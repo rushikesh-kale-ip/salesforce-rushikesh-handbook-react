@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Complete Save Order</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0A84FF;--green:#30D158;--orange:#FF9F0A;--red:#FF453A;--purple:#BF5AF2;
+  --t1:#1C1C1E;--t2:#3A3A3C;--tm:#8E8E93;
+  --bg:#F2F2F7;--card:rgba(255,255,255,0.9);--bdr:rgba(0,0,0,0.08);
+  --r:12px;--rm:16px;--rl:20px;
+  --f:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --fm:"SF Mono","JetBrains Mono","Menlo","Courier New",monospace;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);line-height:1.7;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+.ph{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(30px) saturate(200%);-webkit-backdrop-filter:blur(30px) saturate(200%);
+  border-bottom:1px solid var(--bdr);padding:1rem 1.5rem;
+  box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.phi{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:.875rem}
+.hi{width:36px;height:36px;background:linear-gradient(135deg,#0A84FF,#5E5CE6);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:1rem;flex-shrink:0;box-shadow:0 2px 8px rgba(10,132,255,.35)}
+.ht h1{font-size:.9375rem;font-weight:600;letter-spacing:-.02em;color:var(--t1)}
+.ht p{font-size:.75rem;color:var(--tm);margin-top:1px}
+.cw{max-width:860px;margin:0 auto;padding:1.75rem 1.5rem 4rem}
+.hero{background:linear-gradient(135deg,#0A84FF,#5E5CE6);border-radius:var(--rl);
+  padding:1.75rem 2rem;margin-bottom:1.75rem;color:white;
+  box-shadow:0 8px 32px rgba(10,132,255,.3)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);border-radius:100px;font-size:.6875rem;
+  font-weight:700;padding:.2rem .75rem;margin-bottom:.625rem;
+  letter-spacing:.04em;text-transform:uppercase}
+.hero h2{font-size:1.625rem;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.maj{display:flex;align-items:center;gap:.5rem;font-size:.625rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--tm);
+  margin:2.25rem 0 .875rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.blk{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rm);
+  padding:1.125rem 1.375rem;margin-bottom:.875rem;
+  box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.ct{font-size:.9375rem;font-weight:600;color:var(--t1);margin-bottom:.625rem;
+  letter-spacing:-.01em}
+.cb p{font-size:.9rem;color:var(--t2);margin-bottom:.4rem;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.ans{border-left:3px solid var(--blue)}
+.scn{border-left:3px solid var(--orange)}
+.mis{border-left:3px solid var(--red)}
+.sen{border-left:3px solid var(--purple)}
+.chk{border-left:3px solid var(--green)}
+.dep{border-left:3px solid var(--blue);background:rgba(10,132,255,.03)}
+.sub{border-left:3px solid rgba(0,0,0,.1);background:rgba(0,0,0,.015)}
+.cl{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin:.2rem 0}
+.cl li{font-size:.875rem;color:var(--t2);padding:.25rem 0 .25rem 1rem;
+  position:relative;line-height:1.6}
+.cl li::before{content:"·";position:absolute;left:0;color:var(--blue);font-weight:700}
+.ni{padding-left:2rem !important}
+.ni::before{display:none !important}
+.nb{display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;background:var(--blue);color:white;border-radius:5px;
+  font-size:.625rem;font-weight:700;margin-right:.4rem;vertical-align:middle}
+.ci{font-size:.875rem;color:var(--t2);padding:.2rem 0}
+.arr{font-size:.875rem;color:var(--blue);padding:.2rem 0 .2rem .5rem;font-weight:500}
+.cb-code{background:#1C1C1E;border-radius:var(--r);padding:1.125rem 1.25rem;
+  margin:.75rem 0;overflow-x:auto;position:relative}
+.cb-code::before{content:"";display:block;width:10px;height:10px;border-radius:50%;
+  background:#FF5F57;box-shadow:16px 0 0 #FFBD2E,32px 0 0 #28CA41;
+  margin-bottom:.75rem}
+.cb-code pre{overflow-x:auto}
+.cb-code code{font-family:var(--fm);font-size:.8rem;line-height:1.7;
+  color:#E8E8ED;white-space:pre;word-break:normal}
+.ic{font-family:var(--fm);font-size:.8125rem;background:rgba(10,132,255,.1);
+  color:var(--blue);padding:.1em .4em;border-radius:4px;
+  border:1px solid rgba(10,132,255,.15)}
+.tbl{width:100%;border-collapse:collapse;font-size:.875rem;margin:.5rem 0;
+  border-radius:var(--r);overflow:hidden}
+.tbl tr:first-child td{background:rgba(10,132,255,.07);font-weight:600;color:var(--t1)}
+.tbl td{padding:.5rem .875rem;border-bottom:1px solid var(--bdr);color:var(--t2)}
+.tbl tr:last-child td{border-bottom:none}
+.lp{font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:.375rem}
+@media(max-width:640px){
+  .cw{padding:1rem .875rem 3rem}
+  .hero{padding:1.375rem 1.25rem}
+  .hero h2{font-size:1.25rem}
+  .blk{padding:.875rem 1rem;border-radius:var(--r)}
+  .cb-code{padding:.875rem 1rem}
+  .ph{padding:.75rem 1rem}
+}
+@media(max-width:380px){
+  .hero h2{font-size:1.125rem}
+  .cw{padding:.75rem .625rem 3rem}
+}
+</style>
+</head>
+<body>
+<header class="ph"><div class="phi">
+  <div class="hi">📘</div>
+  <div class="ht"><h1>Salesforce Developer Guide</h1><p>Interview Ready · Deep Dive · Production Patterns</p></div>
+</div></header>
+<div class="cw">
+  <div class="hero"><div class="badge">Salesforce Developer</div><h2>Complete Save Order</h2></div>
+  <p class="lp">6.a Complete Save Order</p><p class="lp">Say Next.</p><p class="lp">Next</p><div class="maj"><span>🎤</span>INTERVIEW SECTION</div><div class="blk ans"><div class="ct">30-Second Interview Answer</div><div class="cb"><p>The Complete Save Order is the exact sequence Salesforce follows when a record is created or updated.</p><p>It includes system validation, before triggers, custom validation rules, after triggers, workflow rules,</p><p>flows, roll-up calculations, commit, and post-commit operations. Understanding this helps prevent</p><ul class="cl"><li>recursion and unexpected data changes.</li></ul></div></div><div class="blk ans"><div class="ct">2-Minute Technical Explanation</div><div class="cb"><p>When a record is saved, Salesforce executes automation in a strict sequence within a single transaction.</p><ul class="cl"><li>High-Level Complete Order:</li><li class="ni"><span class="nb">1</span>Load Existing Record (if update)</li><li class="ni"><span class="nb">2</span>System Validation</li><li class="ni"><span class="nb">3</span>Before Triggers</li><li class="ni"><span class="nb">4</span>Custom Validation Rules</li><li class="ni"><span class="nb">5</span>Duplicate Rules</li><li class="ni"><span class="nb">6</span>Save Record (not committed yet)</li><li class="ni"><span class="nb">7</span>After Triggers</li><li class="ni"><span class="nb">8</span>Assignment Rules</li><li class="ni"><span class="nb">9</span>Auto-response Rules</li><li class="ni"><span class="nb">10</span>Workflow Rules</li><li class="ni"><span class="nb">11</span>Workflow Field Updates (may cause re-entry)</li><li class="ni"><span class="nb">12</span>Process Builder / After-Save Flow</li><li class="ni"><span class="nb">13</span>Roll-Up Summary Recalculation</li><li class="ni"><span class="nb">14</span>Criteria-Based Sharing</li><li class="ni"><span class="nb">15</span>Commit to Database</li><li class="ni"><span class="nb">16</span>Post-Commit Logic (Async, Email, Events)</li><li>Every step shares same governor limits until commit.</li></ul></div></div><div class="blk scn"><div class="ct">Real-Time Scenario</div><div class="cb"><ul class="cl"><li>You update Account:</li><li>Before trigger modifies field.</li><li>Validation rule checks field.</li><li>After trigger creates Contact.</li><li>Workflow updates Rating.</li><li>Trigger fires again.</li><li>After-save Flow sends email.</li><li>Record commits.</li><li>Queueable job executes.</li><li>If you don’t understand this sequence:</li><li>You will mis-handle recursion.</li></ul></div></div><div class="blk ans"><div class="ct">Tricky Interview Questions</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">1</span>When does record ID get generated?</li></ul><div class="arr">→ Before after trigger.</div><ul class="cl"><li class="ni"><span class="nb">2</span>Does workflow run before after trigger?</li></ul><div class="arr">→ No, after after trigger.</div><ul class="cl"><li class="ni"><span class="nb">3</span>Does commit happen before Flow?</li></ul><div class="arr">→ No, Flow runs before commit.</div><ul class="cl"><li class="ni"><span class="nb">4</span>When do async methods execute?</li></ul><div class="arr">→ After commit.</div><ul class="cl"><li class="ni"><span class="nb">5</span>Does roll-up summary update before commit?</li></ul><div class="arr">→ Yes.</div></div></div><div class="blk sen"><div class="ct">Senior-Level Discussion Points</div><div class="cb"><ul class="cl"><li>Transaction boundary</li><li>Lock escalation</li><li>Sharing recalculation timing</li><li>Integration-safe design</li><li>Performance tuning via automation layering</li><li>Removing Workflow in favor of Flow</li><li>🔵 󾠯 COMPLETE SAVE ORDER – STEP-BY-STEP</li></ul></div></div><div class="blk dep"><div class="ct">STEP 1: Record Loaded</div><div class="cb"><ul class="cl"><li>If update:</li><li>Existing record loaded from DB.</li></ul></div></div><div class="blk dep"><div class="ct">STEP 2: System Validation</div><div class="cb"><div class="cb-code"><pre><code>Checks:</code></pre></div><ul class="cl"><li>Required fields</li><li>Data type</li><li>Field length</li><li>Layout-level validation</li></ul></div></div><div class="blk dep"><div class="ct">STEP 3: Before Triggers</div><div class="cb"><ul class="cl"><li>Modify same record fields</li><li>Add errors</li><li>No DML required</li></ul></div></div><div class="blk dep"><div class="ct">STEP 4: Custom Validation Rules</div><div class="cb"><ul class="cl"><li>If fails → transaction stops.</li></ul></div></div><div class="blk dep"><div class="ct">STEP 5: Duplicate Rules</div><div class="cb"><ul class="cl"><li>Checks duplicates.</li></ul><div class="cb-code"><pre><code>📌 STEP 6: Record Saved (Not Committed Yet)</code></pre></div><ul class="cl"><li>Temporary save in memory.</li><li>ID now available.</li></ul></div></div><div class="blk dep"><div class="ct">STEP 7: After Triggers</div><div class="cb"><ul class="cl"><li>Create related records</li><li>Prepare integration logic</li><li>Record ID available</li></ul></div></div><div class="blk dep"><div class="ct">STEP 8: Assignment Rules</div><div class="cb"><ul class="cl"><li>Lead / Case owner reassignment.</li></ul></div></div><div class="blk dep"><div class="ct">STEP 9: Auto-Response Rules</div><div class="cb"><ul class="cl"><li>Emails sent.</li></ul></div></div><div class="blk dep"><div class="ct">STEP 10: Workflow Rules</div><div class="cb"><ul class="cl"><li>If workflow criteria met:</li><li>Field update</li><li>Email alert</li><li>Task creation</li></ul></div></div><div class="blk dep"><div class="ct">STEP 11: Workflow Field Update Re-Entry</div><div class="cb"><ul class="cl"><li>If workflow updates field:</li><li>👉 Before Update Trigger runs again</li><li>👉 After Update Trigger runs again</li><li>This is major recursion point.</li></ul></div></div><div class="blk dep"><div class="ct">STEP 12: Process Builder / After-Save Flow</div><div class="cb"><ul class="cl"><li>Runs after triggers and workflow.</li><li>If Flow updates record:</li><li>Triggers fire again.</li></ul></div></div><div class="blk dep"><div class="ct">STEP 13: Roll-Up Summary</div><div class="cb"><ul class="cl"><li>If Master-Detail:</li><li>Parent recalculated.</li></ul></div></div><div class="blk dep"><div class="ct">STEP 14: Criteria-Based Sharing</div><div class="cb"><ul class="cl"><li>Sharing recalculated if needed.</li></ul></div></div><div class="blk dep"><div class="ct">STEP 15: Commit</div><div class="cb"><ul class="cl"><li>Record permanently written to DB.</li><li>Now transaction final.</li></ul></div></div><div class="blk dep"><div class="ct">STEP 16: Post-Commit Logic</div><div class="cb"><ul class="cl"><li>After commit:</li><li>Future methods</li><li>Queueable jobs</li><li>Batch start</li><li>Platform events</li><li>Emails finalized</li><li>Async runs in new transaction.</li></ul></div></div><div class="blk sub"><div class="ct">All Steps 1–15 Share Same Governor Limits</div><div class="cb"><ul class="cl"><li>CPU time accumulates across:</li><li>Triggers</li><li>Workflow</li><li>Flow</li><li>Validation</li></ul></div></div><div class="blk sub"><div class="ct">Async Starts Fresh Limits</div><div class="cb"><ul class="cl"><li>Future/Queueable:</li><li>New transaction → new limits.</li></ul></div></div><div class="blk sub"><div class="ct">Triggers May Fire Multiple Times</div><div class="cb"><ul class="cl"><li>Due to:</li><li>Workflow field update</li><li>Flow update</li><li>Process Builder update</li></ul></div></div><div class="blk dep"><div class="ct">Performance Impact</div><div class="cb"><ul class="cl"><li>Too many automations:</li><li>Increased CPU time</li><li>Hard debugging</li><li>Recursion complexity</li><li>Best practice:</li><li>Avoid mixing Trigger + Workflow + Flow for same logic.</li></ul></div></div><div class="blk dep"><div class="ct">Example of Trigger Firing Twice</div><div class="cb"><ul class="cl"><li>Account update</li><li>↓</li><li>After Trigger runs</li><li>↓</li><li>Workflow updates field</li><li>↓</li><li>Before Update Trigger runs again</li><li>↓</li><li>After Update Trigger runs again</li><li>Without recursion handling → CPU limit exceeded.</li></ul></div></div><div class="blk dep"><div class="ct">Debugging Complete Save Order Issues</div><div class="cb"><ul class="cl"><li>If logic misbehaving:</li><li class="ni"><span class="nb">1</span>Check debug logs.</li><li class="ni"><span class="nb">2</span>Identify which automation executed.</li><li class="ni"><span class="nb">3</span>Track execution order.</li><li class="ni"><span class="nb">4</span>Look for second trigger execution.</li><li class="ni"><span class="nb">5</span>Check Flow debug run.</li></ul></div></div><div class="blk dep"><div class="ct">Best Practices</div><div class="cb"><ul class="cl"><li>Prefer Before Trigger for same-record changes.</li><li>Avoid workflow field updates when trigger exists.</li><li>Consolidate logic in one layer.</li><li>Use async for heavy processing.</li><li>Use field-change detection.</li><li>Avoid redundant automation.</li></ul></div></div><div class="blk ans"><div class="ct">Interview Power Line</div><div class="cb"><ul class="cl"><li>If interviewer asks:</li><li>“Why is understanding order of execution critical?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>Because multiple automation layers execute in a defined sequence within the same transaction, and</p><p>misunderstanding this order can lead to recursion, unexpected data changes, and governor limit</p><ul class="cl"><li>failures.</li><li>🚀 Next Topic in Sequence:</li></ul></div></div>
+</div>
+</body></html>

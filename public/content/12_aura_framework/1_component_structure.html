@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Component Structure</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0A84FF;--green:#30D158;--orange:#FF9F0A;--red:#FF453A;--purple:#BF5AF2;
+  --t1:#1C1C1E;--t2:#3A3A3C;--tm:#8E8E93;
+  --bg:#F2F2F7;--card:rgba(255,255,255,0.9);--bdr:rgba(0,0,0,0.08);
+  --r:12px;--rm:16px;--rl:20px;
+  --f:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --fm:"SF Mono","JetBrains Mono","Menlo","Courier New",monospace;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);line-height:1.7;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+.ph{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(30px) saturate(200%);-webkit-backdrop-filter:blur(30px) saturate(200%);
+  border-bottom:1px solid var(--bdr);padding:1rem 1.5rem;
+  box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.phi{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:.875rem}
+.hi{width:36px;height:36px;background:linear-gradient(135deg,#0A84FF,#5E5CE6);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:1rem;flex-shrink:0;box-shadow:0 2px 8px rgba(10,132,255,.35)}
+.ht h1{font-size:.9375rem;font-weight:600;letter-spacing:-.02em;color:var(--t1)}
+.ht p{font-size:.75rem;color:var(--tm);margin-top:1px}
+.cw{max-width:860px;margin:0 auto;padding:1.75rem 1.5rem 4rem}
+.hero{background:linear-gradient(135deg,#0A84FF,#5E5CE6);border-radius:var(--rl);
+  padding:1.75rem 2rem;margin-bottom:1.75rem;color:white;
+  box-shadow:0 8px 32px rgba(10,132,255,.3)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);border-radius:100px;font-size:.6875rem;
+  font-weight:700;padding:.2rem .75rem;margin-bottom:.625rem;
+  letter-spacing:.04em;text-transform:uppercase}
+.hero h2{font-size:1.625rem;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.maj{display:flex;align-items:center;gap:.5rem;font-size:.625rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--tm);
+  margin:2.25rem 0 .875rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.blk{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rm);
+  padding:1.125rem 1.375rem;margin-bottom:.875rem;
+  box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.ct{font-size:.9375rem;font-weight:600;color:var(--t1);margin-bottom:.625rem;
+  letter-spacing:-.01em}
+.cb p{font-size:.9rem;color:var(--t2);margin-bottom:.4rem;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.ans{border-left:3px solid var(--blue)}
+.scn{border-left:3px solid var(--orange)}
+.mis{border-left:3px solid var(--red)}
+.sen{border-left:3px solid var(--purple)}
+.chk{border-left:3px solid var(--green)}
+.dep{border-left:3px solid var(--blue);background:rgba(10,132,255,.03)}
+.sub{border-left:3px solid rgba(0,0,0,.1);background:rgba(0,0,0,.015)}
+.cl{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin:.2rem 0}
+.cl li{font-size:.875rem;color:var(--t2);padding:.25rem 0 .25rem 1rem;
+  position:relative;line-height:1.6}
+.cl li::before{content:"·";position:absolute;left:0;color:var(--blue);font-weight:700}
+.ni{padding-left:2rem !important}
+.ni::before{display:none !important}
+.nb{display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;background:var(--blue);color:white;border-radius:5px;
+  font-size:.625rem;font-weight:700;margin-right:.4rem;vertical-align:middle}
+.ci{font-size:.875rem;color:var(--t2);padding:.2rem 0}
+.arr{font-size:.875rem;color:var(--blue);padding:.2rem 0 .2rem .5rem;font-weight:500}
+.cb-code{background:#1C1C1E;border-radius:var(--r);padding:1.125rem 1.25rem;
+  margin:.75rem 0;overflow-x:auto;position:relative}
+.cb-code::before{content:"";display:block;width:10px;height:10px;border-radius:50%;
+  background:#FF5F57;box-shadow:16px 0 0 #FFBD2E,32px 0 0 #28CA41;
+  margin-bottom:.75rem}
+.cb-code pre{overflow-x:auto}
+.cb-code code{font-family:var(--fm);font-size:.8rem;line-height:1.7;
+  color:#E8E8ED;white-space:pre;word-break:normal}
+.ic{font-family:var(--fm);font-size:.8125rem;background:rgba(10,132,255,.1);
+  color:var(--blue);padding:.1em .4em;border-radius:4px;
+  border:1px solid rgba(10,132,255,.15)}
+.tbl{width:100%;border-collapse:collapse;font-size:.875rem;margin:.5rem 0;
+  border-radius:var(--r);overflow:hidden}
+.tbl tr:first-child td{background:rgba(10,132,255,.07);font-weight:600;color:var(--t1)}
+.tbl td{padding:.5rem .875rem;border-bottom:1px solid var(--bdr);color:var(--t2)}
+.tbl tr:last-child td{border-bottom:none}
+.lp{font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:.375rem}
+@media(max-width:640px){
+  .cw{padding:1rem .875rem 3rem}
+  .hero{padding:1.375rem 1.25rem}
+  .hero h2{font-size:1.25rem}
+  .blk{padding:.875rem 1rem;border-radius:var(--r)}
+  .cb-code{padding:.875rem 1rem}
+  .ph{padding:.75rem 1rem}
+}
+@media(max-width:380px){
+  .hero h2{font-size:1.125rem}
+  .cw{padding:.75rem .625rem 3rem}
+}
+</style>
+</head>
+<body>
+<header class="ph"><div class="phi">
+  <div class="hi">📘</div>
+  <div class="ht"><h1>Salesforce Developer Guide</h1><p>Interview Ready · Deep Dive · Production Patterns</p></div>
+</div></header>
+<div class="cw">
+  <div class="hero"><div class="badge">Salesforce Developer</div><h2>Component Structure</h2></div>
+  <p class="lp">12.a Component Structure</p><div class="maj"><span>🎤</span>INTERVIEW SECTION</div><div class="blk ans"><div class="ct">30-Second Interview Answer</div><div class="cb"><p>An Aura component is a bundle consisting of multiple files such as .cmp, .js, .css, .design, .svg, and</p><p>.auradoc. The main file is the .cmp file which defines the UI structure, attributes, and event handlers. Aura</p><ul class="cl"><li>follows a component-based architecture using its proprietary framework.</li></ul></div></div><div class="blk ans"><div class="ct">2-Minute Technical Explanation</div><div class="cb"><ul class="cl"><li>Aura component bundle includes:</li><li>MyComponent/</li><li>├── MyComponent.cmp</li><li>├── MyComponentController.js</li><li>├── MyComponentHelper.js</li></ul><div class="cb-code"><pre><code>├── MyComponentRenderer.js (optional)</code></pre></div><ul class="cl"><li>├── MyComponent.css</li><li>├── MyComponent.design</li><li>├── MyComponent.auradoc</li><li>├── MyComponent.svg</li><li>Main files:</li></ul><div class="cb-code"><pre><code>.cmp → Markup (UI)</code></pre></div><ul class="cl"><li>Controller.js → Client-side JS logic</li><li>Helper.js → Reusable logic</li><li>Apex Controller → Server-side logic</li><li>Aura uses:</li></ul><div class="cb-code"><pre><code>aura:component</code></pre></div><div class="cb-code"><pre><code>aura:attribute</code></pre></div><div class="cb-code"><pre><code>{! v.attributeName } binding</code></pre></div></div></div><div class="blk scn"><div class="ct">Real-Time Scenario</div><div class="cb"><ul class="cl"><li>Legacy org built entirely in Aura.</li><li>New requirement:</li><li>Modify existing Aura component.</li><li>You must understand:</li><li>Attribute declaration</li><li>Event handling</li><li>Helper logic</li><li>Apex controller connection</li></ul></div></div><div class="blk ans"><div class="ct">Tricky Interview Questions</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">1</span>What is difference between Controller and Helper?</li></ul><div class="cb-code"><pre><code>→ Controller handles events; Helper contains reusable logic.</code></pre></div><ul class="cl"><li class="ni"><span class="nb">2</span>Can Aura call Apex?</li></ul><div class="arr">→ Yes.</div><ul class="cl"><li class="ni"><span class="nb">3</span>What is Renderer file?</li></ul><div class="cb-code"><pre><code>→ Custom rendering override (rarely used).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">4</span>Can LWC be used inside Aura?</li></ul><div class="arr">→ Yes.</div><ul class="cl"><li class="ni"><span class="nb">5</span>Is Aura still supported?</li></ul><div class="arr">→ Yes, but LWC preferred.</div></div></div><div class="blk sen"><div class="ct">Senior-Level Discussion Points</div><div class="cb"><ul class="cl"><li>Aura event model</li><li>Performance comparison with LWC</li><li>Migration strategy</li><li>Two-way binding risks</li><li>Legacy technical debt handling</li></ul></div></div><div class="maj"><span>🔬</span>DEEP TECHNICAL BREAKDOWN</div><p class="lp"><aura:component controller="AccountController"></p><p class="lp"><aura:attribute name="name" type="String"/></p><p class="lp"></aura:component></p><div class="blk dep"><div class="ct">Controller.js</div><div class="cb"><ul class="cl"><li>Handles client-side events.</li></ul><div class="cb-code"><pre><code>({</code></pre></div><div class="cb-code"><pre><code>handleClick : function(component, event, helper) {</code></pre></div><div class="cb-code"><pre><code>helper.updateName(component);</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>})</code></pre></div><ul class="cl"><li>Acts as entry point.</li></ul></div></div><div class="blk dep"><div class="ct">Helper.js</div><div class="cb"><ul class="cl"><li>Contains reusable logic.</li></ul><div class="cb-code"><pre><code>({</code></pre></div><div class="cb-code"><pre><code>updateName : function(component) {</code></pre></div><div class="cb-code"><pre><code>component.set("v.name", "Updated");</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>})</code></pre></div><ul class="cl"><li>Best practice:</li><li>Put business logic in Helper.</li></ul></div></div><div class="blk dep"><div class="ct">Apex Controller</div><div class="cb"><ul class="cl"><li>Server-side logic.</li></ul><div class="cb-code"><pre><code>public with sharing class AccountController {</code></pre></div><ul class="cl"><li>@AuraEnabled</li></ul><div class="cb-code"><pre><code>public static String getName(){</code></pre></div><div class="cb-code"><pre><code>return 'Salesforce';</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><ul class="cl"><li>Called from Aura.</li></ul></div></div><div class="blk dep"><div class="ct">design File</div><div class="cb"><ul class="cl"><li>Used for:</li><li>Exposing attributes in App Builder.</li></ul></div></div><div class="blk dep"><div class="ct">css File</div><div class="cb"><ul class="cl"><li>Scoped CSS for component.</li></ul><div class="cb-code"><pre><code>📌 󾠴 Renderer.js (Rare Use)</code></pre></div><ul class="cl"><li>Used to override rendering lifecycle.</li><li>Advanced usage.</li></ul></div></div><div class="blk dep"><div class="ct">Aura Attribute Syntax</div><div class="cb"><div class="cb-code"><pre><code>Declare:</code></pre></div><ul class="cl"><li><aura:attribute name="count" type="Integer"/></li></ul><div class="cb-code"><pre><code>Access:</code></pre></div><div class="cb-code"><pre><code>{!v.count}</code></pre></div><ul class="cl"><li>Two-way binding supported.</li></ul></div></div><div class="blk dep"><div class="ct">Aura Event Handling</div><div class="cb"><div class="cb-code"><pre><code>Button:</code></pre></div><div class="cb-code"><pre><code>onclick="{!c.handleClick}"</code></pre></div><ul class="cl"><li>Controller receives event.</li></ul></div></div><div class="blk dep"><div class="ct">Aura vs LWC Structure Comparison</div><div class="cb"><ul class="cl"><li>Feature Aura LWC</li><li>Bundle Size Larger Smaller</li><li>Binding Two-way One-way</li><li>JS Standard Older ES6</li><li>Performance Slower Faster</li><li>Framework Proprietary Web Standard</li></ul></div></div><div class="blk dep"><div class="ct">Enterprise Reality</div><div class="cb"><ul class="cl"><li>Many orgs still have:</li></ul><div class="ci">✔ Aura-based apps</div><div class="ci">✔ Aura utility bar</div><div class="ci">✔ Aura quick actions</div><ul class="cl"><li>Must maintain them.</li></ul></div></div><div class="blk dep"><div class="ct">Migration Strategy</div><div class="cb"><ul class="cl"><li>Wrap LWC inside Aura:</li><li><c:myLwcComponent/></li><li>Gradually replace Aura logic.</li></ul></div></div><div class="blk dep"><div class="ct">Interview Scenario</div><div class="cb"><ul class="cl"><li>“Explain Aura component structure.”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><div class="cb-code"><pre><code>An Aura component is a bundle that includes markup (.cmp), client-side controller (.js), helper (.js),</code></pre></div><p>optional renderer, CSS, and metadata files, working together to define UI, logic, and server interaction.</p></div></div><div class="blk ans"><div class="ct">Interview Power Line</div><div class="cb"><ul class="cl"><li>If interviewer asks:</li><li>“Where should business logic be written in Aura?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>Business logic should be written in the Helper file to maintain clean separation between event handling</p><ul class="cl"><li>in the Controller and reusable logic in the Helper.</li><li>🚀 Next Topic in Sequence:</li></ul></div></div>
+</div>
+</body></html>

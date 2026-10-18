@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Trigger Flow Interaction</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0A84FF;--green:#30D158;--orange:#FF9F0A;--red:#FF453A;--purple:#BF5AF2;
+  --t1:#1C1C1E;--t2:#3A3A3C;--tm:#8E8E93;
+  --bg:#F2F2F7;--card:rgba(255,255,255,0.9);--bdr:rgba(0,0,0,0.08);
+  --r:12px;--rm:16px;--rl:20px;
+  --f:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --fm:"SF Mono","JetBrains Mono","Menlo","Courier New",monospace;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);line-height:1.7;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+.ph{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(30px) saturate(200%);-webkit-backdrop-filter:blur(30px) saturate(200%);
+  border-bottom:1px solid var(--bdr);padding:1rem 1.5rem;
+  box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.phi{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:.875rem}
+.hi{width:36px;height:36px;background:linear-gradient(135deg,#0A84FF,#5E5CE6);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:1rem;flex-shrink:0;box-shadow:0 2px 8px rgba(10,132,255,.35)}
+.ht h1{font-size:.9375rem;font-weight:600;letter-spacing:-.02em;color:var(--t1)}
+.ht p{font-size:.75rem;color:var(--tm);margin-top:1px}
+.cw{max-width:860px;margin:0 auto;padding:1.75rem 1.5rem 4rem}
+.hero{background:linear-gradient(135deg,#0A84FF,#5E5CE6);border-radius:var(--rl);
+  padding:1.75rem 2rem;margin-bottom:1.75rem;color:white;
+  box-shadow:0 8px 32px rgba(10,132,255,.3)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);border-radius:100px;font-size:.6875rem;
+  font-weight:700;padding:.2rem .75rem;margin-bottom:.625rem;
+  letter-spacing:.04em;text-transform:uppercase}
+.hero h2{font-size:1.625rem;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.maj{display:flex;align-items:center;gap:.5rem;font-size:.625rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--tm);
+  margin:2.25rem 0 .875rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.blk{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rm);
+  padding:1.125rem 1.375rem;margin-bottom:.875rem;
+  box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.ct{font-size:.9375rem;font-weight:600;color:var(--t1);margin-bottom:.625rem;
+  letter-spacing:-.01em}
+.cb p{font-size:.9rem;color:var(--t2);margin-bottom:.4rem;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.ans{border-left:3px solid var(--blue)}
+.scn{border-left:3px solid var(--orange)}
+.mis{border-left:3px solid var(--red)}
+.sen{border-left:3px solid var(--purple)}
+.chk{border-left:3px solid var(--green)}
+.dep{border-left:3px solid var(--blue);background:rgba(10,132,255,.03)}
+.sub{border-left:3px solid rgba(0,0,0,.1);background:rgba(0,0,0,.015)}
+.cl{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin:.2rem 0}
+.cl li{font-size:.875rem;color:var(--t2);padding:.25rem 0 .25rem 1rem;
+  position:relative;line-height:1.6}
+.cl li::before{content:"·";position:absolute;left:0;color:var(--blue);font-weight:700}
+.ni{padding-left:2rem !important}
+.ni::before{display:none !important}
+.nb{display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;background:var(--blue);color:white;border-radius:5px;
+  font-size:.625rem;font-weight:700;margin-right:.4rem;vertical-align:middle}
+.ci{font-size:.875rem;color:var(--t2);padding:.2rem 0}
+.arr{font-size:.875rem;color:var(--blue);padding:.2rem 0 .2rem .5rem;font-weight:500}
+.cb-code{background:#1C1C1E;border-radius:var(--r);padding:1.125rem 1.25rem;
+  margin:.75rem 0;overflow-x:auto;position:relative}
+.cb-code::before{content:"";display:block;width:10px;height:10px;border-radius:50%;
+  background:#FF5F57;box-shadow:16px 0 0 #FFBD2E,32px 0 0 #28CA41;
+  margin-bottom:.75rem}
+.cb-code pre{overflow-x:auto}
+.cb-code code{font-family:var(--fm);font-size:.8rem;line-height:1.7;
+  color:#E8E8ED;white-space:pre;word-break:normal}
+.ic{font-family:var(--fm);font-size:.8125rem;background:rgba(10,132,255,.1);
+  color:var(--blue);padding:.1em .4em;border-radius:4px;
+  border:1px solid rgba(10,132,255,.15)}
+.tbl{width:100%;border-collapse:collapse;font-size:.875rem;margin:.5rem 0;
+  border-radius:var(--r);overflow:hidden}
+.tbl tr:first-child td{background:rgba(10,132,255,.07);font-weight:600;color:var(--t1)}
+.tbl td{padding:.5rem .875rem;border-bottom:1px solid var(--bdr);color:var(--t2)}
+.tbl tr:last-child td{border-bottom:none}
+.lp{font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:.375rem}
+@media(max-width:640px){
+  .cw{padding:1rem .875rem 3rem}
+  .hero{padding:1.375rem 1.25rem}
+  .hero h2{font-size:1.25rem}
+  .blk{padding:.875rem 1rem;border-radius:var(--r)}
+  .cb-code{padding:.875rem 1rem}
+  .ph{padding:.75rem 1rem}
+}
+@media(max-width:380px){
+  .hero h2{font-size:1.125rem}
+  .cw{padding:.75rem .625rem 3rem}
+}
+</style>
+</head>
+<body>
+<header class="ph"><div class="phi">
+  <div class="hi">📘</div>
+  <div class="ht"><h1>Salesforce Developer Guide</h1><p>Interview Ready · Deep Dive · Production Patterns</p></div>
+</div></header>
+<div class="cw">
+  <div class="hero"><div class="badge">Salesforce Developer</div><h2>Trigger Flow Interaction</h2></div>
+  <p class="lp">6.b Trigger + Flow Interaction</p><p class="lp">Say Next.</p><p class="lp">Next</p><p class="lp">🔷 6.b Trigger + Flow Interaction</p><div class="maj"><span>🎤</span>INTERVIEW SECTION</div><div class="blk ans"><div class="ct">30-Second Interview Answer</div><div class="cb"><p>Trigger and Flow interaction refers to how Apex triggers and Salesforce Flows execute within the same</p><p>transaction during the record save process. Since both can update records, they can cause re-entry,</p><p>recursion, and unexpected field overwrites if not designed carefully. Understanding their execution</p><ul class="cl"><li>order is critical to avoid conflicts and CPU limit issues.</li></ul></div></div><div class="blk ans"><div class="ct">2-Minute Technical Explanation</div><div class="cb"><div class="cb-code"><pre><code>In modern Salesforce (Flow-first architecture):</code></pre></div><ul class="cl"><li>When a record is saved:</li><li>󾠮 Before-save Flow runs</li><li>󾠯 Before Trigger runs</li><li>󾠰 Validation Rules</li><li>󾠱 After Trigger runs</li><li>󾠲 After-save Flow runs</li><li>󾠳 Commit</li><li>󾠴 Async logic</li><li>If Flow updates the record again:</li><li>👉 Triggers fire again</li><li>👉 Possible recursion</li><li>If Trigger updates record:</li><li>👉 Flow may run again</li><li>Both share:</li><li>Same transaction</li><li>Same governor limits</li><li>Same CPU time</li><li>This is why improper design causes performance issues.</li></ul></div></div><div class="blk scn"><div class="ct">Real-Time Scenario</div><div class="cb"><ul class="cl"><li>Account update scenario:</li><li>Before Flow sets Industry default.</li><li>Before Trigger formats Name.</li><li>After Trigger creates Contact.</li><li>After Flow updates Account Rating.</li><li>After Flow updates Rating:</li></ul><div class="arr">→ Before Update Trigger runs again</div><div class="arr">→ After Update Trigger runs again</div><ul class="cl"><li>If no recursion control → CPU limit exceeded.</li></ul></div></div><div class="blk ans"><div class="ct">Tricky Interview Questions</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">1</span>Does Flow run before trigger?</li></ul><div class="arr">→ Before-save Flow runs before before trigger.</div><ul class="cl"><li class="ni"><span class="nb">2</span>Does after-save Flow run before commit?</li></ul><div class="arr">→ Yes.</div><ul class="cl"><li class="ni"><span class="nb">3</span>If Flow updates record, will trigger fire?</li></ul><div class="arr">→ Yes.</div><ul class="cl"><li class="ni"><span class="nb">4</span>Do Flow and Trigger share governor limits?</li></ul><div class="arr">→ Yes.</div><ul class="cl"><li class="ni"><span class="nb">5</span>Which is faster: before-save Flow or before trigger?</li></ul><div class="cb-code"><pre><code>→ Before-save Flow (no DML required).</code></pre></div></div></div><div class="blk sen"><div class="ct">Senior-Level Discussion Points</div><div class="cb"><ul class="cl"><li>Flow-first vs Apex-first strategy</li><li>When to replace Workflow with Flow</li><li>Automation hierarchy design</li><li>CPU optimization</li><li>Avoiding duplicate logic</li><li>Centralizing business rules</li><li>Governance strategy</li></ul></div></div><div class="maj"><span>🔬</span>DEEP TECHNICAL BREAKDOWN</div><div class="blk sub"><div class="ct">Before-Save Flow</div><div class="cb"><ul class="cl"><li>Runs before before trigger completes</li><li>Used for updating same record fields</li><li>No DML required</li><li>Very fast</li></ul></div></div><div class="blk sub"><div class="ct">Before Trigger</div><div class="cb"><ul class="cl"><li>Runs after before-save Flow</li><li>Can modify fields</li><li>Can addError</li></ul></div></div><div class="blk sub"><div class="ct">After Trigger</div><div class="cb"><ul class="cl"><li>Runs after record temporarily saved</li><li>Used for related records</li><li>Can perform DML</li></ul></div></div><div class="blk sub"><div class="ct">After-Save Flow</div><div class="cb"><ul class="cl"><li>Runs after after trigger</li><li>Can update same or related records</li><li>May cause trigger re-entry</li></ul></div></div><div class="blk dep"><div class="ct">Example Interaction</div><div class="cb"><ul class="cl"><li>Step 1: User updates Account</li><li>Step 2: Before Flow sets default Industry</li><li>Step 3: Before Trigger formats Name</li><li>Step 4: After Trigger creates Contact</li><li>Step 5: After Flow updates Rating</li><li>Step 6: Because Rating updated →</li><li>Before Update Trigger fires again</li><li>After Update Trigger fires again</li></ul></div></div><div class="blk dep"><div class="ct">Recursion Risk</div><div class="cb"><ul class="cl"><li>If both Flow and Trigger update same field:</li><li>Infinite loop possible</li><li>CPU limit hit</li></ul><div class="cb-code"><pre><code>Solution:</code></pre></div><ul class="cl"><li>Field change detection</li><li>Static Set pattern</li><li>Clear automation ownership</li></ul></div></div><div class="blk dep"><div class="ct">Governor Limit Sharing</div><div class="cb"><ul class="cl"><li>Flow + Trigger share:</li><li>100 SOQL</li><li>150 DML</li><li>10 sec CPU</li><li>Heavy Flow + heavy Trigger = limit failure.</li></ul></div></div><div class="blk dep"><div class="ct">Performance Comparison</div><div class="cb"><ul class="cl"><li>Feature Before Flow Before Trigger</li><li>Speed Faster Slightly slower</li><li>Requires DML No No</li><li>Code Flexibility Limited High</li><li>Complex Logic Hard Easy</li></ul></div></div><div class="blk dep"><div class="ct">Best Practice Strategy</div><div class="cb"><ul class="cl"><li>Option 1: Flow-First Strategy</li><li>Use Flow when:</li><li>Simple field updates</li><li>Simple validation</li><li>Declarative-friendly logic</li><li>Option 2: Apex-First Strategy</li><li>Use Trigger when:</li><li>Complex logic</li><li>Large data volume</li><li>Integration</li><li>Performance critical</li></ul><div class="cb-code"><pre><code>NEVER: Split Same Logic Across Both</code></pre></div></div></div><div class="blk mis"><div class="ct">Bad ❌</div><div class="cb"><ul class="cl"><li>Flow updates Rating</li><li>Trigger also updates Rating</li><li>Causes unpredictable behavior.</li></ul></div></div><div class="blk dep"><div class="ct">Enterprise Best Practice</div><div class="cb"><ul class="cl"><li>Choose one automation owner per object:</li></ul><div class="cb-code"><pre><code>Example:</code></pre></div><div class="cb-code"><pre><code>Account:</code></pre></div><ul class="cl"><li>Flow handles UI-level updates</li><li>Trigger handles integration and related record creation</li><li>Clear separation avoids conflict.</li></ul></div></div><div class="blk dep"><div class="ct">Debugging Trigger + Flow Issues</div><div class="cb"><ul class="cl"><li>If record updated multiple times:</li><li class="ni"><span class="nb">1</span>Check Flow debug logs.</li><li class="ni"><span class="nb">2</span>Check trigger debug logs.</li><li class="ni"><span class="nb">3</span>Look for repeated execution blocks.</li><li class="ni"><span class="nb">4</span>Identify which automation updated record.</li><li class="ni"><span class="nb">5</span>Add debug counters.</li></ul></div></div><div class="blk dep"><div class="ct">When NOT to Mix</div><div class="cb"><ul class="cl"><li>Avoid mixing Flow + Trigger if:</li><li>Same field updated</li><li>Same business logic executed</li><li>Large data volume environment</li><li>High integration traffic</li></ul></div></div><div class="blk ans"><div class="ct">Interview Power Line</div><div class="cb"><ul class="cl"><li>If interviewer asks:</li><li>“Why does my trigger execute twice after I added a Flow?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>Because after-save Flow updated the record again, which caused the before and after update triggers to</p><ul class="cl"><li>execute a second time within the same transaction.</li><li>🚀 Next Topic in Sequence:</li></ul></div></div>
+</div>
+</body></html>

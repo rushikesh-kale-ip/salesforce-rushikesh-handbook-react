@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Dynamic Soql</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0A84FF;--green:#30D158;--orange:#FF9F0A;--red:#FF453A;--purple:#BF5AF2;
+  --t1:#1C1C1E;--t2:#3A3A3C;--tm:#8E8E93;
+  --bg:#F2F2F7;--card:rgba(255,255,255,0.9);--bdr:rgba(0,0,0,0.08);
+  --r:12px;--rm:16px;--rl:20px;
+  --f:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --fm:"SF Mono","JetBrains Mono","Menlo","Courier New",monospace;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);line-height:1.7;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+.ph{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(30px) saturate(200%);-webkit-backdrop-filter:blur(30px) saturate(200%);
+  border-bottom:1px solid var(--bdr);padding:1rem 1.5rem;
+  box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.phi{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:.875rem}
+.hi{width:36px;height:36px;background:linear-gradient(135deg,#0A84FF,#5E5CE6);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:1rem;flex-shrink:0;box-shadow:0 2px 8px rgba(10,132,255,.35)}
+.ht h1{font-size:.9375rem;font-weight:600;letter-spacing:-.02em;color:var(--t1)}
+.ht p{font-size:.75rem;color:var(--tm);margin-top:1px}
+.cw{max-width:860px;margin:0 auto;padding:1.75rem 1.5rem 4rem}
+.hero{background:linear-gradient(135deg,#0A84FF,#5E5CE6);border-radius:var(--rl);
+  padding:1.75rem 2rem;margin-bottom:1.75rem;color:white;
+  box-shadow:0 8px 32px rgba(10,132,255,.3)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);border-radius:100px;font-size:.6875rem;
+  font-weight:700;padding:.2rem .75rem;margin-bottom:.625rem;
+  letter-spacing:.04em;text-transform:uppercase}
+.hero h2{font-size:1.625rem;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.maj{display:flex;align-items:center;gap:.5rem;font-size:.625rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--tm);
+  margin:2.25rem 0 .875rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.blk{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rm);
+  padding:1.125rem 1.375rem;margin-bottom:.875rem;
+  box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.ct{font-size:.9375rem;font-weight:600;color:var(--t1);margin-bottom:.625rem;
+  letter-spacing:-.01em}
+.cb p{font-size:.9rem;color:var(--t2);margin-bottom:.4rem;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.ans{border-left:3px solid var(--blue)}
+.scn{border-left:3px solid var(--orange)}
+.mis{border-left:3px solid var(--red)}
+.sen{border-left:3px solid var(--purple)}
+.chk{border-left:3px solid var(--green)}
+.dep{border-left:3px solid var(--blue);background:rgba(10,132,255,.03)}
+.sub{border-left:3px solid rgba(0,0,0,.1);background:rgba(0,0,0,.015)}
+.cl{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin:.2rem 0}
+.cl li{font-size:.875rem;color:var(--t2);padding:.25rem 0 .25rem 1rem;
+  position:relative;line-height:1.6}
+.cl li::before{content:"·";position:absolute;left:0;color:var(--blue);font-weight:700}
+.ni{padding-left:2rem !important}
+.ni::before{display:none !important}
+.nb{display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;background:var(--blue);color:white;border-radius:5px;
+  font-size:.625rem;font-weight:700;margin-right:.4rem;vertical-align:middle}
+.ci{font-size:.875rem;color:var(--t2);padding:.2rem 0}
+.arr{font-size:.875rem;color:var(--blue);padding:.2rem 0 .2rem .5rem;font-weight:500}
+.cb-code{background:#1C1C1E;border-radius:var(--r);padding:1.125rem 1.25rem;
+  margin:.75rem 0;overflow-x:auto;position:relative}
+.cb-code::before{content:"";display:block;width:10px;height:10px;border-radius:50%;
+  background:#FF5F57;box-shadow:16px 0 0 #FFBD2E,32px 0 0 #28CA41;
+  margin-bottom:.75rem}
+.cb-code pre{overflow-x:auto}
+.cb-code code{font-family:var(--fm);font-size:.8rem;line-height:1.7;
+  color:#E8E8ED;white-space:pre;word-break:normal}
+.ic{font-family:var(--fm);font-size:.8125rem;background:rgba(10,132,255,.1);
+  color:var(--blue);padding:.1em .4em;border-radius:4px;
+  border:1px solid rgba(10,132,255,.15)}
+.tbl{width:100%;border-collapse:collapse;font-size:.875rem;margin:.5rem 0;
+  border-radius:var(--r);overflow:hidden}
+.tbl tr:first-child td{background:rgba(10,132,255,.07);font-weight:600;color:var(--t1)}
+.tbl td{padding:.5rem .875rem;border-bottom:1px solid var(--bdr);color:var(--t2)}
+.tbl tr:last-child td{border-bottom:none}
+.lp{font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:.375rem}
+@media(max-width:640px){
+  .cw{padding:1rem .875rem 3rem}
+  .hero{padding:1.375rem 1.25rem}
+  .hero h2{font-size:1.25rem}
+  .blk{padding:.875rem 1rem;border-radius:var(--r)}
+  .cb-code{padding:.875rem 1rem}
+  .ph{padding:.75rem 1rem}
+}
+@media(max-width:380px){
+  .hero h2{font-size:1.125rem}
+  .cw{padding:.75rem .625rem 3rem}
+}
+</style>
+</head>
+<body>
+<header class="ph"><div class="phi">
+  <div class="hi">📘</div>
+  <div class="ht"><h1>Salesforce Developer Guide</h1><p>Interview Ready · Deep Dive · Production Patterns</p></div>
+</div></header>
+<div class="cw">
+  <div class="hero"><div class="badge">Salesforce Developer</div><h2>Dynamic Soql</h2></div>
+  <p class="lp">4.d Dynamic SOQL</p><p class="lp">Say Next.</p><p class="lp">Next</p><p class="lp">🔷 4.d Dynamic SOQL</p><div class="maj"><span>🎤</span>INTERVIEW SECTION</div><div class="blk ans"><div class="ct">30-Second Interview Answer</div><div class="cb"><p>Dynamic SOQL is used when the SOQL query needs to be constructed at runtime, such as when object</p><div class="cb-code"><pre><code>names, field names, or filters are not known at compile time. It is executed using Database.query() and is</code></pre></div><p>useful for flexible, metadata-driven applications. However, it must be handled carefully to prevent SOQL</p><ul class="cl"><li>injection.</li></ul></div></div><div class="blk ans"><div class="ct">2-Minute Technical Explanation</div><div class="cb"><ul class="cl"><li>There are two types of SOQL:</li><li>󾠮 Static SOQL → Written inside square brackets.</li></ul><div class="cb-code"><pre><code>󾠯 Dynamic SOQL → Built as a String and executed using Database.query().</code></pre></div><ul class="cl"><li>Dynamic SOQL is required when:</li><li>Object name is dynamic</li><li>Fields are dynamic</li><li>Filters are configurable</li><li>Building generic frameworks</li></ul><div class="cb-code"><pre><code>Example:</code></pre></div><div class="cb-code"><pre><code>String query = 'SELECT Id, Name FROM Account WHERE Industry = \'IT\'';</code></pre></div><div class="cb-code"><pre><code>List&lt;SObject&gt; records = Database.query(query);</code></pre></div><ul class="cl"><li>Used in:</li><li>Generic search utilities</li><li>Configurable reporting</li><li>Dynamic field selection</li><li>Admin-driven filtering</li></ul></div></div><div class="blk scn"><div class="ct">Real-Time Scenario</div><div class="cb"><ul class="cl"><li>You are building:</li></ul><div class="cb-code"><pre><code>Generic Search Component (LWC)</code></pre></div><ul class="cl"><li>User selects:</li><li>Object</li><li>Fields</li><li>Filters</li><li>Since object and fields vary:</li><li>You must build SOQL dynamically.</li><li>Static SOQL cannot handle this.</li></ul></div></div><div class="blk ans"><div class="ct">Tricky Interview Questions</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">1</span>Does Dynamic SOQL count toward governor limits?</li></ul></div></div><div class="blk chk"><div class="ct">Yes.</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">2</span>What is SOQL Injection?</li><li>Malicious manipulation of query string.</li><li class="ni"><span class="nb">3</span>How to prevent SOQL injection?</li><li>Use bind variables.</li><li class="ni"><span class="nb">4</span>Can we use bind variable in dynamic SOQL?</li></ul></div></div><div class="blk chk"><div class="ct">Yes.</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">5</span>What does Database.query return?</li><li>List<SObject>.</li></ul></div></div><div class="blk sen"><div class="ct">Senior-Level Discussion Points</div><div class="cb"><ul class="cl"><li>Security risk of dynamic queries</li><li>Using Schema methods for validation</li><li>Field-level security enforcement</li><li>with SECURITY_ENFORCED</li><li>Generic framework design</li><li>Performance trade-offs</li><li>Query optimization in dynamic context</li></ul></div></div><div class="maj"><span>🔬</span>DEEP TECHNICAL BREAKDOWN</div><div class="blk sub"><div class="ct">Static SOQL</div><div class="cb"><ul class="cl"><li>List<Account> accList =</li></ul><div class="cb-code"><pre><code>[SELECT Id, Name FROM Account];</code></pre></div><ul class="cl"><li>Compile-time validated</li><li>Safer</li><li>Faster</li><li>Recommended when possible</li></ul></div></div><div class="blk sub"><div class="ct">Dynamic SOQL</div><div class="cb"><div class="cb-code"><pre><code>String query = 'SELECT Id, Name FROM Account';</code></pre></div><div class="cb-code"><pre><code>List&lt;SObject&gt; records = Database.query(query);</code></pre></div><ul class="cl"><li>Built at runtime</li><li>Flexible</li><li>Risky if not sanitized</li></ul><div class="cb-code"><pre><code>📌 Using Bind Variables (IMPORTANT)</code></pre></div></div></div><div class="blk mis"><div class="ct">Wrong ❌</div><div class="cb"><div class="cb-code"><pre><code>String name = 'IT';</code></pre></div><div class="cb-code"><pre><code>String query = 'SELECT Id FROM Account WHERE Industry = \'' + name + '\'';</code></pre></div><div class="cb-code"><pre><code>Risk: Injection</code></pre></div></div></div><div class="blk chk"><div class="ct">Correct ✅</div><div class="cb"><div class="cb-code"><pre><code>String name = 'IT';</code></pre></div><div class="cb-code"><pre><code>String query = 'SELECT Id FROM Account WHERE Industry = :name';</code></pre></div><div class="cb-code"><pre><code>List&lt;SObject&gt; records = Database.query(query);</code></pre></div><ul class="cl"><li>Safer.</li></ul></div></div><div class="blk dep"><div class="ct">Handling Single Quotes</div><div class="cb"><ul class="cl"><li>If string must be concatenated:</li></ul><div class="cb-code"><pre><code>String safeValue = String.escapeSingleQuotes(userInput);</code></pre></div></div></div><div class="blk dep"><div class="ct">Dynamic Object Example</div><div class="cb"><div class="cb-code"><pre><code>String objName = 'Account';</code></pre></div><div class="cb-code"><pre><code>String query = 'SELECT Id, Name FROM ' + objName;</code></pre></div><div class="cb-code"><pre><code>List&lt;SObject&gt; records = Database.query(query);</code></pre></div></div></div><div class="blk dep"><div class="ct">Type Casting from SObject</div><div class="cb"><div class="cb-code"><pre><code>List&lt;SObject&gt; records = Database.query(query);</code></pre></div><div class="cb-code"><pre><code>for(SObject sob : records){</code></pre></div><div class="cb-code"><pre><code>Account acc = (Account) sob;</code></pre></div><div class="cb-code"><pre><code>System.debug(acc.Name);</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>📌 Schema Validation (Advanced)</code></pre></div><ul class="cl"><li>Before dynamic object use:</li></ul><div class="cb-code"><pre><code>if(Schema.getGlobalDescribe().containsKey(objName)){</code></pre></div><ul class="cl"><li>// safe to query</li></ul><div class="cb-code"><pre><code>}</code></pre></div><ul class="cl"><li>Prevents querying invalid object.</li></ul></div></div><div class="blk dep"><div class="ct">Security Risk – SOQL Injection</div><div class="cb"><ul class="cl"><li>Example Attack:</li><li>User enters:</li><li>IT' OR Name != ''</li><li>Query becomes:</li><li>WHERE Industry = 'IT' OR Name != ''</li><li>Returns all records.</li></ul><div class="cb-code"><pre><code>Solution:</code></pre></div><ul class="cl"><li>Use bind variables</li><li>Validate input</li><li>Escape single quotes</li></ul></div></div><div class="blk dep"><div class="ct">Performance Considerations</div><div class="cb"><ul class="cl"><li>Dynamic SOQL:</li><li>Slightly slower than static</li><li>No compile-time validation</li><li>More risk of non-selective queries</li><li>Avoid using dynamic when static possible.</li></ul></div></div><div class="blk dep"><div class="ct">Governor Limits</div><div class="cb"><ul class="cl"><li>Dynamic SOQL:</li><li>Counts toward 100/200 limit</li><li>Row limit still 50,000</li><li>Aggregate limit still applies</li><li>No special exemption.</li></ul></div></div><div class="blk dep"><div class="ct">Dynamic Field Selection Example</div><div class="cb"><div class="cb-code"><pre><code>String fields = 'Id, Name, Industry';</code></pre></div><div class="cb-code"><pre><code>String query = 'SELECT ' + fields + ' FROM Account';</code></pre></div><div class="cb-code"><pre><code>List&lt;SObject&gt; records = Database.query(query);</code></pre></div><ul class="cl"><li>Used in:</li><li>Dynamic reporting engines.</li></ul></div></div><div class="blk sub"><div class="ct">Invalid Field Name</div><div class="cb"><ul class="cl"><li>Runtime exception.</li></ul></div></div><div class="blk sub"><div class="ct">Invalid Object Name</div><div class="cb"><ul class="cl"><li>QueryException.</li></ul></div></div><div class="blk sub"><div class="ct">Incorrect Casting</div><div class="cb"><ul class="cl"><li>ClassCastException.</li></ul></div></div><div class="blk dep"><div class="ct">Debugging Dynamic SOQL</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">1</span>Print constructed query.</li><li class="ni"><span class="nb">2</span>Validate object name.</li><li class="ni"><span class="nb">3</span>Validate field names.</li><li class="ni"><span class="nb">4</span>Check bind variables.</li><li class="ni"><span class="nb">5</span>Check selectivity.</li></ul></div></div><div class="blk dep"><div class="ct">When NOT to Use Dynamic SOQL</div><div class="cb"><ul class="cl"><li>Avoid if:</li><li>Query structure fixed.</li><li>Security risk high.</li><li>Performance critical.</li><li>Simple filtering needed.</li><li>Use static instead.</li></ul></div></div><div class="blk ans"><div class="ct">Interview Power Line</div><div class="cb"><ul class="cl"><li>If interviewer asks:</li><li>“What is the biggest risk with Dynamic SOQL?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>SOQL injection vulnerability if user input is directly concatenated without bind variables or proper</p><ul class="cl"><li>validation.</li><li>🚀 Next Topic in Sequence:</li></ul></div></div>
+</div>
+</body></html>

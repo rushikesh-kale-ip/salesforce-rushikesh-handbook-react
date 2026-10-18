@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Custom Objects</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0A84FF;--green:#30D158;--orange:#FF9F0A;--red:#FF453A;--purple:#BF5AF2;
+  --t1:#1C1C1E;--t2:#3A3A3C;--tm:#8E8E93;
+  --bg:#F2F2F7;--card:rgba(255,255,255,0.9);--bdr:rgba(0,0,0,0.08);
+  --r:12px;--rm:16px;--rl:20px;
+  --f:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --fm:"SF Mono","JetBrains Mono","Menlo","Courier New",monospace;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);line-height:1.7;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+.ph{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(30px) saturate(200%);-webkit-backdrop-filter:blur(30px) saturate(200%);
+  border-bottom:1px solid var(--bdr);padding:1rem 1.5rem;
+  box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.phi{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:.875rem}
+.hi{width:36px;height:36px;background:linear-gradient(135deg,#0A84FF,#5E5CE6);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:1rem;flex-shrink:0;box-shadow:0 2px 8px rgba(10,132,255,.35)}
+.ht h1{font-size:.9375rem;font-weight:600;letter-spacing:-.02em;color:var(--t1)}
+.ht p{font-size:.75rem;color:var(--tm);margin-top:1px}
+.cw{max-width:860px;margin:0 auto;padding:1.75rem 1.5rem 4rem}
+.hero{background:linear-gradient(135deg,#0A84FF,#5E5CE6);border-radius:var(--rl);
+  padding:1.75rem 2rem;margin-bottom:1.75rem;color:white;
+  box-shadow:0 8px 32px rgba(10,132,255,.3)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);border-radius:100px;font-size:.6875rem;
+  font-weight:700;padding:.2rem .75rem;margin-bottom:.625rem;
+  letter-spacing:.04em;text-transform:uppercase}
+.hero h2{font-size:1.625rem;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.maj{display:flex;align-items:center;gap:.5rem;font-size:.625rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--tm);
+  margin:2.25rem 0 .875rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.blk{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rm);
+  padding:1.125rem 1.375rem;margin-bottom:.875rem;
+  box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.ct{font-size:.9375rem;font-weight:600;color:var(--t1);margin-bottom:.625rem;
+  letter-spacing:-.01em}
+.cb p{font-size:.9rem;color:var(--t2);margin-bottom:.4rem;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.ans{border-left:3px solid var(--blue)}
+.scn{border-left:3px solid var(--orange)}
+.mis{border-left:3px solid var(--red)}
+.sen{border-left:3px solid var(--purple)}
+.chk{border-left:3px solid var(--green)}
+.dep{border-left:3px solid var(--blue);background:rgba(10,132,255,.03)}
+.sub{border-left:3px solid rgba(0,0,0,.1);background:rgba(0,0,0,.015)}
+.cl{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin:.2rem 0}
+.cl li{font-size:.875rem;color:var(--t2);padding:.25rem 0 .25rem 1rem;
+  position:relative;line-height:1.6}
+.cl li::before{content:"·";position:absolute;left:0;color:var(--blue);font-weight:700}
+.ni{padding-left:2rem !important}
+.ni::before{display:none !important}
+.nb{display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;background:var(--blue);color:white;border-radius:5px;
+  font-size:.625rem;font-weight:700;margin-right:.4rem;vertical-align:middle}
+.ci{font-size:.875rem;color:var(--t2);padding:.2rem 0}
+.arr{font-size:.875rem;color:var(--blue);padding:.2rem 0 .2rem .5rem;font-weight:500}
+.cb-code{background:#1C1C1E;border-radius:var(--r);padding:1.125rem 1.25rem;
+  margin:.75rem 0;overflow-x:auto;position:relative}
+.cb-code::before{content:"";display:block;width:10px;height:10px;border-radius:50%;
+  background:#FF5F57;box-shadow:16px 0 0 #FFBD2E,32px 0 0 #28CA41;
+  margin-bottom:.75rem}
+.cb-code pre{overflow-x:auto}
+.cb-code code{font-family:var(--fm);font-size:.8rem;line-height:1.7;
+  color:#E8E8ED;white-space:pre;word-break:normal}
+.ic{font-family:var(--fm);font-size:.8125rem;background:rgba(10,132,255,.1);
+  color:var(--blue);padding:.1em .4em;border-radius:4px;
+  border:1px solid rgba(10,132,255,.15)}
+.tbl{width:100%;border-collapse:collapse;font-size:.875rem;margin:.5rem 0;
+  border-radius:var(--r);overflow:hidden}
+.tbl tr:first-child td{background:rgba(10,132,255,.07);font-weight:600;color:var(--t1)}
+.tbl td{padding:.5rem .875rem;border-bottom:1px solid var(--bdr);color:var(--t2)}
+.tbl tr:last-child td{border-bottom:none}
+.lp{font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:.375rem}
+@media(max-width:640px){
+  .cw{padding:1rem .875rem 3rem}
+  .hero{padding:1.375rem 1.25rem}
+  .hero h2{font-size:1.25rem}
+  .blk{padding:.875rem 1rem;border-radius:var(--r)}
+  .cb-code{padding:.875rem 1rem}
+  .ph{padding:.75rem 1rem}
+}
+@media(max-width:380px){
+  .hero h2{font-size:1.125rem}
+  .cw{padding:.75rem .625rem 3rem}
+}
+</style>
+</head>
+<body>
+<header class="ph"><div class="phi">
+  <div class="hi">📘</div>
+  <div class="ht"><h1>Salesforce Developer Guide</h1><p>Interview Ready · Deep Dive · Production Patterns</p></div>
+</div></header>
+<div class="cw">
+  <div class="hero"><div class="badge">Salesforce Developer</div><h2>Custom Objects</h2></div>
+  <p class="lp">2.b Custom Objects</p><p class="lp">Say Next.</p><p class="lp">Next</p><p class="lp">🔵 󾠯 Data Model</p><p class="lp">2.b Custom Objects</p><div class="maj"><span>🎤</span>INTERVIEW SECTION</div><div class="blk ans"><div class="ct">30-Second Interview Answer</div><div class="cb"><p>Custom Objects are user-defined database tables in Salesforce created to store data that standard</p><p>objects cannot handle. They allow full customization, including custom fields, relationships, validation</p><ul class="cl"><li>rules, triggers, and automation. Custom objects have API names ending with __c.</li></ul></div></div><div class="blk ans"><div class="ct">2-Minute Technical Explanation</div><div class="cb"><ul class="cl"><li>When standard objects don’t satisfy business requirements, we create Custom Objects.</li></ul><div class="cb-code"><pre><code>Example:</code></pre></div><ul class="cl"><li>If a company wants to track:</li><li>Projects</li><li>Assets</li><li>Training Programs</li><li>Site Visits</li><li>These may not fit into standard CRM objects.</li><li>So we create:</li><li>Project__c</li><li>Training__c</li><li>Asset__c</li><li>Custom objects:</li><li>Are fully customizable</li><li>Support relationships</li><li>Support triggers</li><li>Support record types</li><li>Can be deployed</li></ul><div class="cb-code"><pre><code>Can be deleted (unlike standard objects)</code></pre></div></div></div><div class="blk scn"><div class="ct">Real-Time Scenario</div><div class="cb"><ul class="cl"><li>Company wants to track:</li><li>Construction Sites.</li><li>You create:</li><li>Site__c</li><li>Engineer__c</li><li>Inspection__c</li><li>Then create:</li><li>Lookup relationship between Inspection and Site</li><li>Trigger to auto-update site status</li><li>Flow for approval</li><li>All done using custom objects.</li></ul></div></div><div class="blk ans"><div class="ct">Tricky Interview Questions</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">1</span>Can we convert custom object to standard?</li></ul></div></div><div class="blk mis"><div class="ct">No.</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">2</span>Can we change API name?</li></ul><div class="cb-code"><pre><code>❌ No (after creation).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">3</span>Can custom object have Master-Detail relationship?</li></ul></div></div><div class="blk chk"><div class="ct">Yes.</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">4</span>Can custom object be reportable?</li></ul></div></div><div class="blk chk"><div class="ct">Yes.</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">5</span>Can we delete custom object?</li></ul><div class="cb-code"><pre><code>✅ Yes (soft delete first).</code></pre></div></div></div><div class="blk sen"><div class="ct">Senior-Level Discussion Points</div><div class="cb"><ul class="cl"><li>Custom object indexing</li><li>External ID fields</li><li>Big Objects</li><li>Custom metadata vs custom object</li><li>LDV strategy for custom object</li><li>Junction object design</li></ul></div></div><div class="maj"><span>🔬</span>DEEP TECHNICAL BREAKDOWN</div><div class="blk dep"><div class="ct">What Is a Custom Object Internally?</div><div class="cb"><ul class="cl"><li>Custom object is:</li><li>Metadata definition</li><li>Table in Salesforce DB</li><li>Has OrgId segregation</li><li>Supports standard CRUD operations</li><li>Internally stored similar to standard objects but defined in org metadata.</li></ul><div class="cb-code"><pre><code>📌 Creation Steps (Step-by-Step)</code></pre></div><ul class="cl"><li class="ni"><span class="nb">1</span>Setup → Object Manager</li><li class="ni"><span class="nb">2</span>Click Create → Custom Object</li><li class="ni"><span class="nb">3</span>Define:</li><li>Label</li><li>Plural Label</li><li>Object Name</li></ul><div class="cb-code"><pre><code>Record Name (Text/Auto Number)</code></pre></div><ul class="cl"><li class="ni"><span class="nb">4</span>Enable:</li><li>Reports</li><li>Activities</li><li>Track Field History</li><li class="ni"><span class="nb">5</span>Save</li></ul></div></div><div class="blk dep"><div class="ct">API Naming Convention</div><div class="cb"><ul class="cl"><li>If object label = Project</li><li>API Name = Project__c</li><li>Custom fields:</li><li>Budget__c</li><li>Status__c</li></ul></div></div><div class="blk dep"><div class="ct">Code Example</div><div class="cb"><ul class="cl"><li>List<Project__c> projList =</li></ul><div class="cb-code"><pre><code>[SELECT Id, Name FROM Project__c LIMIT 10];</code></pre></div><ul class="cl"><li>Works same as standard object.</li></ul></div></div><div class="blk dep"><div class="ct">Custom Object Capabilities</div><div class="cb"><ul class="cl"><li>Feature Supported</li></ul></div></div><div class="blk chk"><div class="ct">Lookup ✅</div><div class="cb"><div class="cb-code"><pre><code>Roll-Up Summary ✅ (if Master-Detail)</code></pre></div></div></div><div class="blk chk"><div class="ct">Record Types ✅</div><div class="cb"><ul class="cl"><li>Feature Supported</li></ul></div></div><div class="blk dep"><div class="ct">Differences from Standard Object</div><div class="cb"><ul class="cl"><li>Feature Custom Standard</li></ul></div></div><div class="blk dep"><div class="ct">Performance Considerations</div><div class="cb"><ul class="cl"><li>For large custom object:</li><li>Add External ID</li><li>Add Indexed fields</li><li>Use selective queries</li><li>Avoid full table scans</li><li>Consider Big Object for billions of records</li></ul></div></div><div class="blk sub"><div class="ct">Deleting Custom Object</div><div class="cb"><div class="cb-code"><pre><code>Moves to recycle bin (15 days).</code></pre></div></div></div><div class="blk sub"><div class="ct">Changing Relationship Type</div><div class="cb"><ul class="cl"><li>Cannot convert Lookup to Master-Detail if data exists violating rules.</li></ul></div></div><div class="blk sub"><div class="ct">Massive Data Volume</div><div class="cb"><ul class="cl"><li>Need archiving strategy.</li></ul><div class="cb-code"><pre><code>📌 Big Object (Advanced)</code></pre></div><ul class="cl"><li>Used for:</li><li>Billions of records</li><li>Event logging</li><li>Historical data</li></ul><div class="cb-code"><pre><code>Limitations:</code></pre></div><ul class="cl"><li>No triggers</li><li>Limited query capability</li></ul></div></div><div class="blk dep"><div class="ct">Debugging Issues</div><div class="cb"><ul class="cl"><li>If record not saving:</li><li class="ni"><span class="nb">1</span>Check validation rules</li><li class="ni"><span class="nb">2</span>Check trigger</li><li class="ni"><span class="nb">3</span>Check FLS</li><li class="ni"><span class="nb">4</span>Check sharing</li><li class="ni"><span class="nb">5</span>Check required fields</li></ul></div></div><div class="blk dep"><div class="ct">Best Practices</div><div class="cb"><ul class="cl"><li>Use standard objects first.</li><li>Create custom only when needed.</li><li>Use meaningful API names.</li><li>Enable reporting option.</li><li>Use external IDs for integrations.</li><li>Avoid unnecessary relationships.</li></ul></div></div><div class="blk dep"><div class="ct">When NOT to Use Custom Object</div><div class="cb"><div class="cb-code"><pre><code>If:</code></pre></div><ul class="cl"><li>Standard object fits 80% requirement</li><li>You can extend using custom fields</li><li>Process aligns with CRM</li><li>Then prefer standard.</li></ul></div></div><div class="blk ans"><div class="ct">Interview Power Line</div><div class="cb"><ul class="cl"><li>If interviewer asks:</li><li>“Why would you create custom object instead of using standard?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>Because the business process does not align with standard CRM model, and custom object provides</p><ul class="cl"><li>flexibility to design specific data structure and automation.</li><li>🚀 Next Topic in Sequence:</li></ul></div></div>
+</div>
+</body></html>

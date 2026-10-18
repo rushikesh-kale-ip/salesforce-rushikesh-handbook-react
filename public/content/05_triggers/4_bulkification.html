@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Bulkification</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0A84FF;--green:#30D158;--orange:#FF9F0A;--red:#FF453A;--purple:#BF5AF2;
+  --t1:#1C1C1E;--t2:#3A3A3C;--tm:#8E8E93;
+  --bg:#F2F2F7;--card:rgba(255,255,255,0.9);--bdr:rgba(0,0,0,0.08);
+  --r:12px;--rm:16px;--rl:20px;
+  --f:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --fm:"SF Mono","JetBrains Mono","Menlo","Courier New",monospace;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);line-height:1.7;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+.ph{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(30px) saturate(200%);-webkit-backdrop-filter:blur(30px) saturate(200%);
+  border-bottom:1px solid var(--bdr);padding:1rem 1.5rem;
+  box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.phi{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:.875rem}
+.hi{width:36px;height:36px;background:linear-gradient(135deg,#0A84FF,#5E5CE6);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:1rem;flex-shrink:0;box-shadow:0 2px 8px rgba(10,132,255,.35)}
+.ht h1{font-size:.9375rem;font-weight:600;letter-spacing:-.02em;color:var(--t1)}
+.ht p{font-size:.75rem;color:var(--tm);margin-top:1px}
+.cw{max-width:860px;margin:0 auto;padding:1.75rem 1.5rem 4rem}
+.hero{background:linear-gradient(135deg,#0A84FF,#5E5CE6);border-radius:var(--rl);
+  padding:1.75rem 2rem;margin-bottom:1.75rem;color:white;
+  box-shadow:0 8px 32px rgba(10,132,255,.3)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);border-radius:100px;font-size:.6875rem;
+  font-weight:700;padding:.2rem .75rem;margin-bottom:.625rem;
+  letter-spacing:.04em;text-transform:uppercase}
+.hero h2{font-size:1.625rem;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.maj{display:flex;align-items:center;gap:.5rem;font-size:.625rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--tm);
+  margin:2.25rem 0 .875rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.blk{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rm);
+  padding:1.125rem 1.375rem;margin-bottom:.875rem;
+  box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.ct{font-size:.9375rem;font-weight:600;color:var(--t1);margin-bottom:.625rem;
+  letter-spacing:-.01em}
+.cb p{font-size:.9rem;color:var(--t2);margin-bottom:.4rem;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.ans{border-left:3px solid var(--blue)}
+.scn{border-left:3px solid var(--orange)}
+.mis{border-left:3px solid var(--red)}
+.sen{border-left:3px solid var(--purple)}
+.chk{border-left:3px solid var(--green)}
+.dep{border-left:3px solid var(--blue);background:rgba(10,132,255,.03)}
+.sub{border-left:3px solid rgba(0,0,0,.1);background:rgba(0,0,0,.015)}
+.cl{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin:.2rem 0}
+.cl li{font-size:.875rem;color:var(--t2);padding:.25rem 0 .25rem 1rem;
+  position:relative;line-height:1.6}
+.cl li::before{content:"·";position:absolute;left:0;color:var(--blue);font-weight:700}
+.ni{padding-left:2rem !important}
+.ni::before{display:none !important}
+.nb{display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;background:var(--blue);color:white;border-radius:5px;
+  font-size:.625rem;font-weight:700;margin-right:.4rem;vertical-align:middle}
+.ci{font-size:.875rem;color:var(--t2);padding:.2rem 0}
+.arr{font-size:.875rem;color:var(--blue);padding:.2rem 0 .2rem .5rem;font-weight:500}
+.cb-code{background:#1C1C1E;border-radius:var(--r);padding:1.125rem 1.25rem;
+  margin:.75rem 0;overflow-x:auto;position:relative}
+.cb-code::before{content:"";display:block;width:10px;height:10px;border-radius:50%;
+  background:#FF5F57;box-shadow:16px 0 0 #FFBD2E,32px 0 0 #28CA41;
+  margin-bottom:.75rem}
+.cb-code pre{overflow-x:auto}
+.cb-code code{font-family:var(--fm);font-size:.8rem;line-height:1.7;
+  color:#E8E8ED;white-space:pre;word-break:normal}
+.ic{font-family:var(--fm);font-size:.8125rem;background:rgba(10,132,255,.1);
+  color:var(--blue);padding:.1em .4em;border-radius:4px;
+  border:1px solid rgba(10,132,255,.15)}
+.tbl{width:100%;border-collapse:collapse;font-size:.875rem;margin:.5rem 0;
+  border-radius:var(--r);overflow:hidden}
+.tbl tr:first-child td{background:rgba(10,132,255,.07);font-weight:600;color:var(--t1)}
+.tbl td{padding:.5rem .875rem;border-bottom:1px solid var(--bdr);color:var(--t2)}
+.tbl tr:last-child td{border-bottom:none}
+.lp{font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:.375rem}
+@media(max-width:640px){
+  .cw{padding:1rem .875rem 3rem}
+  .hero{padding:1.375rem 1.25rem}
+  .hero h2{font-size:1.25rem}
+  .blk{padding:.875rem 1rem;border-radius:var(--r)}
+  .cb-code{padding:.875rem 1rem}
+  .ph{padding:.75rem 1rem}
+}
+@media(max-width:380px){
+  .hero h2{font-size:1.125rem}
+  .cw{padding:.75rem .625rem 3rem}
+}
+</style>
+</head>
+<body>
+<header class="ph"><div class="phi">
+  <div class="hi">📘</div>
+  <div class="ht"><h1>Salesforce Developer Guide</h1><p>Interview Ready · Deep Dive · Production Patterns</p></div>
+</div></header>
+<div class="cw">
+  <div class="hero"><div class="badge">Salesforce Developer</div><h2>Bulkification</h2></div>
+  <p class="lp">5.d Bulkification</p><p class="lp">Say Next.</p><p class="lp">Next</p><p class="lp">🔷 5.d Bulkification</p><div class="maj"><span>🎤</span>INTERVIEW SECTION</div><div class="blk ans"><div class="ct">30-Second Interview Answer</div><div class="cb"><p>Bulkification is the practice of writing Apex code that can handle multiple records efficiently in a single</p><p>transaction. Since triggers and API operations can process up to 200 records at once, code must avoid</p><p>SOQL or DML inside loops and use collections like Set and Map to stay within governor limits.</p></div></div><div class="blk ans"><div class="ct">2-Minute Technical Explanation</div><div class="cb"><ul class="cl"><li>In Salesforce:</li><li>A single trigger execution can process up to 200 records.</li><li>Data Loader or integrations can send records in bulk.</li><li>Governor limits restrict:</li><li>100 SOQL queries</li><li>150 DML statements</li><li>If code is not bulkified:</li><li>It will fail in production.</li><li>Bulkification principles:</li><li>󾠮 Never write SOQL inside loop</li><li>󾠯 Never write DML inside loop</li><li>󾠰 Use Set to collect Ids</li><li>󾠱 Use Map for fast lookup</li><li>󾠲 Perform DML once outside loop</li></ul></div></div><div class="blk scn"><div class="ct">Real-Time Scenario</div><div class="cb"><div class="cb-code"><pre><code>Requirement:</code></pre></div><ul class="cl"><li>When Accounts updated,</li><li>Update related Contacts.</li></ul></div></div><div class="blk mis"><div class="ct">Bad ❌</div><div class="cb"><div class="cb-code"><pre><code>for(Account acc : Trigger.new){</code></pre></div><ul class="cl"><li>List<Contact> conList = [</li><li>SELECT Id FROM Contact</li><li>WHERE AccountId = :acc.Id</li></ul><div class="cb-code"><pre><code>];</code></pre></div><div class="cb-code"><pre><code>update conList;</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><ul class="cl"><li>If 200 Accounts:</li></ul><div class="arr">→ 200 SOQL</div><div class="arr">→ 200 DML</div><div class="arr">→ LimitException.</div></div></div><div class="blk chk"><div class="ct">Good ✅</div><div class="cb"><div class="cb-code"><pre><code>Set&lt;Id&gt; accIds = new Set&lt;Id&gt;();</code></pre></div><div class="cb-code"><pre><code>for(Account acc : Trigger.new){</code></pre></div><div class="cb-code"><pre><code>accIds.add(acc.Id);</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><ul class="cl"><li>List<Contact> conList = [</li><li>SELECT Id FROM Contact</li><li>WHERE AccountId IN :accIds</li></ul><div class="cb-code"><pre><code>];</code></pre></div><div class="cb-code"><pre><code>update conList;</code></pre></div><div class="cb-code"><pre><code>Only:</code></pre></div><ul class="cl"><li>1 SOQL</li><li>1 DML</li></ul></div></div><div class="blk ans"><div class="ct">Tricky Interview Questions</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">1</span>Why bulkification important?</li></ul><div class="arr">→ Because triggers process multiple records.</div><ul class="cl"><li class="ni"><span class="nb">2</span>What is max records in one trigger execution?</li></ul><div class="arr">→ 200.</div><ul class="cl"><li class="ni"><span class="nb">3</span>Does batch Apex require bulkification?</li></ul><div class="arr">→ Yes.</div><ul class="cl"><li class="ni"><span class="nb">4</span>Does Flow also need bulk handling?</li></ul><div class="cb-code"><pre><code>→ Yes (same limits).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">5</span>What happens if not bulkified?</li></ul><div class="arr">→ Governor limit exception.</div></div></div><div class="blk sen"><div class="ct">Senior-Level Discussion Points</div><div class="cb"><ul class="cl"><li>CPU time optimization</li><li>Map-based grouping</li><li>Handling partial DML</li><li>Bulk-safe framework design</li><li>Handling recursive bulk updates</li><li>Large data volume strategy</li></ul></div></div><div class="maj"><span>🔬</span>DEEP TECHNICAL BREAKDOWN</div><div class="blk dep"><div class="ct">Why Bulkification Is Required</div><div class="cb"><ul class="cl"><li>Trigger may execute for:</li></ul><div class="cb-code"><pre><code>UI save (1 record)</code></pre></div><div class="cb-code"><pre><code>Data Loader (200 records)</code></pre></div><div class="cb-code"><pre><code>Integration API (200 records)</code></pre></div><ul class="cl"><li>Same code must handle all scenarios.</li></ul></div></div><div class="blk dep"><div class="ct">Core Bulkification Pattern</div><div class="cb"><ul class="cl"><li>Step 1: Collect IDs</li></ul><div class="cb-code"><pre><code>Set&lt;Id&gt; accIds = new Set&lt;Id&gt;();</code></pre></div><ul class="cl"><li>Step 2: Query Once</li></ul><div class="cb-code"><pre><code>Map&lt;Id, Account&gt; accMap = new Map&lt;Id, Account&gt;(</code></pre></div><ul class="cl"><li>[SELECT Id, Name FROM Account WHERE Id IN :accIds]</li></ul><div class="cb-code"><pre><code>);</code></pre></div><ul class="cl"><li>Step 3: Process in Loop</li></ul><div class="cb-code"><pre><code>for(Contact con : conList){</code></pre></div><div class="cb-code"><pre><code>Account acc = accMap.get(con.AccountId);</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><ul class="cl"><li>Step 4: Single DML</li></ul><div class="cb-code"><pre><code>update conList;</code></pre></div><div class="cb-code"><pre><code>📌 Advanced Bulk Pattern (Grouping)</code></pre></div><div class="cb-code"><pre><code>Example:</code></pre></div><ul class="cl"><li>Group Contacts by Account.</li></ul><div class="cb-code"><pre><code>Map&lt;Id, List&lt;Contact&gt;&gt; accToContacts = new Map&lt;Id, List&lt;Contact&gt;&gt;();</code></pre></div><div class="cb-code"><pre><code>for(Contact con : conList){</code></pre></div><div class="cb-code"><pre><code>if(!accToContacts.containsKey(con.AccountId)){</code></pre></div><div class="cb-code"><pre><code>accToContacts.put(con.AccountId, new List&lt;Contact&gt;());</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>accToContacts.get(con.AccountId).add(con);</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><ul class="cl"><li>Used in complex logic.</li></ul></div></div><div class="blk dep"><div class="ct">CPU Optimization</div><div class="cb"><div class="cb-code"><pre><code>Avoid:</code></pre></div><ul class="cl"><li>Nested loops:</li></ul><div class="cb-code"><pre><code>for(Account acc : accList){</code></pre></div><div class="cb-code"><pre><code>for(Contact con : conList){</code></pre></div><div class="cb-code"><pre><code>if(con.AccountId == acc.Id){</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>This is O(n²).</code></pre></div><div class="cb-code"><pre><code>Use Map for O(1) lookup.</code></pre></div></div></div><div class="blk mis"><div class="ct">Bad ❌</div><div class="cb"><div class="cb-code"><pre><code>for(Account acc : accList){</code></pre></div><div class="cb-code"><pre><code>update acc;</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div></div></div><div class="blk chk"><div class="ct">Good ✅</div><div class="cb"><div class="cb-code"><pre><code>update accList;</code></pre></div><div class="cb-code"><pre><code>📌 Handling Partial DML (Advanced)</code></pre></div><div class="cb-code"><pre><code>Use:</code></pre></div><div class="cb-code"><pre><code>Database.update(accList, false);</code></pre></div><ul class="cl"><li>Prevents full rollback.</li></ul></div></div><div class="blk dep"><div class="ct">Governor Limit Awareness</div><div class="cb"><ul class="cl"><li>Bulkified code:</li><li>Minimizes SOQL usage.</li><li>Minimizes DML usage.</li><li>Reduces CPU time.</li><li>Avoids heap overflow.</li></ul></div></div><div class="blk sub"><div class="ct">Trigger Calling Another Trigger</div><div class="cb"><ul class="cl"><li>Must still be bulk safe.</li></ul></div></div><div class="blk sub"><div class="ct">Bulk Delete</div><div class="cb"><ul class="cl"><li>Handle Trigger.old list.</li></ul></div></div><div class="blk sub"><div class="ct">Large Data Volume</div><div class="cb"><ul class="cl"><li>May still hit 50k row limit → use Batch Apex.</li></ul></div></div><div class="blk dep"><div class="ct">Debugging Bulk Issues</div><div class="cb"><ul class="cl"><li>If error:</li><li class="ni"><span class="nb">1</span>Check SOQL count.</li><li class="ni"><span class="nb">2</span>Check DML count.</li><li class="ni"><span class="nb">3</span>Check nested loops.</li><li class="ni"><span class="nb">4</span>Check recursion.</li><li class="ni"><span class="nb">5</span>Check CPU time.</li></ul></div></div><div class="blk dep"><div class="ct">When NOT to Over-Engineer Bulk</div><div class="cb"><ul class="cl"><li>If logic only ever runs:</li></ul><div class="cb-code"><pre><code>On single record context (rare)</code></pre></div><ul class="cl"><li>In async small chunk</li><li>Still best practice:</li><li>Always bulkify.</li></ul></div></div><div class="blk ans"><div class="ct">Interview Power Line</div><div class="cb"><ul class="cl"><li>If interviewer asks:</li><li>“How do you ensure your trigger is bulk-safe?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><div class="cb-code"><pre><code>By collecting record IDs in Sets, querying related data once using IN clause, using Maps for O(1) lookup,</code></pre></div><ul class="cl"><li>and performing DML operations outside loops.</li><li>🚀 Next Topic in Sequence:</li></ul></div></div>
+</div>
+</body></html>

@@ -1,0 +1,1563 @@
+/* Import SF Pro-like fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ============================================
+   macOS Design System
+   ============================================ */
+:root {
+  /* macOS Vibrancy Colors */
+  --mac-blue: #0A84FF;
+  --mac-blue-hover: #0974E5;
+  --mac-purple: #BF5AF2;
+  --mac-pink: #FF375F;
+  --mac-orange: #FF9F0A;
+  --mac-yellow: #FFD60A;
+  --mac-green: #30D158;
+  --mac-red: #FF453A;
+
+  /* Blue Theme */
+  --blue-primary: #0A84FF;
+  --blue-primary-dark: #0070E0;
+  --blue-primary-light: #5AC8FA;
+  --blue-accent: #5E5CE6;
+  --blue-accent-gradient: linear-gradient(135deg, #0A84FF 0%, #5E5CE6 100%);
+
+  --blue-text-primary: #1C1C1E;
+  --blue-text-secondary: #3A3A3C;
+  --blue-text-muted: #8E8E93;
+
+  /* Orange Theme */
+  --orange-primary: #FF9F0A;
+  --orange-primary-dark: #E8890A;
+  --orange-primary-light: #FFB340;
+  --orange-accent: #FF6B35;
+  --orange-accent-gradient: linear-gradient(135deg, #FF9F0A 0%, #FF6B35 100%);
+
+  --orange-text-primary: #1C1C1E;
+  --orange-text-secondary: #3A3A3C;
+  --orange-text-muted: #8E8E93;
+
+  /* macOS Glass System */
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-bg-hover: rgba(255, 255, 255, 0.82);
+  --glass-bg-active: rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-border-subtle: rgba(0, 0, 0, 0.06);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+  --glass-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.18), 0 4px 16px rgba(0, 0, 0, 0.08);
+  --glass-inset: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+
+  --blur-sidebar: blur(40px) saturate(180%);
+  --blur-header: blur(30px) saturate(200%);
+  --blur-card: blur(20px) saturate(160%);
+  --blur-light: blur(10px);
+
+  /* macOS Border Radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-2xl: 24px;
+
+  /* macOS Typography Scale */
+  --font-display: -apple-system, 'SF Pro Display', 'Inter', sans-serif;
+  --font-text: -apple-system, 'SF Pro Text', 'Inter', sans-serif;
+
+  /* Transitions */
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ============================================
+   Global Reset & Base
+   ============================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-text);
+  overflow-x: hidden;
+  background: #E8ECF0;
+}
+
+/* ============================================
+   Theme Variants
+   ============================================ */
+.theme-blue {
+  --current-primary: var(--blue-primary);
+  --current-primary-dark: var(--blue-primary-dark);
+  --current-primary-light: var(--blue-primary-light);
+  --current-accent: var(--blue-accent);
+  --current-gradient: var(--blue-accent-gradient);
+  --current-text-primary: var(--blue-text-primary);
+  --current-text-secondary: var(--blue-text-secondary);
+  --current-text-muted: var(--blue-text-muted);
+}
+
+.theme-orange {
+  --current-primary: var(--orange-primary);
+  --current-primary-dark: var(--orange-primary-dark);
+  --current-primary-light: var(--orange-primary-light);
+  --current-accent: var(--orange-accent);
+  --current-gradient: var(--orange-accent-gradient);
+  --current-text-primary: var(--orange-text-primary);
+  --current-text-secondary: var(--orange-text-secondary);
+  --current-text-muted: var(--orange-text-muted);
+}
+
+/* ============================================
+   Main Container
+   ============================================ */
+.learning-container {
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ============================================
+   Background — macOS Wallpaper Style
+   ============================================ */
+.background-image {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(0px) brightness(0.95);
+  z-index: 0;
+  transition: opacity 0.6s ease;
+}
+
+/* Overlay for depth */
+.background-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(16, 16, 32, 0.25) 0%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(16, 16, 32, 0.2) 100%
+  );
+}
+
+.bg-blue {
+  background-image: url('/salesforce-dev-handbook-react/images/sample_2_1.webp');
+}
+
+.bg-orange {
+  background-image: url('/salesforce-dev-handbook-react/images/sample_0_1.webp');
+}
+
+/* ============================================
+   macOS Header — Menu Bar Style
+   ============================================ */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(248, 248, 250, 0.78);
+  backdrop-filter: var(--blur-header);
+  -webkit-backdrop-filter: var(--blur-header);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.5),
+    0 2px 20px rgba(0, 0, 0, 0.08);
+}
+
+.header-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  flex: 1;
+  min-width: 0;
+}
+
+/* macOS Traffic-light inspired menu button */
+.menu-button {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  color: var(--current-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), var(--glass-inset);
+}
+
+.menu-button:hover {
+  background: rgba(0, 0, 0, 0.1);
+  transform: scale(1.05);
+}
+
+.menu-button:active {
+  transform: scale(0.95);
+  background: rgba(0, 0, 0, 0.14);
+}
+
+/* Theme Toggle */
+.theme-toggle-button {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  color: var(--current-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), var(--glass-inset);
+}
+
+.theme-toggle-button:hover {
+  background: var(--current-primary);
+  color: white;
+  border-color: transparent;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(10, 132, 255, 0.35);
+}
+
+.theme-toggle-button:active {
+  transform: scale(0.95);
+}
+
+.mobile-only {
+  display: none;
+}
+
+/* App Icon Style */
+.header-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--current-gradient);
+  border-radius: 9px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(10, 132, 255, 0.35), var(--glass-inset);
+  flex-shrink: 0;
+}
+
+.header-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.header-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--current-text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.header-subtitle {
+  font-size: 0.75rem;
+  color: var(--current-text-muted);
+  margin-top: 1px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+/* ============================================
+   Content Layout
+   ============================================ */
+.content-wrapper {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  position: relative;
+  z-index: 10;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 1.25rem;
+  position: relative;
+  align-items: start;
+}
+
+/* ============================================
+   Sidebar — macOS Finder/Notes Panel Style
+   ============================================ */
+.sidebar {
+  position: sticky;
+  top: 76px;
+  height: calc(100vh - 96px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--glass-shadow-lg);
+  transition: transform var(--transition-normal);
+}
+
+.sidebar-content {
+  background: rgba(246, 246, 248, 0.85);
+  backdrop-filter: var(--blur-sidebar);
+  -webkit-backdrop-filter: var(--blur-sidebar);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-2xl);
+  padding: 1.25rem;
+  height: 100%;
+  overflow-y: auto;
+  box-shadow: var(--glass-inset);
+}
+
+/* Custom macOS-style scrollbar */
+.sidebar-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* ============================================
+   Search — Spotlight Inspired
+   ============================================ */
+.search-container {
+  margin-bottom: 1.25rem;
+}
+
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.75rem;
+  color: var(--current-text-muted);
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.5rem 0.875rem 0.5rem 2.25rem;
+  background: rgba(142, 142, 147, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 9px;
+  font-family: var(--font-text);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--current-text-primary);
+  outline: none;
+  transition: all var(--transition-fast);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.search-input::placeholder {
+  color: var(--current-text-muted);
+  font-weight: 400;
+}
+
+.search-input:focus {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: var(--current-primary);
+  box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.15), inset 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.search-results {
+  font-size: 0.6875rem;
+  color: var(--current-text-muted);
+  margin-top: 0.375rem;
+  padding-left: 0.25rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.sidebar-title {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--current-text-muted);
+  margin-bottom: 0.625rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding-left: 0.5rem;
+}
+
+/* ============================================
+   Topics List — macOS Sidebar Navigation
+   ============================================ */
+.topics-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.topic-container {
+  position: relative;
+}
+
+.topic-connector {
+  display: none; /* Cleaner macOS look */
+}
+
+/* macOS Sidebar Row Style */
+.topic-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+.topic-card:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.topic-card.active {
+  background: var(--current-primary);
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(10, 132, 255, 0.3);
+}
+
+.topic-content {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  position: relative;
+  z-index: 10;
+}
+
+.topic-icon-wrapper {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: rgba(142, 142, 147, 0.14);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--current-text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.topic-card.active .topic-icon-wrapper {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.topic-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.topic-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--current-text-primary);
+}
+
+.topic-card.active .topic-title {
+  color: white;
+}
+
+.topic-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chevron-icon {
+  transition: transform var(--transition-fast);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  opacity: 0.5;
+}
+
+.topic-card.active .chevron-icon {
+  opacity: 1;
+  color: white;
+}
+
+.chevron-icon.expanded {
+  transform: rotate(180deg);
+}
+
+.topic-description {
+  font-size: 0.725rem;
+  line-height: 1.3;
+  color: var(--current-text-muted);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+.topic-card.active .topic-description {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Remove shimmer — macOS is clean */
+.topic-hover-effect {
+  display: none;
+}
+
+/* ============================================
+   Files List — Indented Sidebar Items
+   ============================================ */
+.files-list {
+  margin-top: 0.125rem;
+  margin-left: 0.75rem;
+  padding-left: 0.75rem;
+  border-left: 1.5px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  margin-bottom: 0.25rem;
+}
+
+.file-item-wrapper {
+  position: relative;
+}
+
+/* Hide old connector decorations */
+.file-connector-line,
+.file-connector-dot {
+  display: none;
+}
+
+.file-item {
+  margin-left: 0;
+  padding: 0.375rem 0.625rem;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  background: transparent;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.file-item:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.file-item.active {
+  background: rgba(10, 132, 255, 0.12);
+  border-color: rgba(10, 132, 255, 0.2);
+}
+
+.file-rank {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.625rem;
+  font-weight: 700;
+  background: rgba(142, 142, 147, 0.12);
+  border: none;
+  color: var(--current-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.file-item.active .file-rank {
+  background: var(--current-primary);
+  color: white;
+}
+
+.file-name {
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--current-text-secondary);
+  text-transform: capitalize;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-item.active .file-name {
+  color: var(--current-primary);
+  font-weight: 500;
+}
+
+/* ============================================
+   No Results
+   ============================================ */
+.no-results {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: var(--current-text-muted);
+}
+
+.no-results-icon {
+  margin: 0 auto 0.75rem;
+  opacity: 0.3;
+}
+
+.no-results-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--current-text-muted);
+}
+
+/* ============================================
+   Sidebar Overlay (Mobile)
+   ============================================ */
+.sidebar-overlay {
+  display: none;
+}
+
+/* ============================================
+   Main Content — macOS Window Style
+   ============================================ */
+.main-content {
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.content-card {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: var(--blur-card);
+  -webkit-backdrop-filter: var(--blur-card);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius-2xl);
+  padding: 2.5rem 3rem;
+  box-shadow: var(--glass-shadow-lg), var(--glass-inset);
+  min-height: 600px;
+  max-width: 100%;
+  overflow-x: hidden;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* macOS Window Top Bar Accent */
+.content-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+  border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+  pointer-events: none;
+}
+
+/* ============================================
+   Loading
+   ============================================ */
+.loading-container {
+  text-align: center;
+  padding: 5rem 2rem;
+}
+
+.loading-icon {
+  display: inline-block;
+  padding: 1.5rem;
+  background: rgba(142, 142, 147, 0.1);
+  border-radius: var(--radius-xl);
+  margin-bottom: 1.25rem;
+  color: var(--current-primary);
+}
+
+.spinner {
+  animation: spin 1.5s linear infinite;
+  color: var(--current-primary);
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 0.9375rem;
+  color: var(--current-text-muted);
+  font-weight: 500;
+}
+
+/* ============================================
+   Breadcrumb — macOS Finder Path Bar
+   ============================================ */
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.8125rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  color: var(--current-text-muted);
+  font-weight: 400;
+}
+
+.breadcrumb-path {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  overflow: hidden;
+  flex: 1;
+  min-width: 0;
+}
+
+.breadcrumb-topic {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+  color: var(--current-text-secondary);
+  max-width: 200px;
+}
+
+.breadcrumb-file {
+  text-transform: capitalize;
+  color: var(--current-primary);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 250px;
+}
+
+/* ============================================
+   Content Body & Markdown
+   ============================================ */
+.content-body {
+  margin-bottom: 2.5rem;
+}
+
+.markdown-content {
+  line-height: 1.75;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.md-h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  margin-top: 2rem;
+  color: var(--current-text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Accent line under h1 */
+.md-h1::after {
+  content: '';
+  display: block;
+  width: 2.5rem;
+  height: 3px;
+  background: var(--current-gradient);
+  border-radius: 2px;
+  margin-top: 0.5rem;
+}
+
+.md-h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+  color: var(--current-text-primary);
+  letter-spacing: -0.02em;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.md-h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  margin-top: 1.5rem;
+  color: var(--current-text-primary);
+  letter-spacing: -0.01em;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.md-li {
+  margin-left: 1.25rem;
+  margin-bottom: 0.5rem;
+  list-style-type: disc;
+  color: var(--current-text-secondary);
+  line-height: 1.65;
+  font-weight: 400;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.md-spacer {
+  height: 0.75rem;
+}
+
+.md-p {
+  margin-bottom: 0.875rem;
+  color: var(--current-text-secondary);
+  line-height: 1.75;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.md-p strong {
+  font-weight: 600;
+  color: var(--current-text-primary);
+}
+
+/* ============================================
+   HTML Content
+   ============================================ */
+.html-content {
+  line-height: 1.75;
+  color: var(--current-text-secondary);
+  font-weight: 400;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  font-size: 0.9375rem;
+}
+
+/* ============================================
+   PDF Viewer
+   ============================================ */
+.pdf-viewer {
+  width: 100%;
+  height: 70vh;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.pdf-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* ============================================
+   Image Viewer
+   ============================================ */
+.image-viewer {
+  width: 100%;
+  max-width: 100%;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 1.25rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.content-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius-md);
+  object-fit: contain;
+  max-height: 70vh;
+}
+
+/* ============================================
+   Text Content
+   ============================================ */
+.text-content {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  overflow-x: auto;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.04);
+  max-width: 100%;
+}
+
+.text-pre {
+  font-family: 'SF Mono', 'JetBrains Mono', 'Cascadia Code', 'Menlo', 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--current-text-secondary);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  font-weight: 400;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* ============================================
+   Navigation — macOS Toolbar Style
+   ============================================ */
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+/* macOS Button Style */
+.nav-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  background: var(--current-gradient);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-text);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.2) inset,
+    0 4px 12px rgba(10, 132, 255, 0.25);
+  letter-spacing: -0.01em;
+  min-height: 34px;
+}
+
+.nav-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.2) inset,
+    0 6px 18px rgba(10, 132, 255, 0.35);
+  filter: brightness(1.05);
+}
+
+.nav-button:active:not(:disabled) {
+  transform: translateY(0);
+  filter: brightness(0.95);
+  box-shadow: 0 1px 4px rgba(10, 132, 255, 0.2);
+}
+
+.nav-button:disabled {
+  background: rgba(142, 142, 147, 0.12);
+  color: rgba(60, 60, 67, 0.3);
+  cursor: not-allowed;
+  box-shadow: none;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* macOS Page Indicator */
+.page-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  background: rgba(142, 142, 147, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-md);
+  min-height: 34px;
+}
+
+.page-number {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--current-text-muted);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+/* ============================================
+   Welcome Screen
+   ============================================ */
+.welcome-container {
+  text-align: center;
+  padding: 5rem 2rem;
+}
+
+.welcome-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: var(--current-gradient);
+  border-radius: 22px;
+  margin-bottom: 1.5rem;
+  color: white;
+  box-shadow: 0 8px 24px rgba(10, 132, 255, 0.3), var(--glass-inset);
+}
+
+.welcome-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--current-text-primary);
+  margin-bottom: 0.625rem;
+  letter-spacing: -0.02em;
+}
+
+.welcome-text {
+  font-size: 0.9375rem;
+  color: var(--current-text-muted);
+  font-weight: 400;
+  max-width: 300px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* ============================================
+   Global Scrollbar — macOS style
+   ============================================ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.28);
+  background-clip: content-box;
+}
+
+/* ============================================
+   Tablet (768px - 1024px)
+   ============================================ */
+@media (max-width: 1024px) {
+  .content-grid {
+    grid-template-columns: 260px 1fr;
+    gap: 1rem;
+  }
+
+  .sidebar {
+    top: 72px;
+    height: calc(100vh - 88px);
+  }
+
+  .content-card {
+    padding: 2rem;
+  }
+
+  .md-h1 { font-size: 1.75rem; }
+  .md-h2 { font-size: 1.375rem; }
+  .md-h3 { font-size: 1.125rem; }
+}
+
+/* ============================================
+   Mobile (< 768px)
+   ============================================ */
+@media (max-width: 768px) {
+  .mobile-only {
+    display: flex;
+  }
+
+  .header-container {
+    padding: 0.625rem 1rem;
+  }
+
+  .header-title {
+    font-size: 0.9375rem;
+  }
+
+  .header-subtitle {
+    display: none;
+  }
+
+  .content-wrapper {
+    padding: 0.75rem;
+    overflow-x: hidden;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    width: 280px;
+    height: calc(100vh - 56px);
+    transform: translateX(-100%);
+    z-index: 40;
+    border-radius: 0 var(--radius-2xl) var(--radius-2xl) 0;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 30;
+  }
+
+  .content-card {
+    padding: 1.25rem;
+    overflow-x: hidden;
+    max-width: 100vw;
+    border-radius: var(--radius-xl);
+  }
+
+  .content-body {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+
+  .md-h1 { font-size: 1.5rem; word-break: break-word; }
+  .md-h2 { font-size: 1.25rem; word-break: break-word; }
+  .md-h3 { font-size: 1.0625rem; word-break: break-word; }
+  .md-p { font-size: 0.9rem; word-break: break-word; }
+
+  .breadcrumb-topic { max-width: 120px; }
+  .breadcrumb-file { max-width: 140px; }
+
+  .navigation { flex-direction: column; }
+  .nav-button { width: 100%; }
+
+  .breadcrumb {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.375rem;
+  }
+
+  .pdf-viewer { height: 50vh; }
+
+  * {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
+/* ============================================
+   Small Mobile (< 480px)
+   ============================================ */
+@media (max-width: 480px) {
+  .header-container { padding: 0.5rem 0.75rem; }
+  .header-left { gap: 0.5rem; }
+  .header-title { font-size: 0.875rem; }
+
+  .sidebar { width: 260px; }
+
+  .content-card {
+    padding: 1rem;
+    overflow-x: hidden;
+  }
+
+  .md-h1 { font-size: 1.375rem; hyphens: auto; }
+  .md-h2 { font-size: 1.125rem; hyphens: auto; }
+  .md-h3 { font-size: 1rem; hyphens: auto; }
+  .md-p { hyphens: auto; }
+
+  .breadcrumb-topic { max-width: 80px; }
+  .breadcrumb-file { max-width: 100px; }
+
+  .search-input { font-size: 0.875rem; }
+
+  .nav-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.8125rem;
+  }
+
+  .nav-text { display: none; }
+
+  .content-wrapper {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  .main-content {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  pre, code { overflow-x: auto; max-width: 100%; }
+}
+
+/* ============================================
+   Reduced Motion
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+   Print
+   ============================================ */
+@media print {
+  .header, .sidebar, .navigation, .breadcrumb { display: none; }
+
+  .content-card {
+    background: white;
+    box-shadow: none;
+    border: none;
+  }
+}
+
+/* ============================================
+   Home Screen – 30 Topic Grid
+   ============================================ */
+.home-screen {
+  padding-bottom: 4rem;
+}
+
+/* Hero */
+.home-hero {
+  text-align: center;
+  padding: 3rem 1rem 2.5rem;
+}
+
+.home-hero-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+  filter: drop-shadow(0 4px 12px rgba(10,132,255,0.3));
+}
+
+.home-hero-title {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: rgba(255,255,255,0.95);
+  text-shadow: 0 2px 16px rgba(0,0,0,0.25);
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.home-hero-sub {
+  font-size: 0.9375rem;
+  color: rgba(255,255,255,0.7);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* Grid */
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.875rem;
+}
+
+/* Each card */
+.topic-grid-card {
+  position: relative;
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255,255,255,0.9);
+  border-radius: 16px;
+  padding: 1.25rem 1.125rem 1rem;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1),
+              box-shadow 0.2s ease,
+              background 0.15s ease;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08), 0 1px 0 rgba(255,255,255,0.8) inset;
+  overflow: hidden;
+  /* accent colour from inline style --accent */
+}
+
+.topic-grid-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--accent, #0A84FF) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.topic-grid-card:hover {
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 10px 32px rgba(0,0,0,0.14), 0 1px 0 rgba(255,255,255,0.8) inset;
+  background: rgba(255,255,255,0.94);
+}
+
+.topic-grid-card:hover::before {
+  opacity: 0.06;
+}
+
+.topic-grid-card:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+/* Number badge */
+.tgc-number {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  color: var(--accent, #0A84FF);
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 0.5rem;
+  opacity: 0.85;
+}
+
+/* Accent bar */
+.tgc-accent-bar {
+  width: 2rem;
+  height: 2.5px;
+  background: var(--accent, #0A84FF);
+  border-radius: 2px;
+  margin-bottom: 0.75rem;
+  transition: width 0.2s ease;
+}
+
+.topic-grid-card:hover .tgc-accent-bar {
+  width: 3rem;
+}
+
+/* Body text */
+.tgc-body {
+  flex: 1;
+}
+
+.tgc-label {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent, #0A84FF);
+  margin-bottom: 0.25rem;
+  opacity: 0.8;
+}
+
+.tgc-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #1C1C1E;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin-bottom: 0.375rem;
+}
+
+.tgc-desc {
+  font-size: 0.75rem;
+  color: #8E8E93;
+  line-height: 1.45;
+  font-weight: 400;
+}
+
+/* Arrow */
+.tgc-arrow {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  font-size: 1rem;
+  color: var(--accent, #0A84FF);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.topic-grid-card:hover .tgc-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Responsive grid ── */
+@media (max-width: 1024px) {
+  .topics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .topics-grid {
+    grid-template-columns: 1fr;
+    gap: 0.625rem;
+  }
+
+  .home-hero-title {
+    font-size: 1.5rem;
+  }
+
+  .home-hero {
+    padding: 2rem 1rem 1.75rem;
+  }
+
+  .topic-grid-card {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .tgc-name {
+    font-size: 0.875rem;
+  }
+
+  .tgc-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 400px) {
+  .home-hero-title { font-size: 1.25rem; }
+  .home-hero-icon  { font-size: 2.25rem; }
+}
+
+/* ============================================
+   macOS-style Header Buttons
+   ============================================ */
+
+/* Generic mac pill button — menu toggle & theme toggle */
+.mac-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  color: var(--current-text-primary, #1C1C1E);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.15s ease;
+  /* Subtle top-gloss like real macOS buttons */
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.85) inset,
+    0 1px 4px rgba(0,0,0,0.08);
+  flex-shrink: 0;
+}
+
+.mac-btn:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: scale(1.06);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.9) inset,
+    0 4px 12px rgba(0,0,0,0.12);
+}
+
+.mac-btn:active {
+  transform: scale(0.94);
+  background: rgba(240,240,245,0.9);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.7) inset, 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Accent variant for theme toggle — shows the current primary colour */
+.mac-btn--accent {
+  color: var(--current-primary, #0A84FF);
+  border-color: rgba(10,132,255,0.18);
+}
+
+.mac-btn--accent:hover {
+  background: var(--current-primary, #0A84FF);
+  color: white;
+  border-color: transparent;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.25) inset,
+    0 4px 14px rgba(10,132,255,0.35);
+}
+
+/* macOS App Icon — gradient square with rounded corners (home button) */
+.mac-app-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(145deg, #1a8fff 0%, #5E5CE6 100%);
+  color: white;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.15s ease, filter 0.15s ease;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.3) inset,
+    0 3px 10px rgba(10,132,255,0.4),
+    0 1px 3px rgba(0,0,0,0.15);
+}
+
+.mac-app-icon:hover {
+  transform: scale(1.08) translateY(-1px);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.3) inset,
+    0 6px 18px rgba(10,132,255,0.45),
+    0 2px 6px rgba(0,0,0,0.15);
+  filter: brightness(1.08);
+}
+
+.mac-app-icon:active {
+  transform: scale(0.94);
+  filter: brightness(0.95);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.2) inset,
+    0 2px 6px rgba(10,132,255,0.3);
+}
+
+/* Keep mobile-only display rule intact */
+@media (min-width: 769px) {
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: flex !important;
+  }
+}

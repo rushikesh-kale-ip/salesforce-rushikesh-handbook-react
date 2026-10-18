@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Query Plan Tool</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0A84FF;--green:#30D158;--orange:#FF9F0A;--red:#FF453A;--purple:#BF5AF2;
+  --t1:#1C1C1E;--t2:#3A3A3C;--tm:#8E8E93;
+  --bg:#F2F2F7;--card:rgba(255,255,255,0.9);--bdr:rgba(0,0,0,0.08);
+  --r:12px;--rm:16px;--rl:20px;
+  --f:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --fm:"SF Mono","JetBrains Mono","Menlo","Courier New",monospace;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);line-height:1.7;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+.ph{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(30px) saturate(200%);-webkit-backdrop-filter:blur(30px) saturate(200%);
+  border-bottom:1px solid var(--bdr);padding:1rem 1.5rem;
+  box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.phi{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:.875rem}
+.hi{width:36px;height:36px;background:linear-gradient(135deg,#0A84FF,#5E5CE6);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:1rem;flex-shrink:0;box-shadow:0 2px 8px rgba(10,132,255,.35)}
+.ht h1{font-size:.9375rem;font-weight:600;letter-spacing:-.02em;color:var(--t1)}
+.ht p{font-size:.75rem;color:var(--tm);margin-top:1px}
+.cw{max-width:860px;margin:0 auto;padding:1.75rem 1.5rem 4rem}
+.hero{background:linear-gradient(135deg,#0A84FF,#5E5CE6);border-radius:var(--rl);
+  padding:1.75rem 2rem;margin-bottom:1.75rem;color:white;
+  box-shadow:0 8px 32px rgba(10,132,255,.3)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);border-radius:100px;font-size:.6875rem;
+  font-weight:700;padding:.2rem .75rem;margin-bottom:.625rem;
+  letter-spacing:.04em;text-transform:uppercase}
+.hero h2{font-size:1.625rem;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.maj{display:flex;align-items:center;gap:.5rem;font-size:.625rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--tm);
+  margin:2.25rem 0 .875rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.blk{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rm);
+  padding:1.125rem 1.375rem;margin-bottom:.875rem;
+  box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.ct{font-size:.9375rem;font-weight:600;color:var(--t1);margin-bottom:.625rem;
+  letter-spacing:-.01em}
+.cb p{font-size:.9rem;color:var(--t2);margin-bottom:.4rem;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.ans{border-left:3px solid var(--blue)}
+.scn{border-left:3px solid var(--orange)}
+.mis{border-left:3px solid var(--red)}
+.sen{border-left:3px solid var(--purple)}
+.chk{border-left:3px solid var(--green)}
+.dep{border-left:3px solid var(--blue);background:rgba(10,132,255,.03)}
+.sub{border-left:3px solid rgba(0,0,0,.1);background:rgba(0,0,0,.015)}
+.cl{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin:.2rem 0}
+.cl li{font-size:.875rem;color:var(--t2);padding:.25rem 0 .25rem 1rem;
+  position:relative;line-height:1.6}
+.cl li::before{content:"·";position:absolute;left:0;color:var(--blue);font-weight:700}
+.ni{padding-left:2rem !important}
+.ni::before{display:none !important}
+.nb{display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;background:var(--blue);color:white;border-radius:5px;
+  font-size:.625rem;font-weight:700;margin-right:.4rem;vertical-align:middle}
+.ci{font-size:.875rem;color:var(--t2);padding:.2rem 0}
+.arr{font-size:.875rem;color:var(--blue);padding:.2rem 0 .2rem .5rem;font-weight:500}
+.cb-code{background:#1C1C1E;border-radius:var(--r);padding:1.125rem 1.25rem;
+  margin:.75rem 0;overflow-x:auto;position:relative}
+.cb-code::before{content:"";display:block;width:10px;height:10px;border-radius:50%;
+  background:#FF5F57;box-shadow:16px 0 0 #FFBD2E,32px 0 0 #28CA41;
+  margin-bottom:.75rem}
+.cb-code pre{overflow-x:auto}
+.cb-code code{font-family:var(--fm);font-size:.8rem;line-height:1.7;
+  color:#E8E8ED;white-space:pre;word-break:normal}
+.ic{font-family:var(--fm);font-size:.8125rem;background:rgba(10,132,255,.1);
+  color:var(--blue);padding:.1em .4em;border-radius:4px;
+  border:1px solid rgba(10,132,255,.15)}
+.tbl{width:100%;border-collapse:collapse;font-size:.875rem;margin:.5rem 0;
+  border-radius:var(--r);overflow:hidden}
+.tbl tr:first-child td{background:rgba(10,132,255,.07);font-weight:600;color:var(--t1)}
+.tbl td{padding:.5rem .875rem;border-bottom:1px solid var(--bdr);color:var(--t2)}
+.tbl tr:last-child td{border-bottom:none}
+.lp{font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:.375rem}
+@media(max-width:640px){
+  .cw{padding:1rem .875rem 3rem}
+  .hero{padding:1.375rem 1.25rem}
+  .hero h2{font-size:1.25rem}
+  .blk{padding:.875rem 1rem;border-radius:var(--r)}
+  .cb-code{padding:.875rem 1rem}
+  .ph{padding:.75rem 1rem}
+}
+@media(max-width:380px){
+  .hero h2{font-size:1.125rem}
+  .cw{padding:.75rem .625rem 3rem}
+}
+</style>
+</head>
+<body>
+<header class="ph"><div class="phi">
+  <div class="hi">📘</div>
+  <div class="ht"><h1>Salesforce Developer Guide</h1><p>Interview Ready · Deep Dive · Production Patterns</p></div>
+</div></header>
+<div class="cw">
+  <div class="hero"><div class="badge">Salesforce Developer</div><h2>Query Plan Tool</h2></div>
+  <p class="lp">28.d Query Plan Tool</p><p class="lp">Say Next.</p><p class="lp">Next</p><p class="lp">28.d Query Plan Tool</p><div class="maj"><span>🎤</span>INTERVIEW SECTION</div><div class="blk ans"><div class="ct">30-Second Interview Answer</div><div class="cb"><p>The Query Plan Tool in Salesforce is a performance analysis tool that shows how the Salesforce query</p><p>optimizer evaluates a SOQL query, including index usage, cost, and selectivity, helping developers</p><ul class="cl"><li>optimize queries in large data volume environments.</li></ul></div></div><div class="blk ans"><div class="ct">2-Minute Technical Explanation</div><div class="cb"><ul class="cl"><li>In LDV orgs, poorly written queries can:</li></ul></div></div><div class="blk mis"><div class="ct">Cause CPU timeouts</div><div class="cb"><ul class="cl"><li>The Query Plan Tool helps by showing:</li></ul><div class="ci">✔ Which index is used</div><div class="cb-code"><pre><code>✔ Cardinality (estimated record count)</code></pre></div><div class="ci">✔ Cost of query</div><div class="ci">✔ Whether query is selective</div><div class="cb-code"><pre><code>Goal:</code></pre></div><ul class="cl"><li>Choose query plan with:</li></ul><div class="cb-code"><pre><code>👉 Lowest cost (preferably &lt; 1)</code></pre></div><ul class="cl"><li>👉 Indexed field usage</li><li>It is critical for debugging:</li><li>“Non-selective query against large object” errors.</li></ul></div></div><div class="blk scn"><div class="ct">Real-Time Scenario</div><div class="cb"><div class="cb-code"><pre><code>Object:</code></pre></div><ul class="cl"><li>Case → 10 million records</li></ul><div class="cb-code"><pre><code>Query:</code></pre></div><ul class="cl"><li>SELECT Id FROM Case WHERE Status = 'Closed'</li><li>Query slow.</li><li>Open Query Plan Tool →</li><li>It shows:</li></ul><div class="cb-code"><pre><code>Cost = 5.2</code></pre></div><ul class="cl"><li>Index not used</li></ul><div class="cb-code"><pre><code>Solution:</code></pre></div><ul class="cl"><li>Add additional indexed filter:</li><li>WHERE Status = 'Closed'</li><li>AND CreatedDate = LAST_N_DAYS:30</li></ul><div class="cb-code"><pre><code>Now:</code></pre></div><div class="cb-code"><pre><code>Cost = 0.2</code></pre></div><ul class="cl"><li>Index used</li><li>Query becomes selective.</li></ul></div></div><div class="blk ans"><div class="ct">Tricky Interview Questions</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">1</span>What does cost mean?</li></ul><div class="cb-code"><pre><code>→ Relative execution cost (lower is better).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">2</span>What cost value is ideal?</li></ul><div class="arr">→ Less than 1.</div><ul class="cl"><li class="ni"><span class="nb">3</span>Does indexed field guarantee low cost?</li></ul><div class="cb-code"><pre><code>→ No (depends on selectivity).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">4</span>Can Query Plan Tool predict exact runtime?</li></ul><div class="cb-code"><pre><code>→ No (estimate only).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">5</span>Where is it available?</li></ul><div class="arr">→ Developer Console.</div></div></div><div class="blk sen"><div class="ct">Senior-Level Discussion Points</div><div class="cb"><ul class="cl"><li>Optimizer behavior</li><li>Index selection strategy</li><li>Cardinality interpretation</li><li>Multi-filter query optimization</li><li>LDV trigger design</li></ul></div></div><div class="maj"><span>🔬</span>DEEP TECHNICAL BREAKDOWN</div><div class="blk dep"><div class="ct">What Is Query Plan Tool?</div><div class="cb"><ul class="cl"><li>A diagnostic tool that shows:</li><li>How Salesforce will execute your query.</li><li>Accessible via:</li><li>Developer Console →</li><li>Query Editor →</li><li>Check “Query Plan”.</li></ul></div></div><div class="blk sub"><div class="ct">Cost</div><div class="cb"><div class="cb-code"><pre><code>Represents:</code></pre></div><ul class="cl"><li>Relative cost of executing query.</li><li>Lower cost = Better performance.</li></ul><div class="cb-code"><pre><code>Goal:</code></pre></div><div class="ci">✔ Cost < 1 preferred</div><div class="ci">✔ Cost > 1 may cause performance issue</div></div></div><div class="blk sub"><div class="ct">Cardinality</div><div class="cb"><ul class="cl"><li>Estimated number of records returned.</li><li>If cardinality too high →</li><li>Query becomes non-selective.</li></ul></div></div><div class="blk sub"><div class="ct">sObject Cardinality</div><div class="cb"><ul class="cl"><li>Total number of records in object.</li><li>Used to calculate selectivity threshold.</li></ul></div></div><div class="blk sub"><div class="ct">Leading Operation Type</div><div class="cb"><div class="cb-code"><pre><code>Shows:</code></pre></div><div class="ci">✔ Index</div><div class="ci">✔ Table Scan</div><ul class="cl"><li>If “Table Scan” → Bad for LDV.</li></ul></div></div><div class="blk dep"><div class="ct">Example Analysis</div><div class="cb"><div class="cb-code"><pre><code>Query:</code></pre></div><ul class="cl"><li>SELECT Id FROM Account WHERE Industry = 'Banking'</li></ul><div class="cb-code"><pre><code>If:</code></pre></div><ul class="cl"><li>50% records = Banking</li><li>Query Plan shows:</li></ul><div class="cb-code"><pre><code>Cost = 4.5</code></pre></div><ul class="cl"><li>Leading Operation = Table Scan</li><li>Not selective.</li><li>Improved Query:</li><li>SELECT Id FROM Account</li><li>WHERE Industry = 'Banking'</li><li>AND CreatedDate = LAST_N_DAYS:7</li><li>Query Plan:</li></ul><div class="cb-code"><pre><code>Cost = 0.3</code></pre></div><ul class="cl"><li>Leading Operation = Index</li><li>Selective.</li></ul></div></div><div class="blk dep"><div class="ct">Query Plan and Multiple Filters</div><div class="cb"><ul class="cl"><li>If multiple filters used:</li><li>Optimizer evaluates:</li><li>Different possible index paths.</li></ul><div class="cb-code"><pre><code>Selects:</code></pre></div><ul class="cl"><li>Lowest cost path.</li><li>Important in complex queries.</li></ul></div></div><div class="blk dep"><div class="ct">Why Sandbox Testing Is Dangerous</div><div class="cb"><ul class="cl"><li>Sandbox may have:</li><li>50k records.</li><li>Production may have:</li><li>10M records.</li><li>Query selective in sandbox →</li><li>Non-selective in production.</li><li>Always test in full-copy or use Query Plan with realistic estimates.</li></ul></div></div><div class="blk dep"><div class="ct">Query Plan Tool for Trigger Debugging</div><div class="cb"><div class="cb-code"><pre><code>Error:</code></pre></div><ul class="cl"><li>“Non-selective query against large object type”</li></ul><div class="cb-code"><pre><code>Solution:</code></pre></div><ul class="cl"><li>󾠮 Copy query from trigger</li><li>󾠯 Run in Query Plan</li><li>󾠰 Analyze cost</li><li>󾠱 Add indexed filters</li><li>Fix before production.</li></ul></div></div><div class="blk dep"><div class="ct">Enterprise LDV Strategy</div><div class="cb"><div class="ci">✔ Always check Query Plan</div><div class="ci">✔ Use indexed filters</div><div class="ci">✔ Avoid OR on non-indexed fields</div><div class="ci">✔ Add custom index if required</div><div class="ci">✔ Combine filters smartly</div></div></div><div class="blk dep"><div class="ct">Interview Scenario</div><div class="cb"><ul class="cl"><li>“How do you debug a non-selective query error in Production?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>I would analyze the SOQL query using the Query Plan Tool to check cost, cardinality, and index usage,</p><p>then modify the query to use indexed fields and reduce the result set below Salesforce selectivity</p><ul class="cl"><li>thresholds.</li></ul></div></div><div class="blk ans"><div class="ct">Interview Power Line</div><div class="cb"><ul class="cl"><li>If interviewer asks:</li><li>“What is the most important metric in Query Plan Tool?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>The cost metric is most important, as it indicates how efficiently the query will execute—values below 1</p><ul class="cl"><li>generally indicate a selective and optimized query.</li><li>🚀 Next Topic in Sequence:</li><li class="ni"><span class="nb">29</span>Scenario-Based Questions → 29.a Callout from Trigger</li><li>Say Next.</li><li>Next</li><li>🔷 29. Scenario-Based Questions</li></ul></div></div>
+</div>
+</body></html>
