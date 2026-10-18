@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Approval Process</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0A84FF;--green:#30D158;--orange:#FF9F0A;--red:#FF453A;--purple:#BF5AF2;
+  --t1:#1C1C1E;--t2:#3A3A3C;--tm:#8E8E93;
+  --bg:#F2F2F7;--card:rgba(255,255,255,0.9);--bdr:rgba(0,0,0,0.08);
+  --r:12px;--rm:16px;--rl:20px;
+  --f:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --fm:"SF Mono","JetBrains Mono","Menlo","Courier New",monospace;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);line-height:1.7;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+.ph{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(30px) saturate(200%);-webkit-backdrop-filter:blur(30px) saturate(200%);
+  border-bottom:1px solid var(--bdr);padding:1rem 1.5rem;
+  box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.phi{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:.875rem}
+.hi{width:36px;height:36px;background:linear-gradient(135deg,#0A84FF,#5E5CE6);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:1rem;flex-shrink:0;box-shadow:0 2px 8px rgba(10,132,255,.35)}
+.ht h1{font-size:.9375rem;font-weight:600;letter-spacing:-.02em;color:var(--t1)}
+.ht p{font-size:.75rem;color:var(--tm);margin-top:1px}
+.cw{max-width:860px;margin:0 auto;padding:1.75rem 1.5rem 4rem}
+.hero{background:linear-gradient(135deg,#0A84FF,#5E5CE6);border-radius:var(--rl);
+  padding:1.75rem 2rem;margin-bottom:1.75rem;color:white;
+  box-shadow:0 8px 32px rgba(10,132,255,.3)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);border-radius:100px;font-size:.6875rem;
+  font-weight:700;padding:.2rem .75rem;margin-bottom:.625rem;
+  letter-spacing:.04em;text-transform:uppercase}
+.hero h2{font-size:1.625rem;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.maj{display:flex;align-items:center;gap:.5rem;font-size:.625rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--tm);
+  margin:2.25rem 0 .875rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.blk{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rm);
+  padding:1.125rem 1.375rem;margin-bottom:.875rem;
+  box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.ct{font-size:.9375rem;font-weight:600;color:var(--t1);margin-bottom:.625rem;
+  letter-spacing:-.01em}
+.cb p{font-size:.9rem;color:var(--t2);margin-bottom:.4rem;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.ans{border-left:3px solid var(--blue)}
+.scn{border-left:3px solid var(--orange)}
+.mis{border-left:3px solid var(--red)}
+.sen{border-left:3px solid var(--purple)}
+.chk{border-left:3px solid var(--green)}
+.dep{border-left:3px solid var(--blue);background:rgba(10,132,255,.03)}
+.sub{border-left:3px solid rgba(0,0,0,.1);background:rgba(0,0,0,.015)}
+.cl{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin:.2rem 0}
+.cl li{font-size:.875rem;color:var(--t2);padding:.25rem 0 .25rem 1rem;
+  position:relative;line-height:1.6}
+.cl li::before{content:"·";position:absolute;left:0;color:var(--blue);font-weight:700}
+.ni{padding-left:2rem !important}
+.ni::before{display:none !important}
+.nb{display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;background:var(--blue);color:white;border-radius:5px;
+  font-size:.625rem;font-weight:700;margin-right:.4rem;vertical-align:middle}
+.ci{font-size:.875rem;color:var(--t2);padding:.2rem 0}
+.arr{font-size:.875rem;color:var(--blue);padding:.2rem 0 .2rem .5rem;font-weight:500}
+.cb-code{background:#1C1C1E;border-radius:var(--r);padding:1.125rem 1.25rem;
+  margin:.75rem 0;overflow-x:auto;position:relative}
+.cb-code::before{content:"";display:block;width:10px;height:10px;border-radius:50%;
+  background:#FF5F57;box-shadow:16px 0 0 #FFBD2E,32px 0 0 #28CA41;
+  margin-bottom:.75rem}
+.cb-code pre{overflow-x:auto}
+.cb-code code{font-family:var(--fm);font-size:.8rem;line-height:1.7;
+  color:#E8E8ED;white-space:pre;word-break:normal}
+.ic{font-family:var(--fm);font-size:.8125rem;background:rgba(10,132,255,.1);
+  color:var(--blue);padding:.1em .4em;border-radius:4px;
+  border:1px solid rgba(10,132,255,.15)}
+.tbl{width:100%;border-collapse:collapse;font-size:.875rem;margin:.5rem 0;
+  border-radius:var(--r);overflow:hidden}
+.tbl tr:first-child td{background:rgba(10,132,255,.07);font-weight:600;color:var(--t1)}
+.tbl td{padding:.5rem .875rem;border-bottom:1px solid var(--bdr);color:var(--t2)}
+.tbl tr:last-child td{border-bottom:none}
+.lp{font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:.375rem}
+@media(max-width:640px){
+  .cw{padding:1rem .875rem 3rem}
+  .hero{padding:1.375rem 1.25rem}
+  .hero h2{font-size:1.25rem}
+  .blk{padding:.875rem 1rem;border-radius:var(--r)}
+  .cb-code{padding:.875rem 1rem}
+  .ph{padding:.75rem 1rem}
+}
+@media(max-width:380px){
+  .hero h2{font-size:1.125rem}
+  .cw{padding:.75rem .625rem 3rem}
+}
+</style>
+</head>
+<body>
+<header class="ph"><div class="phi">
+  <div class="hi">📘</div>
+  <div class="ht"><h1>Salesforce Developer Guide</h1><p>Interview Ready · Deep Dive · Production Patterns</p></div>
+</div></header>
+<div class="cw">
+  <div class="hero"><div class="badge">Salesforce Developer</div><h2>Approval Process</h2></div>
+  <p class="lp">15.c Approval Process</p><p class="lp">Say Next.</p><p class="lp">Next</p><p class="lp">🔷 15.c Approval Process</p><div class="maj"><span>🎤</span>INTERVIEW SECTION</div><div class="blk ans"><div class="ct">30-Second Interview Answer</div><div class="cb"><p>Approval Process is a declarative Salesforce automation that routes records for approval based on</p><p>defined criteria. It supports multi-step approval chains, automatic actions on approval/rejection, and</p><ul class="cl"><li>locking of records during the approval process.</li></ul></div></div><div class="blk ans"><div class="ct">2-Minute Technical Explanation</div><div class="cb"><ul class="cl"><li>Approval Process is used when:</li></ul><div class="ci">✔ Record requires managerial approval</div><div class="ci">✔ Multi-level approval required</div><div class="ci">✔ Conditional routing required</div><div class="ci">✔ Record locking is necessary</div><ul class="cl"><li>Core components:</li><li>󾠮 Entry Criteria</li><li>󾠯 Initial Submitter</li><li>󾠰 Approval Steps</li><li>󾠱 Final Approval Actions</li><li>󾠲 Final Rejection Actions</li><li>󾠳 Recall Actions</li><li>Once submitted:</li><li>Record gets locked</li><li>Approvers receive email/task</li><li>Decision updates record</li></ul></div></div><div class="blk scn"><div class="ct">Real-Time Scenario</div><div class="cb"><div class="cb-code"><pre><code>Requirement:</code></pre></div><ul class="cl"><li>If Opportunity Discount > 20% →</li><li>Manager approval required.</li><li>If > 40% →</li><li>Director approval required.</li><li>Approval Process handles multi-level routing easily.</li></ul></div></div><div class="blk ans"><div class="ct">Tricky Interview Questions</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">1</span>Does Approval Process lock the record?</li></ul><div class="arr">→ Yes.</div><ul class="cl"><li class="ni"><span class="nb">2</span>Can it update fields?</li></ul><div class="cb-code"><pre><code>→ Yes (via actions).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">3</span>Can it trigger Flow?</li></ul><div class="cb-code"><pre><code>→ Yes (record update can trigger Flow).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">4</span>Can approval be dynamic?</li></ul><div class="cb-code"><pre><code>→ Yes (based on field/role/user).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">5</span>Can we recall approval?</li></ul><div class="cb-code"><pre><code>→ Yes (if configured).</code></pre></div></div></div><div class="blk sen"><div class="ct">Senior-Level Discussion Points</div><div class="cb"><ul class="cl"><li>Approval vs Flow decision</li><li>Record locking behavior</li><li>Performance considerations</li><li>Escalation strategy</li><li>Integration impact</li><li>Delegated approvers</li></ul></div></div><div class="maj"><span>🔬</span>DEEP TECHNICAL BREAKDOWN</div><div class="blk dep"><div class="ct">Approval Process Flow</div><div class="cb"><ul class="cl"><li>Submit Record</li><li>↓</li><li>Check Entry Criteria</li><li>↓</li><li>Lock Record</li><li>↓</li><li>Assign Approver</li><li>↓</li><li>Approval / Rejection</li><li>↓</li><li>Final Actions</li></ul></div></div><div class="blk dep"><div class="ct">Key Components Explained</div><div class="cb"><ul class="cl"><li>󾠮 Entry Criteria</li><li>Defines when record can enter approval.</li></ul><div class="cb-code"><pre><code>Example:</code></pre></div><ul class="cl"><li>Discount__c > 20</li><li>󾠯 Initial Submitters</li><li>Who can submit:</li><li>Record Owner</li><li>Specific Role</li><li>Specific User</li><li>󾠰 Approval Steps</li><li>Each step defines:</li></ul><div class="cb-code"><pre><code>✔ Approver (User / Role / Manager)</code></pre></div><div class="cb-code"><pre><code>✔ Criteria (optional)</code></pre></div><div class="ci">✔ Actions</div><ul class="cl"><li>Supports multi-level hierarchy.</li><li>󾠱 Final Approval Actions</li><li>Executed when fully approved:</li></ul><div class="ci">✔ Field update</div><div class="ci">✔ Email alert</div><div class="ci">✔ Task creation</div><div class="ci">✔ Outbound message</div><ul class="cl"><li>󾠲 Final Rejection Actions</li><li>Executed when rejected.</li></ul><div class="cb-code"><pre><code>Often:</code></pre></div><ul class="cl"><li>Update Status</li><li>Notify owner</li><li>󾠳 Recall Actions</li><li>When user recalls request.</li></ul></div></div><div class="blk dep"><div class="ct">Record Locking</div><div class="cb"><ul class="cl"><li>When submitted:</li><li>Record becomes locked.</li></ul><div class="cb-code"><pre><code>Only:</code></pre></div><ul class="cl"><li>Admin</li><li>Approver</li><li>Can modify.</li><li>Important for:</li></ul><div class="ci">✔ Data integrity</div><div class="ci">✔ Prevent mid-approval edits</div></div></div><div class="blk dep"><div class="ct">Escalation Rules</div><div class="cb"><ul class="cl"><li>Can define:</li><li>Time-based escalation</li><li>Auto-approve after X days</li><li>Reassign if no response</li><li>Enterprise-grade feature.</li></ul></div></div><div class="blk dep"><div class="ct">Approval vs Flow</div><div class="cb"><ul class="cl"><li>Feature Approval Process Flow</li></ul></div></div><div class="blk chk"><div class="ct">Record locking ✅ Manual</div><div class="cb"><ul class="cl"><li>Time escalation Built-in Complex</li><li>UI approval button Standard Custom</li><li>Feature Approval Process Flow</li><li>Declarative Yes Yes</li><li>Approval Process is purpose-built.</li></ul></div></div><div class="blk dep"><div class="ct">When NOT to Use Approval Process</div><div class="cb"><ul class="cl"><li>Avoid if:</li><li>Simple status update</li><li>No formal approval chain</li><li>No record locking needed</li><li>Use Flow instead.</li></ul></div></div><div class="blk dep"><div class="ct">Enterprise Pattern</div><div class="cb"><ul class="cl"><li>High-discount deal:</li></ul><div class="ci">✔ Submit for approval</div><div class="ci">✔ Lock record</div><div class="ci">✔ Notify manager</div><div class="ci">✔ On approval → Trigger Flow</div><div class="ci">✔ Flow creates commission record</div><ul class="cl"><li>Hybrid architecture.</li></ul></div></div><div class="blk dep"><div class="ct">Order of Execution Impact</div><div class="cb"><ul class="cl"><li>Approval field updates may:</li></ul><div class="ci">✔ Trigger Flow</div><div class="ci">✔ Trigger Apex</div><div class="ci">✔ Trigger validation</div><ul class="cl"><li>Must design carefully.</li></ul></div></div><div class="blk dep"><div class="ct">Interview Scenario</div><div class="cb"><ul class="cl"><li>“How would you design a multi-level discount approval?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>I would use Approval Process with step-based criteria routing. For example, discounts above 20% go to</p><p>the manager, and above 40% escalate to the director, with record locking and final approval actions</p><ul class="cl"><li>updating the Opportunity status.</li></ul></div></div><div class="blk ans"><div class="ct">Interview Power Line</div><div class="cb"><ul class="cl"><li>If interviewer asks:</li><li>“Why use Approval Process instead of Flow?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>Because Approval Process provides built-in multi-level routing, record locking, escalation, and standard</p><p>UI support specifically designed for approval management, making it more suitable than custom Flow</p><ul class="cl"><li>logic for structured approvals.</li><li>🚀 Next Topic in Sequence:</li><li class="ni"><span class="nb">16</span>API Fundamentals → 16.a REST API</li><li>Say Next.</li><li>Next</li><li>🔷 16. API Fundamentals</li></ul></div></div>
+</div>
+</body></html>

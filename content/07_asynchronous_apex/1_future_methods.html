@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Future Methods</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0A84FF;--green:#30D158;--orange:#FF9F0A;--red:#FF453A;--purple:#BF5AF2;
+  --t1:#1C1C1E;--t2:#3A3A3C;--tm:#8E8E93;
+  --bg:#F2F2F7;--card:rgba(255,255,255,0.9);--bdr:rgba(0,0,0,0.08);
+  --r:12px;--rm:16px;--rl:20px;
+  --f:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --fm:"SF Mono","JetBrains Mono","Menlo","Courier New",monospace;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);line-height:1.7;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+.ph{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(30px) saturate(200%);-webkit-backdrop-filter:blur(30px) saturate(200%);
+  border-bottom:1px solid var(--bdr);padding:1rem 1.5rem;
+  box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.phi{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:.875rem}
+.hi{width:36px;height:36px;background:linear-gradient(135deg,#0A84FF,#5E5CE6);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:1rem;flex-shrink:0;box-shadow:0 2px 8px rgba(10,132,255,.35)}
+.ht h1{font-size:.9375rem;font-weight:600;letter-spacing:-.02em;color:var(--t1)}
+.ht p{font-size:.75rem;color:var(--tm);margin-top:1px}
+.cw{max-width:860px;margin:0 auto;padding:1.75rem 1.5rem 4rem}
+.hero{background:linear-gradient(135deg,#0A84FF,#5E5CE6);border-radius:var(--rl);
+  padding:1.75rem 2rem;margin-bottom:1.75rem;color:white;
+  box-shadow:0 8px 32px rgba(10,132,255,.3)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);border-radius:100px;font-size:.6875rem;
+  font-weight:700;padding:.2rem .75rem;margin-bottom:.625rem;
+  letter-spacing:.04em;text-transform:uppercase}
+.hero h2{font-size:1.625rem;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.maj{display:flex;align-items:center;gap:.5rem;font-size:.625rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--tm);
+  margin:2.25rem 0 .875rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.blk{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rm);
+  padding:1.125rem 1.375rem;margin-bottom:.875rem;
+  box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.ct{font-size:.9375rem;font-weight:600;color:var(--t1);margin-bottom:.625rem;
+  letter-spacing:-.01em}
+.cb p{font-size:.9rem;color:var(--t2);margin-bottom:.4rem;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.ans{border-left:3px solid var(--blue)}
+.scn{border-left:3px solid var(--orange)}
+.mis{border-left:3px solid var(--red)}
+.sen{border-left:3px solid var(--purple)}
+.chk{border-left:3px solid var(--green)}
+.dep{border-left:3px solid var(--blue);background:rgba(10,132,255,.03)}
+.sub{border-left:3px solid rgba(0,0,0,.1);background:rgba(0,0,0,.015)}
+.cl{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin:.2rem 0}
+.cl li{font-size:.875rem;color:var(--t2);padding:.25rem 0 .25rem 1rem;
+  position:relative;line-height:1.6}
+.cl li::before{content:"·";position:absolute;left:0;color:var(--blue);font-weight:700}
+.ni{padding-left:2rem !important}
+.ni::before{display:none !important}
+.nb{display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;background:var(--blue);color:white;border-radius:5px;
+  font-size:.625rem;font-weight:700;margin-right:.4rem;vertical-align:middle}
+.ci{font-size:.875rem;color:var(--t2);padding:.2rem 0}
+.arr{font-size:.875rem;color:var(--blue);padding:.2rem 0 .2rem .5rem;font-weight:500}
+.cb-code{background:#1C1C1E;border-radius:var(--r);padding:1.125rem 1.25rem;
+  margin:.75rem 0;overflow-x:auto;position:relative}
+.cb-code::before{content:"";display:block;width:10px;height:10px;border-radius:50%;
+  background:#FF5F57;box-shadow:16px 0 0 #FFBD2E,32px 0 0 #28CA41;
+  margin-bottom:.75rem}
+.cb-code pre{overflow-x:auto}
+.cb-code code{font-family:var(--fm);font-size:.8rem;line-height:1.7;
+  color:#E8E8ED;white-space:pre;word-break:normal}
+.ic{font-family:var(--fm);font-size:.8125rem;background:rgba(10,132,255,.1);
+  color:var(--blue);padding:.1em .4em;border-radius:4px;
+  border:1px solid rgba(10,132,255,.15)}
+.tbl{width:100%;border-collapse:collapse;font-size:.875rem;margin:.5rem 0;
+  border-radius:var(--r);overflow:hidden}
+.tbl tr:first-child td{background:rgba(10,132,255,.07);font-weight:600;color:var(--t1)}
+.tbl td{padding:.5rem .875rem;border-bottom:1px solid var(--bdr);color:var(--t2)}
+.tbl tr:last-child td{border-bottom:none}
+.lp{font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:.375rem}
+@media(max-width:640px){
+  .cw{padding:1rem .875rem 3rem}
+  .hero{padding:1.375rem 1.25rem}
+  .hero h2{font-size:1.25rem}
+  .blk{padding:.875rem 1rem;border-radius:var(--r)}
+  .cb-code{padding:.875rem 1rem}
+  .ph{padding:.75rem 1rem}
+}
+@media(max-width:380px){
+  .hero h2{font-size:1.125rem}
+  .cw{padding:.75rem .625rem 3rem}
+}
+</style>
+</head>
+<body>
+<header class="ph"><div class="phi">
+  <div class="hi">📘</div>
+  <div class="ht"><h1>Salesforce Developer Guide</h1><p>Interview Ready · Deep Dive · Production Patterns</p></div>
+</div></header>
+<div class="cw">
+  <div class="hero"><div class="badge">Salesforce Developer</div><h2>Future Methods</h2></div>
+  <p class="lp">7.a Future Methods</p><div class="maj"><span>🎤</span>INTERVIEW SECTION</div><div class="blk ans"><div class="ct">30-Second Interview Answer</div><div class="cb"><p>Future Methods are asynchronous Apex methods that run in a separate thread after the current</p><p>transaction commits. They are defined using the @future annotation and are commonly used for callouts</p><ul class="cl"><li>and long-running operations that should not block the user transaction.</li></ul></div></div><div class="blk ans"><div class="ct">2-Minute Technical Explanation</div><div class="cb"><ul class="cl"><li>Future methods:</li><li>Run asynchronously</li><li>Execute after database commit</li><li>Have separate governor limits</li><li>Cannot return values</li><li>Must be static</li><li>Accept only primitive types or collections of primitives</li><li>Basic syntax:</li><li>@future</li></ul><div class="cb-code"><pre><code>public static void methodName(String param){</code></pre></div><ul class="cl"><li>// async logic</li></ul><div class="cb-code"><pre><code>}</code></pre></div><ul class="cl"><li>Used when:</li><li>Performing HTTP callouts</li><li>Running long-running logic</li><li>Avoiding Mixed DML error</li><li>Preventing trigger CPU limit overflow</li></ul></div></div><div class="blk scn"><div class="ct">Real-Time Scenario</div><div class="cb"><div class="cb-code"><pre><code>Requirement:</code></pre></div><ul class="cl"><li>When Opportunity is Closed Won:</li></ul><div class="arr">→ Send data to external ERP system.</div><ul class="cl"><li>You cannot perform callout directly in trigger.</li></ul><div class="cb-code"><pre><code>Solution:</code></pre></div><div class="cb-code"><pre><code>@future(callout=true)</code></pre></div><div class="cb-code"><pre><code>public static void sendToERP(Set&lt;Id&gt; oppIds){</code></pre></div><ul class="cl"><li>// callout logic</li></ul><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>Trigger:</code></pre></div><div class="cb-code"><pre><code>Set&lt;Id&gt; oppIds = new Set&lt;Id&gt;();</code></pre></div><ul class="cl"><li>// collect IDs</li></ul><div class="cb-code"><pre><code>MyClass.sendToERP(oppIds);</code></pre></div><ul class="cl"><li>Callout runs after commit.</li></ul></div></div><div class="blk ans"><div class="ct">Tricky Interview Questions</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">1</span>Can future method return value?</li></ul></div></div><div class="blk mis"><div class="ct">No.</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">2</span>Can future method accept sObject?</li></ul></div></div><div class="blk mis"><div class="ct">No.</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">3</span>Does future method run before commit?</li></ul></div></div><div class="blk mis"><div class="ct">After commit.</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">4</span>What are SOQL limits in future?</li></ul><div class="arr">→ 200 queries.</div><ul class="cl"><li class="ni"><span class="nb">5</span>Can future method call another future?</li></ul></div></div><div class="blk mis"><div class="ct">Not marking callout=true ❌</div><div class="cb"><div class="cb-code"><pre><code>Calling too many future methods (limit 50 per transaction) ❌</code></pre></div></div></div><div class="blk sen"><div class="ct">Senior-Level Discussion Points</div><div class="cb"><ul class="cl"><li>Future vs Queueable</li><li>When to migrate future to Queueable</li><li>Limit of 50 future calls</li><li>No chaining support</li><li>Debugging async jobs</li><li>Retry handling limitations</li></ul></div></div><div class="maj"><span>🔬</span>DEEP TECHNICAL BREAKDOWN</div><div class="blk dep"><div class="ct">Why Future Method Exists</div><div class="cb"><div class="cb-code"><pre><code>Because:</code></pre></div><ul class="cl"><li>Synchronous transaction has CPU limit.</li><li>Callouts not allowed directly in trigger.</li><li>Mixed DML not allowed in same transaction.</li><li>Future provides:</li><li>Separate transaction</li><li>Separate limits</li><li>Post-commit execution</li></ul></div></div><div class="blk dep"><div class="ct">Basic Future Method Example</div><div class="cb"><div class="cb-code"><pre><code>public class AccountService {</code></pre></div><ul class="cl"><li>@future</li></ul><div class="cb-code"><pre><code>public static void processAccounts(Set&lt;Id&gt; accIds){</code></pre></div><ul class="cl"><li>List<Account> accList = [</li><li>SELECT Id, Name</li><li>FROM Account</li><li>WHERE Id IN :accIds</li></ul><div class="cb-code"><pre><code>];</code></pre></div><ul class="cl"><li>// logic</li></ul><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div></div></div><div class="blk dep"><div class="ct">Callout Future Example</div><div class="cb"><div class="cb-code"><pre><code>@future(callout=true)</code></pre></div><div class="cb-code"><pre><code>public static void sendData(Set&lt;Id&gt; accIds){</code></pre></div><div class="cb-code"><pre><code>Http http = new Http();</code></pre></div><div class="cb-code"><pre><code>HttpRequest req = new HttpRequest();</code></pre></div><div class="cb-code"><pre><code>req.setEndpoint('https://api.example.com');</code></pre></div><div class="cb-code"><pre><code>req.setMethod('POST');</code></pre></div><div class="cb-code"><pre><code>HttpResponse res = http.send(req);</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><ul class="cl"><li>Without callout=true → runtime error.</li></ul></div></div><div class="blk dep"><div class="ct">Governor Limits in Future</div><div class="cb"><ul class="cl"><li>Limit Sync Future</li><li>SOQL 100 200</li><li>DML 150 150</li><li>Heap 6MB 12MB</li><li>CPU 10 sec 60 sec</li><li>Future Calls 50 per tx N/A</li></ul></div></div><div class="blk dep"><div class="ct">Restrictions</div><div class="cb"><ul class="cl"><li>Future method:</li><li>Must be static</li><li>Must return void</li><li>Cannot accept:</li><li>sObject</li><li>Objects</li><li>Complex types</li><li>No chaining</li><li>No guarantee of execution order</li></ul></div></div><div class="blk dep"><div class="ct">Mixed DML Solution Example</div><div class="cb"><div class="cb-code"><pre><code>Problem:</code></pre></div><ul class="cl"><li>Cannot update User and Account in same transaction.</li></ul><div class="cb-code"><pre><code>Solution:</code></pre></div><div class="cb-code"><pre><code>update accountList;</code></pre></div><div class="cb-code"><pre><code>MyClass.updateUsersAsync(userIds);</code></pre></div><ul class="cl"><li>Future handles User update separately.</li></ul></div></div><div class="blk dep"><div class="ct">Execution Timing</div><div class="cb"><ul class="cl"><li>Future method:</li><li>Executes after commit.</li><li>May not execute immediately.</li><li>Runs in separate thread.</li><li>Order not guaranteed.</li></ul></div></div><div class="blk dep"><div class="ct">Debugging Future</div><div class="cb"><ul class="cl"><li>Go to:</li><li>Setup → Apex Jobs</li></ul><div class="cb-code"><pre><code>Check:</code></pre></div><ul class="cl"><li>Status</li><li>Errors</li><li>Execution time</li><li>Use debug logs for async user.</li></ul></div></div><div class="blk dep"><div class="ct">Performance Considerations</div><div class="cb"><ul class="cl"><li>Good for:</li><li>Callouts</li><li>Light async work</li><li>Simple integration</li><li>Not ideal for:</li><li>Chaining</li><li>Complex logic</li><li>Retry handling</li><li>Large batch processing</li><li>Prefer Queueable instead.</li></ul></div></div><div class="blk dep"><div class="ct">When NOT to Use Future</div><div class="cb"><ul class="cl"><li>Avoid if:</li><li>Need job chaining</li><li>Need job monitoring control</li><li>Need complex state handling</li><li>Need large data processing</li></ul><div class="cb-code"><pre><code>Use:</code></pre></div><ul class="cl"><li>Queueable Apex instead.</li></ul></div></div><div class="blk ans"><div class="ct">Interview Power Line</div><div class="cb"><ul class="cl"><li>If interviewer asks:</li><li>“Why is Queueable preferred over Future?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>Because Queueable supports job chaining, complex data types, better monitoring, and more flexible</p><ul class="cl"><li>control compared to Future methods.</li><li>🚀 Next Topic in Sequence:</li></ul></div></div>
+</div>
+</body></html>

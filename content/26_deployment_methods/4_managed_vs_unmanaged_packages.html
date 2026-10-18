@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Managed Vs Unmanaged Packages</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0A84FF;--green:#30D158;--orange:#FF9F0A;--red:#FF453A;--purple:#BF5AF2;
+  --t1:#1C1C1E;--t2:#3A3A3C;--tm:#8E8E93;
+  --bg:#F2F2F7;--card:rgba(255,255,255,0.9);--bdr:rgba(0,0,0,0.08);
+  --r:12px;--rm:16px;--rl:20px;
+  --f:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --fm:"SF Mono","JetBrains Mono","Menlo","Courier New",monospace;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);line-height:1.7;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+.ph{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(30px) saturate(200%);-webkit-backdrop-filter:blur(30px) saturate(200%);
+  border-bottom:1px solid var(--bdr);padding:1rem 1.5rem;
+  box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.phi{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:.875rem}
+.hi{width:36px;height:36px;background:linear-gradient(135deg,#0A84FF,#5E5CE6);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:1rem;flex-shrink:0;box-shadow:0 2px 8px rgba(10,132,255,.35)}
+.ht h1{font-size:.9375rem;font-weight:600;letter-spacing:-.02em;color:var(--t1)}
+.ht p{font-size:.75rem;color:var(--tm);margin-top:1px}
+.cw{max-width:860px;margin:0 auto;padding:1.75rem 1.5rem 4rem}
+.hero{background:linear-gradient(135deg,#0A84FF,#5E5CE6);border-radius:var(--rl);
+  padding:1.75rem 2rem;margin-bottom:1.75rem;color:white;
+  box-shadow:0 8px 32px rgba(10,132,255,.3)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);border-radius:100px;font-size:.6875rem;
+  font-weight:700;padding:.2rem .75rem;margin-bottom:.625rem;
+  letter-spacing:.04em;text-transform:uppercase}
+.hero h2{font-size:1.625rem;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.maj{display:flex;align-items:center;gap:.5rem;font-size:.625rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--tm);
+  margin:2.25rem 0 .875rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.blk{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rm);
+  padding:1.125rem 1.375rem;margin-bottom:.875rem;
+  box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.ct{font-size:.9375rem;font-weight:600;color:var(--t1);margin-bottom:.625rem;
+  letter-spacing:-.01em}
+.cb p{font-size:.9rem;color:var(--t2);margin-bottom:.4rem;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.ans{border-left:3px solid var(--blue)}
+.scn{border-left:3px solid var(--orange)}
+.mis{border-left:3px solid var(--red)}
+.sen{border-left:3px solid var(--purple)}
+.chk{border-left:3px solid var(--green)}
+.dep{border-left:3px solid var(--blue);background:rgba(10,132,255,.03)}
+.sub{border-left:3px solid rgba(0,0,0,.1);background:rgba(0,0,0,.015)}
+.cl{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin:.2rem 0}
+.cl li{font-size:.875rem;color:var(--t2);padding:.25rem 0 .25rem 1rem;
+  position:relative;line-height:1.6}
+.cl li::before{content:"·";position:absolute;left:0;color:var(--blue);font-weight:700}
+.ni{padding-left:2rem !important}
+.ni::before{display:none !important}
+.nb{display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;background:var(--blue);color:white;border-radius:5px;
+  font-size:.625rem;font-weight:700;margin-right:.4rem;vertical-align:middle}
+.ci{font-size:.875rem;color:var(--t2);padding:.2rem 0}
+.arr{font-size:.875rem;color:var(--blue);padding:.2rem 0 .2rem .5rem;font-weight:500}
+.cb-code{background:#1C1C1E;border-radius:var(--r);padding:1.125rem 1.25rem;
+  margin:.75rem 0;overflow-x:auto;position:relative}
+.cb-code::before{content:"";display:block;width:10px;height:10px;border-radius:50%;
+  background:#FF5F57;box-shadow:16px 0 0 #FFBD2E,32px 0 0 #28CA41;
+  margin-bottom:.75rem}
+.cb-code pre{overflow-x:auto}
+.cb-code code{font-family:var(--fm);font-size:.8rem;line-height:1.7;
+  color:#E8E8ED;white-space:pre;word-break:normal}
+.ic{font-family:var(--fm);font-size:.8125rem;background:rgba(10,132,255,.1);
+  color:var(--blue);padding:.1em .4em;border-radius:4px;
+  border:1px solid rgba(10,132,255,.15)}
+.tbl{width:100%;border-collapse:collapse;font-size:.875rem;margin:.5rem 0;
+  border-radius:var(--r);overflow:hidden}
+.tbl tr:first-child td{background:rgba(10,132,255,.07);font-weight:600;color:var(--t1)}
+.tbl td{padding:.5rem .875rem;border-bottom:1px solid var(--bdr);color:var(--t2)}
+.tbl tr:last-child td{border-bottom:none}
+.lp{font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:.375rem}
+@media(max-width:640px){
+  .cw{padding:1rem .875rem 3rem}
+  .hero{padding:1.375rem 1.25rem}
+  .hero h2{font-size:1.25rem}
+  .blk{padding:.875rem 1rem;border-radius:var(--r)}
+  .cb-code{padding:.875rem 1rem}
+  .ph{padding:.75rem 1rem}
+}
+@media(max-width:380px){
+  .hero h2{font-size:1.125rem}
+  .cw{padding:.75rem .625rem 3rem}
+}
+</style>
+</head>
+<body>
+<header class="ph"><div class="phi">
+  <div class="hi">📘</div>
+  <div class="ht"><h1>Salesforce Developer Guide</h1><p>Interview Ready · Deep Dive · Production Patterns</p></div>
+</div></header>
+<div class="cw">
+  <div class="hero"><div class="badge">Salesforce Developer</div><h2>Managed Vs Unmanaged Packages</h2></div>
+  <p class="lp">26.d Managed vs Unmanaged Packages</p><p class="lp">Say Next.</p><p class="lp">Next</p><p class="lp">🔷 26. Deployment Methods</p><p class="lp">26.d Managed vs Unmanaged Packages</p><div class="maj"><span>🎤</span>INTERVIEW SECTION</div><div class="blk ans"><div class="ct">30-Second Interview Answer</div><div class="cb"><p>Managed and Unmanaged Packages are Salesforce packaging mechanisms used to distribute metadata.</p><p>Managed packages are version-controlled, upgradeable, and typically used for AppExchange apps, while</p><ul class="cl"><li>unmanaged packages are one-time metadata distributions without upgrade capability.</li></ul></div></div><div class="blk ans"><div class="ct">2-Minute Technical Explanation</div><div class="cb"><ul class="cl"><li>Salesforce packaging options:</li><li>󾠮 Managed Package</li><li>󾠯 Unmanaged Package</li><li>Managed Package:</li></ul><div class="ci">✔ Namespaced</div><div class="ci">✔ Versioned</div><div class="ci">✔ Upgradeable</div><div class="ci">✔ IP protected</div><div class="ci">✔ Used for AppExchange</div><ul class="cl"><li>Unmanaged Package:</li></ul><div class="ci">✔ No namespace</div><div class="ci">✔ Not upgradeable</div><div class="ci">✔ Editable after install</div><div class="ci">✔ Used for simple distribution</div><ul class="cl"><li>Primary difference:</li></ul><div class="cb-code"><pre><code>Managed = Controlled &amp; Upgradable</code></pre></div><div class="cb-code"><pre><code>Unmanaged = Open &amp; One-time</code></pre></div></div></div><div class="blk scn"><div class="ct">Real-Time Scenario</div><div class="cb"><ul class="cl"><li>Scenario 1 – ISV Company</li><li>You build reusable product:</li><li>Use Managed Package</li><li>Publish to AppExchange</li><li>Push upgrades to customers.</li><li>Scenario 2 – Sharing Config Between Orgs</li><li>Admin wants to move:</li><li>Flows + Objects to another org.</li><li>Use Unmanaged Package.</li><li>Simple migration.</li></ul></div></div><div class="blk ans"><div class="ct">Tricky Interview Questions</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">1</span>Can Managed Package components be edited?</li></ul><div class="cb-code"><pre><code>→ No (restricted).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">2</span>Can Unmanaged Package be upgraded?</li></ul><div class="arr">→ No.</div><ul class="cl"><li class="ni"><span class="nb">3</span>Does Managed Package require namespace?</li></ul><div class="arr">→ Yes.</div><ul class="cl"><li class="ni"><span class="nb">4</span>Which package type is used for AppExchange?</li></ul><div class="arr">→ Managed.</div><ul class="cl"><li class="ni"><span class="nb">5</span>Can Managed Package push updates?</li></ul><div class="arr">→ Yes.</div></div></div><div class="blk sen"><div class="ct">Senior-Level Discussion Points</div><div class="cb"><ul class="cl"><li>IP protection strategy</li><li>Namespace architecture</li><li>Versioning lifecycle</li><li>Upgrade compatibility design</li><li>Managed vs Unlocked package strategy</li></ul></div></div><div class="maj"><span>🔬</span>DEEP TECHNICAL BREAKDOWN</div><div class="blk dep"><div class="ct">What Is a Managed Package?</div><div class="cb"><ul class="cl"><li>A managed package:</li></ul><div class="ci">✔ Is created in a Developer Edition org</div><div class="ci">✔ Uses namespace prefix</div><div class="ci">✔ Protects code</div><div class="ci">✔ Supports versioning</div><div class="ci">✔ Allows upgrade</div><div class="cb-code"><pre><code>Example:</code></pre></div><ul class="cl"><li>If namespace = abc</li><li>Apex class becomes:</li><li>abc__MyClass</li><li>Namespace prevents conflicts.</li></ul></div></div><div class="blk dep"><div class="ct">Managed Package Features</div><div class="cb"><div class="ci">✔ Upgrade support</div><div class="ci">✔ Patch versions</div><div class="ci">✔ Subscriber org tracking</div><div class="cb-code"><pre><code>✔ IP protection (hidden code)</code></pre></div><div class="ci">✔ License management</div><ul class="cl"><li>Used by:</li></ul><div class="cb-code"><pre><code>ISVs (Independent Software Vendors).</code></pre></div></div></div><div class="blk dep"><div class="ct">What Is an Unmanaged Package?</div><div class="cb"><ul class="cl"><li>Unmanaged package:</li></ul><div class="ci">✔ No namespace</div><div class="ci">✔ Editable after install</div><div class="ci">✔ One-time metadata copy</div><div class="ci">✔ No upgrade path</div><ul class="cl"><li>After installation:</li><li>Components behave like normal metadata.</li></ul></div></div><div class="blk dep"><div class="ct">Managed vs Unmanaged Comparison</div><div class="cb"><ul class="cl"><li>Feature Managed Unmanaged</li><li>Namespace Yes No</li><li>Upgradeable Yes No</li></ul><div class="cb-code"><pre><code>Code visibility Hidden (optional) Fully visible</code></pre></div><ul class="cl"><li>Used for AppExchange Internal migration</li><li>Version control Yes No</li></ul></div></div><div class="blk dep"><div class="ct">Managed Package Lifecycle</div><div class="cb"><ul class="cl"><li>󾠮 Develop in Packaging Org</li><li>󾠯 Create Version</li><li>󾠰 Upload to AppExchange</li><li>󾠱 Customers install</li><li>󾠲 Release new version</li><li>󾠳 Push upgrade</li><li>Full lifecycle control.</li></ul></div></div><div class="blk dep"><div class="ct">Unmanaged Package Use Case</div><div class="cb"><ul class="cl"><li>Small consultancy:</li><li>Deliver solution to client org.</li><li>No need for version upgrade.</li><li>Unmanaged sufficient.</li></ul></div></div><div class="blk dep"><div class="ct">Managed Package Limitations</div><div class="cb"><ul class="cl"><li>After release:</li></ul></div></div><div class="blk mis"><div class="ct">Namespace locked permanently</div><div class="cb"><ul class="cl"><li>Must design carefully from start.</li></ul><div class="cb-code"><pre><code>📌 Managed vs Unlocked Package (Advanced Note)</code></pre></div><ul class="cl"><li>Unlocked packages:</li><li>Modern packaging for enterprise DevOps.</li><li>Different from Managed.</li><li>Used for internal modular deployments.</li><li>We will cover in CI/CD section if needed.</li></ul></div></div><div class="blk dep"><div class="ct">Enterprise Example</div><div class="cb"><ul class="cl"><li>ISV builds:</li><li>CPQ extension.</li><li>Uses Managed Package.</li><li>Pushes version 1.1 with new features.</li><li>Customers upgrade seamlessly.</li></ul></div></div><div class="blk dep"><div class="ct">Interview Scenario</div><div class="cb"><ul class="cl"><li>“Why would you choose Managed Package over Unmanaged?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>I would choose a Managed Package when distributing a reusable product that requires version control,</p><p>upgrade capability, namespace protection, and IP security, especially for AppExchange distribution.</p></div></div><div class="blk ans"><div class="ct">Interview Power Line</div><div class="cb"><ul class="cl"><li>If interviewer asks:</li><li>“What is biggest limitation of Unmanaged Package?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>Unmanaged packages do not support upgrades, meaning once installed, any future changes must be</p><ul class="cl"><li>manually migrated again.</li><li>🚀 Next Topic in Sequence:</li></ul></div></div>
+</div>
+</body></html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Standard Objects</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0A84FF;--green:#30D158;--orange:#FF9F0A;--red:#FF453A;--purple:#BF5AF2;
+  --t1:#1C1C1E;--t2:#3A3A3C;--tm:#8E8E93;
+  --bg:#F2F2F7;--card:rgba(255,255,255,0.9);--bdr:rgba(0,0,0,0.08);
+  --r:12px;--rm:16px;--rl:20px;
+  --f:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --fm:"SF Mono","JetBrains Mono","Menlo","Courier New",monospace;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);line-height:1.7;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+.ph{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(30px) saturate(200%);-webkit-backdrop-filter:blur(30px) saturate(200%);
+  border-bottom:1px solid var(--bdr);padding:1rem 1.5rem;
+  box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.phi{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:.875rem}
+.hi{width:36px;height:36px;background:linear-gradient(135deg,#0A84FF,#5E5CE6);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:1rem;flex-shrink:0;box-shadow:0 2px 8px rgba(10,132,255,.35)}
+.ht h1{font-size:.9375rem;font-weight:600;letter-spacing:-.02em;color:var(--t1)}
+.ht p{font-size:.75rem;color:var(--tm);margin-top:1px}
+.cw{max-width:860px;margin:0 auto;padding:1.75rem 1.5rem 4rem}
+.hero{background:linear-gradient(135deg,#0A84FF,#5E5CE6);border-radius:var(--rl);
+  padding:1.75rem 2rem;margin-bottom:1.75rem;color:white;
+  box-shadow:0 8px 32px rgba(10,132,255,.3)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);border-radius:100px;font-size:.6875rem;
+  font-weight:700;padding:.2rem .75rem;margin-bottom:.625rem;
+  letter-spacing:.04em;text-transform:uppercase}
+.hero h2{font-size:1.625rem;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.maj{display:flex;align-items:center;gap:.5rem;font-size:.625rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--tm);
+  margin:2.25rem 0 .875rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.blk{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rm);
+  padding:1.125rem 1.375rem;margin-bottom:.875rem;
+  box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.ct{font-size:.9375rem;font-weight:600;color:var(--t1);margin-bottom:.625rem;
+  letter-spacing:-.01em}
+.cb p{font-size:.9rem;color:var(--t2);margin-bottom:.4rem;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.ans{border-left:3px solid var(--blue)}
+.scn{border-left:3px solid var(--orange)}
+.mis{border-left:3px solid var(--red)}
+.sen{border-left:3px solid var(--purple)}
+.chk{border-left:3px solid var(--green)}
+.dep{border-left:3px solid var(--blue);background:rgba(10,132,255,.03)}
+.sub{border-left:3px solid rgba(0,0,0,.1);background:rgba(0,0,0,.015)}
+.cl{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin:.2rem 0}
+.cl li{font-size:.875rem;color:var(--t2);padding:.25rem 0 .25rem 1rem;
+  position:relative;line-height:1.6}
+.cl li::before{content:"·";position:absolute;left:0;color:var(--blue);font-weight:700}
+.ni{padding-left:2rem !important}
+.ni::before{display:none !important}
+.nb{display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;background:var(--blue);color:white;border-radius:5px;
+  font-size:.625rem;font-weight:700;margin-right:.4rem;vertical-align:middle}
+.ci{font-size:.875rem;color:var(--t2);padding:.2rem 0}
+.arr{font-size:.875rem;color:var(--blue);padding:.2rem 0 .2rem .5rem;font-weight:500}
+.cb-code{background:#1C1C1E;border-radius:var(--r);padding:1.125rem 1.25rem;
+  margin:.75rem 0;overflow-x:auto;position:relative}
+.cb-code::before{content:"";display:block;width:10px;height:10px;border-radius:50%;
+  background:#FF5F57;box-shadow:16px 0 0 #FFBD2E,32px 0 0 #28CA41;
+  margin-bottom:.75rem}
+.cb-code pre{overflow-x:auto}
+.cb-code code{font-family:var(--fm);font-size:.8rem;line-height:1.7;
+  color:#E8E8ED;white-space:pre;word-break:normal}
+.ic{font-family:var(--fm);font-size:.8125rem;background:rgba(10,132,255,.1);
+  color:var(--blue);padding:.1em .4em;border-radius:4px;
+  border:1px solid rgba(10,132,255,.15)}
+.tbl{width:100%;border-collapse:collapse;font-size:.875rem;margin:.5rem 0;
+  border-radius:var(--r);overflow:hidden}
+.tbl tr:first-child td{background:rgba(10,132,255,.07);font-weight:600;color:var(--t1)}
+.tbl td{padding:.5rem .875rem;border-bottom:1px solid var(--bdr);color:var(--t2)}
+.tbl tr:last-child td{border-bottom:none}
+.lp{font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:.375rem}
+@media(max-width:640px){
+  .cw{padding:1rem .875rem 3rem}
+  .hero{padding:1.375rem 1.25rem}
+  .hero h2{font-size:1.25rem}
+  .blk{padding:.875rem 1rem;border-radius:var(--r)}
+  .cb-code{padding:.875rem 1rem}
+  .ph{padding:.75rem 1rem}
+}
+@media(max-width:380px){
+  .hero h2{font-size:1.125rem}
+  .cw{padding:.75rem .625rem 3rem}
+}
+</style>
+</head>
+<body>
+<header class="ph"><div class="phi">
+  <div class="hi">📘</div>
+  <div class="ht"><h1>Salesforce Developer Guide</h1><p>Interview Ready · Deep Dive · Production Patterns</p></div>
+</div></header>
+<div class="cw">
+  <div class="hero"><div class="badge">Salesforce Developer</div><h2>Standard Objects</h2></div>
+  <p class="lp">2.a Standard Objects</p><div class="maj"><span>🎤</span>INTERVIEW SECTION</div><div class="blk ans"><div class="ct">30-Second Interview Answer</div><div class="cb"><p>Standard Objects are predefined objects provided by Salesforce to manage common business processes</p><p>like Sales, Service, and Marketing. Examples include Account, Contact, Opportunity, Lead, and Case.</p><p>They come with built-in relationships, fields, and functionality that support CRM operations.</p></div></div><div class="blk ans"><div class="ct">2-Minute Technical Explanation</div><div class="cb"><ul class="cl"><li>Salesforce provides standard objects out of the box to support common CRM needs.</li><li>Some core standard objects:</li><li>Account → Company or Organization</li><li>Contact → Person associated with Account</li><li>Opportunity → Sales deal</li><li>Lead → Potential customer</li><li>Case → Customer support ticket</li><li>User → Salesforce user</li><li>Task/Event → Activities</li><li>Standard objects:</li><li>Cannot be deleted</li><li>Have predefined standard fields</li></ul><div class="cb-code"><pre><code>Support customization (add custom fields)</code></pre></div><ul class="cl"><li>Have predefined relationships</li><li>They form the base of Salesforce data model.</li></ul></div></div><div class="blk scn"><div class="ct">Real-Time Scenario</div><div class="cb"><div class="cb-code"><pre><code>Example: Sales Process</code></pre></div><ul class="cl"><li class="ni"><span class="nb">1</span>Lead created</li><li class="ni"><span class="nb">2</span>Lead converted → Account + Contact + Opportunity</li><li class="ni"><span class="nb">3</span>Opportunity progresses through stages</li><li class="ni"><span class="nb">4</span>Activities logged via Tasks</li><li class="ni"><span class="nb">5</span>Closed Won</li><li>All handled using standard objects.</li></ul></div></div><div class="blk ans"><div class="ct">Tricky Interview Questions</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">1</span>Can we delete standard object?</li></ul></div></div><div class="blk mis"><div class="ct">No.</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">2</span>Can we rename standard object?</li></ul><div class="cb-code"><pre><code>❌ No (Label sometimes configurable, API name fixed).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">3</span>Can we create relationship between two standard objects?</li></ul><div class="cb-code"><pre><code>✅ Yes (if allowed).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">4</span>Can we change field type of standard field?</li></ul></div></div><div class="blk mis"><div class="ct">Usually No.</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">5</span>Can we create trigger on standard object?</li></ul></div></div><div class="blk sen"><div class="ct">Senior-Level Discussion Points</div><div class="cb"><ul class="cl"><li>Standard object architecture dependency</li><li>Lead conversion flow internally</li><li>Person Account concept</li><li>Standard object indexing</li><li>Record type impact on standard objects</li></ul></div></div><div class="maj"><span>🔬</span>DEEP TECHNICAL BREAKDOWN</div><div class="blk dep"><div class="ct">What Are Standard Objects Internally?</div><div class="cb"><ul class="cl"><li>Standard objects exist in Salesforce core metadata.</li><li>They have:</li><li>Predefined schema</li><li>Indexed fields</li><li>Built-in sharing model</li><li>System-defined relationships</li></ul><div class="cb-code"><pre><code>Example:</code></pre></div><ul class="cl"><li>Opportunity has:</li></ul><div class="cb-code"><pre><code>AccountId (lookup to Account)</code></pre></div><ul class="cl"><li>StageName</li><li>CloseDate</li><li>Amount</li></ul></div></div><div class="blk dep"><div class="ct">Core Standard Objects Relationship</div><div class="cb"><ul class="cl"><li>Account</li><li>↓</li><li>Contact</li><li>↓</li><li>Opportunity</li><li>↓</li><li>Quote</li><li>↓</li><li>Order</li></ul></div></div><div class="blk dep"><div class="ct">Standard Fields Example</div><div class="cb"><ul class="cl"><li>On Account:</li><li>Name</li><li>Industry</li><li>Phone</li><li>CreatedDate</li><li>OwnerId</li><li>On Opportunity:</li><li>StageName</li><li>Amount</li><li>Probability</li><li>CloseDate</li></ul></div></div><div class="blk dep"><div class="ct">API Access Example</div><div class="cb"><div class="cb-code"><pre><code>List&lt;Account&gt; accList = [SELECT Id, Name FROM Account LIMIT 10];</code></pre></div><ul class="cl"><li>Standard object accessed same as custom.</li></ul></div></div><div class="blk dep"><div class="ct">Differences: Standard vs Custom Object</div><div class="cb"><ul class="cl"><li>Feature Standard Custom</li></ul></div></div><div class="blk dep"><div class="ct">Internal Working in Lead Conversion</div><div class="cb"><ul class="cl"><li>When Lead converted:</li><li>Salesforce internally:</li><li class="ni"><span class="nb">1</span>Creates Account</li><li class="ni"><span class="nb">2</span>Creates Contact</li><li class="ni"><span class="nb">3</span>Creates Opportunity (optional)</li><li class="ni"><span class="nb">4</span>Updates Lead IsConverted = true</li><li>All automatic standard object handling.</li></ul></div></div><div class="blk dep"><div class="ct">Performance Considerations</div><div class="cb"><ul class="cl"><li>Standard objects:</li><li>Usually indexed</li><li>Optimized for CRM</li><li>Better query performance</li><li>But still subject to:</li><li>Selectivity rules</li><li>LDV constraints</li></ul></div></div><div class="blk sub"><div class="ct">Person Account</div><div class="cb"><ul class="cl"><li>Combination of Account + Contact.</li></ul></div></div><div class="blk sub"><div class="ct">Deactivating Standard Field</div><div class="cb"><ul class="cl"><li>Cannot fully delete, only hide.</li></ul></div></div><div class="blk sub"><div class="ct">Standard Object Triggers + Flows</div><div class="cb"><ul class="cl"><li>Can cause heavy automation if not managed.</li></ul></div></div><div class="blk dep"><div class="ct">Debugging Standard Object Issues</div><div class="cb"><ul class="cl"><li>If Opportunity not saving:</li><li class="ni"><span class="nb">1</span>Check validation rules</li><li class="ni"><span class="nb">2</span>Check triggers</li><li class="ni"><span class="nb">3</span>Check flows</li><li class="ni"><span class="nb">4</span>Check sharing</li><li class="ni"><span class="nb">5</span>Check required standard fields</li></ul></div></div><div class="blk dep"><div class="ct">Best Practices</div><div class="cb"><ul class="cl"><li>Use standard objects when possible.</li><li>Avoid creating duplicate custom object if standard exists.</li><li>Extend using custom fields.</li><li>Use record types for different business processes.</li><li>Avoid over-customizing core objects.</li></ul></div></div><div class="blk dep"><div class="ct">When NOT to Use Standard Object</div><div class="cb"><ul class="cl"><li>If business requirement:</li><li>Completely different lifecycle</li><li>No relation to CRM model</li><li>Custom logic heavy</li><li>Then create custom object.</li></ul></div></div><div class="blk ans"><div class="ct">Interview Power Statement</div><div class="cb"><ul class="cl"><li>If interviewer asks:</li><li>“Why should we use standard objects instead of custom?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>Because they are optimized, integrated with Salesforce core features, and reduce development effort</p><ul class="cl"><li>while supporting standard CRM processes.</li><li>🚀 Next Topic in Sequence:</li></ul></div></div>
+</div>
+</body></html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Relationship Queries</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0A84FF;--green:#30D158;--orange:#FF9F0A;--red:#FF453A;--purple:#BF5AF2;
+  --t1:#1C1C1E;--t2:#3A3A3C;--tm:#8E8E93;
+  --bg:#F2F2F7;--card:rgba(255,255,255,0.9);--bdr:rgba(0,0,0,0.08);
+  --r:12px;--rm:16px;--rl:20px;
+  --f:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --fm:"SF Mono","JetBrains Mono","Menlo","Courier New",monospace;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);line-height:1.7;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+.ph{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(30px) saturate(200%);-webkit-backdrop-filter:blur(30px) saturate(200%);
+  border-bottom:1px solid var(--bdr);padding:1rem 1.5rem;
+  box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.phi{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:.875rem}
+.hi{width:36px;height:36px;background:linear-gradient(135deg,#0A84FF,#5E5CE6);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:1rem;flex-shrink:0;box-shadow:0 2px 8px rgba(10,132,255,.35)}
+.ht h1{font-size:.9375rem;font-weight:600;letter-spacing:-.02em;color:var(--t1)}
+.ht p{font-size:.75rem;color:var(--tm);margin-top:1px}
+.cw{max-width:860px;margin:0 auto;padding:1.75rem 1.5rem 4rem}
+.hero{background:linear-gradient(135deg,#0A84FF,#5E5CE6);border-radius:var(--rl);
+  padding:1.75rem 2rem;margin-bottom:1.75rem;color:white;
+  box-shadow:0 8px 32px rgba(10,132,255,.3)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);border-radius:100px;font-size:.6875rem;
+  font-weight:700;padding:.2rem .75rem;margin-bottom:.625rem;
+  letter-spacing:.04em;text-transform:uppercase}
+.hero h2{font-size:1.625rem;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.maj{display:flex;align-items:center;gap:.5rem;font-size:.625rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--tm);
+  margin:2.25rem 0 .875rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.blk{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rm);
+  padding:1.125rem 1.375rem;margin-bottom:.875rem;
+  box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.ct{font-size:.9375rem;font-weight:600;color:var(--t1);margin-bottom:.625rem;
+  letter-spacing:-.01em}
+.cb p{font-size:.9rem;color:var(--t2);margin-bottom:.4rem;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.ans{border-left:3px solid var(--blue)}
+.scn{border-left:3px solid var(--orange)}
+.mis{border-left:3px solid var(--red)}
+.sen{border-left:3px solid var(--purple)}
+.chk{border-left:3px solid var(--green)}
+.dep{border-left:3px solid var(--blue);background:rgba(10,132,255,.03)}
+.sub{border-left:3px solid rgba(0,0,0,.1);background:rgba(0,0,0,.015)}
+.cl{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin:.2rem 0}
+.cl li{font-size:.875rem;color:var(--t2);padding:.25rem 0 .25rem 1rem;
+  position:relative;line-height:1.6}
+.cl li::before{content:"·";position:absolute;left:0;color:var(--blue);font-weight:700}
+.ni{padding-left:2rem !important}
+.ni::before{display:none !important}
+.nb{display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;background:var(--blue);color:white;border-radius:5px;
+  font-size:.625rem;font-weight:700;margin-right:.4rem;vertical-align:middle}
+.ci{font-size:.875rem;color:var(--t2);padding:.2rem 0}
+.arr{font-size:.875rem;color:var(--blue);padding:.2rem 0 .2rem .5rem;font-weight:500}
+.cb-code{background:#1C1C1E;border-radius:var(--r);padding:1.125rem 1.25rem;
+  margin:.75rem 0;overflow-x:auto;position:relative}
+.cb-code::before{content:"";display:block;width:10px;height:10px;border-radius:50%;
+  background:#FF5F57;box-shadow:16px 0 0 #FFBD2E,32px 0 0 #28CA41;
+  margin-bottom:.75rem}
+.cb-code pre{overflow-x:auto}
+.cb-code code{font-family:var(--fm);font-size:.8rem;line-height:1.7;
+  color:#E8E8ED;white-space:pre;word-break:normal}
+.ic{font-family:var(--fm);font-size:.8125rem;background:rgba(10,132,255,.1);
+  color:var(--blue);padding:.1em .4em;border-radius:4px;
+  border:1px solid rgba(10,132,255,.15)}
+.tbl{width:100%;border-collapse:collapse;font-size:.875rem;margin:.5rem 0;
+  border-radius:var(--r);overflow:hidden}
+.tbl tr:first-child td{background:rgba(10,132,255,.07);font-weight:600;color:var(--t1)}
+.tbl td{padding:.5rem .875rem;border-bottom:1px solid var(--bdr);color:var(--t2)}
+.tbl tr:last-child td{border-bottom:none}
+.lp{font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:.375rem}
+@media(max-width:640px){
+  .cw{padding:1rem .875rem 3rem}
+  .hero{padding:1.375rem 1.25rem}
+  .hero h2{font-size:1.25rem}
+  .blk{padding:.875rem 1rem;border-radius:var(--r)}
+  .cb-code{padding:.875rem 1rem}
+  .ph{padding:.75rem 1rem}
+}
+@media(max-width:380px){
+  .hero h2{font-size:1.125rem}
+  .cw{padding:.75rem .625rem 3rem}
+}
+</style>
+</head>
+<body>
+<header class="ph"><div class="phi">
+  <div class="hi">📘</div>
+  <div class="ht"><h1>Salesforce Developer Guide</h1><p>Interview Ready · Deep Dive · Production Patterns</p></div>
+</div></header>
+<div class="cw">
+  <div class="hero"><div class="badge">Salesforce Developer</div><h2>Relationship Queries</h2></div>
+  <p class="lp">4.b Relationship Queries</p><p class="lp">Say Next.</p><p class="lp">Next</p><div class="maj"><span>🎤</span>INTERVIEW SECTION</div><div class="blk ans"><div class="ct">30-Second Interview Answer</div><div class="cb"><p>Relationship Queries in SOQL allow retrieving related records using parent-to-child subqueries or child-</p><p>to-parent dot notation. Child-to-parent uses dot notation like Account.Name, while parent-to-child uses a</p><div class="cb-code"><pre><code>nested subquery like (SELECT Name FROM Contacts). These queries help reduce multiple SOQL calls and</code></pre></div><ul class="cl"><li>improve performance.</li></ul></div></div><div class="blk ans"><div class="ct">2-Minute Technical Explanation</div><div class="cb"><ul class="cl"><li>Salesforce relationships:</li><li>Lookup</li><li>Master-Detail</li><li>SOQL allows navigating them in two ways:</li></ul><div class="cb-code"><pre><code>🔹 󾠮 Child → Parent (Many-to-One)</code></pre></div><ul class="cl"><li>Using dot notation:</li><li>SELECT Name, Account.Name</li><li>FROM Contact</li><li>You move upward in hierarchy.</li></ul><div class="cb-code"><pre><code>Rule:</code></pre></div><ul class="cl"><li>Max 5 levels upward.</li></ul><div class="cb-code"><pre><code>🔹 󾠯 Parent → Child (One-to-Many)</code></pre></div><ul class="cl"><li>Using subquery:</li></ul><div class="cb-code"><pre><code>SELECT Name, (SELECT Name FROM Contacts)</code></pre></div><ul class="cl"><li>FROM Account</li><li>You move downward.</li></ul><div class="cb-code"><pre><code>Rule:</code></pre></div><ul class="cl"><li>Only 1 level down per query.</li></ul></div></div><div class="blk scn"><div class="ct">Real-Time Scenario</div><div class="cb"><div class="cb-code"><pre><code>Requirement:</code></pre></div><ul class="cl"><li>When Account updated:</li><li>Update all related Contacts.</li><li>Instead of 2 queries:</li><li>Use parent-to-child relationship query.</li><li>Saves governor limits.</li></ul></div></div><div class="blk ans"><div class="ct">Tricky Interview Questions</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">1</span>How many levels up can we query?</li></ul><div class="arr">→ 5 levels.</div><ul class="cl"><li class="ni"><span class="nb">2</span>How many levels down?</li></ul><div class="arr">→ Only 1 level per query.</div><ul class="cl"><li class="ni"><span class="nb">3</span>Can we filter child records inside subquery?</li></ul><div class="arr">→ Yes.</div><ul class="cl"><li class="ni"><span class="nb">4</span>What is child relationship name?</li></ul><div class="arr">→ Defined in relationship settings.</div><ul class="cl"><li class="ni"><span class="nb">5</span>Does relationship query count as 1 SOQL?</li></ul><div class="arr">→ Yes.</div></div></div><div class="blk sen"><div class="ct">Senior-Level Discussion Points</div><div class="cb"><ul class="cl"><li>Relationship query heap impact</li><li>Subquery row limits</li><li>Large data volume risks</li><li>Using semi-joins and anti-joins</li><li>Query selectivity with relationships</li><li>Performance comparison vs separate queries</li></ul></div></div><div class="maj"><span>🔬</span>DEEP TECHNICAL BREAKDOWN</div><div class="blk sub"><div class="ct">Example</div><div class="cb"><ul class="cl"><li>Contact → Account</li><li>SELECT Name, Account.Name, Account.Industry</li><li>FROM Contact</li><li>Each Contact record contains Account fields.</li></ul></div></div><div class="blk sub"><div class="ct">Multi-Level Upward Query</div><div class="cb"><ul class="cl"><li>SELECT Name, Opportunity.Account.Owner.Name</li><li>FROM OpportunityLineItem</li><li>Allowed up to 5 levels.</li></ul><div class="cb-code"><pre><code>📌 Parent-to-Child Query (Downward)</code></pre></div></div></div><div class="blk sub"><div class="ct">Basic Example</div><div class="cb"><div class="cb-code"><pre><code>SELECT Name, (SELECT Name FROM Contacts)</code></pre></div><ul class="cl"><li>FROM Account</li></ul><div class="cb-code"><pre><code>Returns:</code></pre></div><ul class="cl"><li>List of Accounts</li><li>Each Account has List<Contact></li></ul></div></div><div class="blk sub"><div class="ct">Filtering Child Records</div><div class="cb"><ul class="cl"><li>SELECT Name,</li></ul><div class="cb-code"><pre><code>(SELECT Name FROM Contacts WHERE CreatedDate = TODAY)</code></pre></div><ul class="cl"><li>FROM Account</li></ul></div></div><div class="blk sub"><div class="ct">Using LIMIT in Subquery</div><div class="cb"><ul class="cl"><li>SELECT Name,</li></ul><div class="cb-code"><pre><code>(SELECT Name FROM Contacts LIMIT 5)</code></pre></div><ul class="cl"><li>FROM Account</li></ul></div></div><div class="blk dep"><div class="ct">Accessing Subquery Data in Apex</div><div class="cb"><ul class="cl"><li>List<Account> accList = [</li></ul><div class="cb-code"><pre><code>SELECT Name, (SELECT Name FROM Contacts)</code></pre></div><ul class="cl"><li>FROM Account</li></ul><div class="cb-code"><pre><code>];</code></pre></div><div class="cb-code"><pre><code>for(Account acc : accList){</code></pre></div><div class="cb-code"><pre><code>for(Contact c : acc.Contacts){</code></pre></div><div class="cb-code"><pre><code>System.debug(c.Name);</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div></div></div><div class="blk dep"><div class="ct">Child Relationship Name</div><div class="cb"><div class="cb-code"><pre><code>Important:</code></pre></div><ul class="cl"><li>Child relationship name is NOT object name.</li><li>Check in:</li><li>Object Manager → Relationship → Child Relationship Name.</li></ul><div class="cb-code"><pre><code>Example:</code></pre></div><div class="cb-code"><pre><code>OpportunityLineItems (not OpportunityLineItem__c)</code></pre></div><div class="cb-code"><pre><code>📌 Semi-Join (Advanced)</code></pre></div><ul class="cl"><li>Query parent based on child condition.</li><li>SELECT Name</li><li>FROM Account</li></ul><div class="cb-code"><pre><code>WHERE Id IN (</code></pre></div><ul class="cl"><li>SELECT AccountId</li><li>FROM Contact</li><li>WHERE LastName = 'Sharma'</li></ul><div class="cb-code"><pre><code>)</code></pre></div></div></div><div class="blk dep"><div class="ct">Anti-Join</div><div class="cb"><ul class="cl"><li>Query parent without matching child.</li><li>SELECT Name</li><li>FROM Account</li></ul><div class="cb-code"><pre><code>WHERE Id NOT IN (</code></pre></div><ul class="cl"><li>SELECT AccountId FROM Contact</li></ul><div class="cb-code"><pre><code>)</code></pre></div></div></div><div class="blk dep"><div class="ct">Governor Limit Behavior</div><div class="cb"><ul class="cl"><li>Relationship query counts as:</li><li>1 SOQL</li><li>Child rows count toward 50,000 row limit</li><li>Important for large data.</li></ul></div></div><div class="blk dep"><div class="ct">Performance Considerations</div><div class="cb"><div class="cb-code"><pre><code>Good:</code></pre></div><ul class="cl"><li>Avoid querying unnecessary child records.</li><li>Use filters inside subquery.</li><li>Use selective WHERE clause.</li></ul><div class="cb-code"><pre><code>Bad:</code></pre></div><ul class="cl"><li>Fetching thousands of child records.</li><li>Deep nested loops after subquery.</li></ul></div></div><div class="blk dep"><div class="ct">Heap Risk Example</div><div class="cb"><ul class="cl"><li>If 100 Accounts</li><li>Each has 1,000 Contacts</li><li>Total rows = 100,000</li></ul><div class="arr">→ May hit heap size or row limit.</div><ul class="cl"><li>Use batch in such case.</li></ul></div></div><div class="blk sub"><div class="ct">Wrong Child Relationship Name</div><div class="cb"><ul class="cl"><li>QueryException thrown.</li></ul></div></div><div class="blk sub"><div class="ct">No Child Records</div><div class="cb"><ul class="cl"><li>Subquery returns empty list.</li></ul></div></div><div class="blk sub"><div class="ct">Large Text Area in Subquery</div><div class="cb"><ul class="cl"><li>May increase heap usage.</li></ul></div></div><div class="blk dep"><div class="ct">Debugging Relationship Query Issues</div><div class="cb"><ul class="cl"><li>If query fails:</li><li class="ni"><span class="nb">1</span>Check relationship name.</li><li class="ni"><span class="nb">2</span>Check object relationship type.</li><li class="ni"><span class="nb">3</span>Check field-level security.</li><li class="ni"><span class="nb">4</span>Check row limits.</li><li class="ni"><span class="nb">5</span>Check selectivity.</li></ul></div></div><div class="blk dep"><div class="ct">When NOT to Use Relationship Query</div><div class="cb"><ul class="cl"><li>Avoid if:</li><li>Very large child data.</li><li>Only few child records needed across many parents.</li><li>Better to query child separately and map manually.</li></ul></div></div><div class="blk ans"><div class="ct">Interview Power Line</div><div class="cb"><ul class="cl"><li>If interviewer asks:</li><li>“What is difference between child-to-parent and parent-to-child query?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>Child-to-parent uses dot notation and moves upward in relationship hierarchy, while parent-to-child uses</p><ul class="cl"><li>a nested subquery and retrieves related child records in a single SOQL statement.</li><li>🚀 Next Topic in Sequence:</li></ul></div></div>
+</div>
+</body></html>

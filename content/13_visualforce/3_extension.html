@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Extension</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0A84FF;--green:#30D158;--orange:#FF9F0A;--red:#FF453A;--purple:#BF5AF2;
+  --t1:#1C1C1E;--t2:#3A3A3C;--tm:#8E8E93;
+  --bg:#F2F2F7;--card:rgba(255,255,255,0.9);--bdr:rgba(0,0,0,0.08);
+  --r:12px;--rm:16px;--rl:20px;
+  --f:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --fm:"SF Mono","JetBrains Mono","Menlo","Courier New",monospace;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);line-height:1.7;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+.ph{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(30px) saturate(200%);-webkit-backdrop-filter:blur(30px) saturate(200%);
+  border-bottom:1px solid var(--bdr);padding:1rem 1.5rem;
+  box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.phi{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:.875rem}
+.hi{width:36px;height:36px;background:linear-gradient(135deg,#0A84FF,#5E5CE6);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:1rem;flex-shrink:0;box-shadow:0 2px 8px rgba(10,132,255,.35)}
+.ht h1{font-size:.9375rem;font-weight:600;letter-spacing:-.02em;color:var(--t1)}
+.ht p{font-size:.75rem;color:var(--tm);margin-top:1px}
+.cw{max-width:860px;margin:0 auto;padding:1.75rem 1.5rem 4rem}
+.hero{background:linear-gradient(135deg,#0A84FF,#5E5CE6);border-radius:var(--rl);
+  padding:1.75rem 2rem;margin-bottom:1.75rem;color:white;
+  box-shadow:0 8px 32px rgba(10,132,255,.3)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);border-radius:100px;font-size:.6875rem;
+  font-weight:700;padding:.2rem .75rem;margin-bottom:.625rem;
+  letter-spacing:.04em;text-transform:uppercase}
+.hero h2{font-size:1.625rem;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.maj{display:flex;align-items:center;gap:.5rem;font-size:.625rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--tm);
+  margin:2.25rem 0 .875rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.blk{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rm);
+  padding:1.125rem 1.375rem;margin-bottom:.875rem;
+  box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.ct{font-size:.9375rem;font-weight:600;color:var(--t1);margin-bottom:.625rem;
+  letter-spacing:-.01em}
+.cb p{font-size:.9rem;color:var(--t2);margin-bottom:.4rem;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.ans{border-left:3px solid var(--blue)}
+.scn{border-left:3px solid var(--orange)}
+.mis{border-left:3px solid var(--red)}
+.sen{border-left:3px solid var(--purple)}
+.chk{border-left:3px solid var(--green)}
+.dep{border-left:3px solid var(--blue);background:rgba(10,132,255,.03)}
+.sub{border-left:3px solid rgba(0,0,0,.1);background:rgba(0,0,0,.015)}
+.cl{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin:.2rem 0}
+.cl li{font-size:.875rem;color:var(--t2);padding:.25rem 0 .25rem 1rem;
+  position:relative;line-height:1.6}
+.cl li::before{content:"·";position:absolute;left:0;color:var(--blue);font-weight:700}
+.ni{padding-left:2rem !important}
+.ni::before{display:none !important}
+.nb{display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;background:var(--blue);color:white;border-radius:5px;
+  font-size:.625rem;font-weight:700;margin-right:.4rem;vertical-align:middle}
+.ci{font-size:.875rem;color:var(--t2);padding:.2rem 0}
+.arr{font-size:.875rem;color:var(--blue);padding:.2rem 0 .2rem .5rem;font-weight:500}
+.cb-code{background:#1C1C1E;border-radius:var(--r);padding:1.125rem 1.25rem;
+  margin:.75rem 0;overflow-x:auto;position:relative}
+.cb-code::before{content:"";display:block;width:10px;height:10px;border-radius:50%;
+  background:#FF5F57;box-shadow:16px 0 0 #FFBD2E,32px 0 0 #28CA41;
+  margin-bottom:.75rem}
+.cb-code pre{overflow-x:auto}
+.cb-code code{font-family:var(--fm);font-size:.8rem;line-height:1.7;
+  color:#E8E8ED;white-space:pre;word-break:normal}
+.ic{font-family:var(--fm);font-size:.8125rem;background:rgba(10,132,255,.1);
+  color:var(--blue);padding:.1em .4em;border-radius:4px;
+  border:1px solid rgba(10,132,255,.15)}
+.tbl{width:100%;border-collapse:collapse;font-size:.875rem;margin:.5rem 0;
+  border-radius:var(--r);overflow:hidden}
+.tbl tr:first-child td{background:rgba(10,132,255,.07);font-weight:600;color:var(--t1)}
+.tbl td{padding:.5rem .875rem;border-bottom:1px solid var(--bdr);color:var(--t2)}
+.tbl tr:last-child td{border-bottom:none}
+.lp{font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:.375rem}
+@media(max-width:640px){
+  .cw{padding:1rem .875rem 3rem}
+  .hero{padding:1.375rem 1.25rem}
+  .hero h2{font-size:1.25rem}
+  .blk{padding:.875rem 1rem;border-radius:var(--r)}
+  .cb-code{padding:.875rem 1rem}
+  .ph{padding:.75rem 1rem}
+}
+@media(max-width:380px){
+  .hero h2{font-size:1.125rem}
+  .cw{padding:.75rem .625rem 3rem}
+}
+</style>
+</head>
+<body>
+<header class="ph"><div class="phi">
+  <div class="hi">📘</div>
+  <div class="ht"><h1>Salesforce Developer Guide</h1><p>Interview Ready · Deep Dive · Production Patterns</p></div>
+</div></header>
+<div class="cw">
+  <div class="hero"><div class="badge">Salesforce Developer</div><h2>Extension</h2></div>
+  <p class="lp">13.c Extension</p><p class="lp">Say Next.</p><p class="lp">Next</p><div class="maj"><span>🎤</span>INTERVIEW SECTION</div><div class="blk ans"><div class="ct">30-Second Interview Answer</div><div class="cb"><p>A Controller Extension in Visualforce is an Apex class that extends a Standard Controller or Custom</p><p>Controller to add additional functionality without replacing the built-in behavior. It allows developers to</p><ul class="cl"><li>reuse standard CRUD functionality while implementing custom business logic.</li></ul></div></div><div class="blk ans"><div class="ct">2-Minute Technical Explanation</div><div class="cb"><ul class="cl"><li>When you define:</li><li><apex:page standardController="Account"</li></ul><div class="cb-code"><pre><code>extensions="AccountExtension"&gt;</code></pre></div><div class="cb-code"><pre><code>Salesforce:</code></pre></div><div class="ci">✔ Keeps built-in CRUD</div><div class="ci">✔ Keeps automatic security</div><div class="ci">✔ Allows custom methods</div><div class="ci">✔ Allows access to current record</div><ul class="cl"><li>Extension constructor receives:</li><li>ApexPages.StandardController controller</li><li>This allows access to:</li></ul><div class="cb-code"><pre><code>controller.getRecord();</code></pre></div><ul class="cl"><li>Best used when:</li></ul><div class="ci">✔ Standard CRUD needed</div><div class="ci">✔ Additional validation required</div><div class="ci">✔ Custom processing required</div><div class="ci">✔ Avoid full custom controller</div></div></div><div class="blk scn"><div class="ct">Real-Time Scenario</div><div class="cb"><div class="cb-code"><pre><code>Requirement:</code></pre></div><ul class="cl"><li>Standard Account edit page,</li><li>But before save:</li><li>Validate custom condition</li><li>Send email notification</li><li>Use Controller Extension.</li></ul></div></div><div class="blk ans"><div class="ct">Tricky Interview Questions</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">1</span>Can extension replace standard save?</li></ul><div class="cb-code"><pre><code>→ Yes (override method).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">2</span>Can we use multiple extensions?</li></ul><div class="cb-code"><pre><code>→ Yes (comma-separated).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">3</span>Does extension enforce security?</li></ul><div class="cb-code"><pre><code>→ Yes (inherits standard behavior).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">4</span>Can extension be used with custom controller?</li></ul><div class="arr">→ Yes.</div><ul class="cl"><li class="ni"><span class="nb">5</span>What is constructor signature?</li></ul><div class="arr">→ Accepts StandardController parameter.</div></div></div><div class="blk mis"><div class="ct">Common Mistakes</div><div class="cb"><div class="cb-code"><pre><code>Not using controller.getRecord() ❌</code></pre></div></div></div><div class="blk sen"><div class="ct">Senior-Level Discussion Points</div><div class="cb"><ul class="cl"><li>Extension vs Custom Controller decision</li><li>Security inheritance</li><li>Overriding standard behavior</li><li>Multi-extension architecture</li><li>Enterprise maintainability</li></ul></div></div><div class="maj"><span>🔬</span>DEEP TECHNICAL BREAKDOWN</div><div class="blk dep"><div class="ct">Basic Syntax</div><div class="cb"><ul class="cl"><li>Visualforce Page:</li><li><apex:page standardController="Account"</li></ul><div class="cb-code"><pre><code>extensions="AccountExtension"&gt;</code></pre></div><ul class="cl"><li><apex:form></li><li><apex:pageBlock></li></ul><div class="cb-code"><pre><code>&lt;apex:inputField value="{!Account.Name}"/&gt;</code></pre></div><div class="cb-code"><pre><code>&lt;apex:commandButton action="{!customSave}" value="Save"/&gt;</code></pre></div><ul class="cl"><li></apex:pageBlock></li><li></apex:form></li><li></apex:page></li></ul></div></div><div class="blk dep"><div class="ct">Extension Class</div><div class="cb"><div class="cb-code"><pre><code>public with sharing class AccountExtension {</code></pre></div><div class="cb-code"><pre><code>private Account acc;</code></pre></div><div class="cb-code"><pre><code>private ApexPages.StandardController stdController;</code></pre></div><div class="cb-code"><pre><code>public AccountExtension(ApexPages.StandardController controller) {</code></pre></div><div class="cb-code"><pre><code>stdController = controller;</code></pre></div><div class="cb-code"><pre><code>acc = (Account) controller.getRecord();</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>public PageReference customSave(){</code></pre></div><div class="cb-code"><pre><code>if(acc.Name == null){</code></pre></div><div class="cb-code"><pre><code>ApexPages.addMessage(</code></pre></div><div class="cb-code"><pre><code>new ApexPages.Message(</code></pre></div><ul class="cl"><li>ApexPages.Severity.ERROR,</li><li>'Name cannot be blank'</li></ul><div class="cb-code"><pre><code>)</code></pre></div><div class="cb-code"><pre><code>);</code></pre></div><div class="cb-code"><pre><code>return null;</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>return stdController.save();</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div></div></div><div class="blk dep"><div class="ct">How It Works</div><div class="cb"><ul class="cl"><li>Standard controller loads record</li><li>Extension adds logic</li><li>Custom method can call standard save</li><li>Best of both worlds.</li></ul></div></div><div class="blk dep"><div class="ct">Accessing Current Record</div><div class="cb"><div class="cb-code"><pre><code>acc = (Account) controller.getRecord();</code></pre></div><ul class="cl"><li>This gives record from URL.</li><li>No need to manually query.</li></ul></div></div><div class="blk dep"><div class="ct">Overriding Standard Save</div><div class="cb"><ul class="cl"><li>Instead of:</li></ul><div class="cb-code"><pre><code>action="{!save}"</code></pre></div><div class="cb-code"><pre><code>Use:</code></pre></div><div class="cb-code"><pre><code>action="{!customSave}"</code></pre></div><ul class="cl"><li>Inside method:</li></ul><div class="cb-code"><pre><code>return stdController.save();</code></pre></div><ul class="cl"><li>Allows validation before save.</li></ul></div></div><div class="blk dep"><div class="ct">Multiple Extensions</div><div class="cb"><div class="cb-code"><pre><code>extensions="Ext1, Ext2"</code></pre></div><ul class="cl"><li>Useful for modular architecture.</li></ul></div></div><div class="blk dep"><div class="ct">Extension vs Custom Controller</div><div class="cb"><ul class="cl"><li>Feature Extension Custom</li><li>Built-in CRUD Yes No</li><li>Security Auto Yes Manual</li><li>Flexibility Medium High</li><li>Best For Add logic Full control</li></ul></div></div><div class="blk dep"><div class="ct">Enterprise Example</div><div class="cb"><ul class="cl"><li>Custom Opportunity page:</li><li>Standard edit behavior</li><li>Before save → calculate discount</li><li>After save → send integration call</li><li>Extension handles extra logic.</li></ul></div></div><div class="blk dep"><div class="ct">Security Advantage</div><div class="cb"><ul class="cl"><li>Because it uses Standard Controller:</li></ul><div class="ci">✔ CRUD enforced</div><div class="ci">✔ FLS enforced</div><div class="ci">✔ Sharing enforced</div><ul class="cl"><li>Safer than Custom Controller.</li></ul></div></div><div class="blk dep"><div class="ct">When NOT to Use Extension</div><div class="cb"><ul class="cl"><li>Avoid if:</li><li>Multiple objects required</li><li>Complex aggregation logic</li><li>No need for standard CRUD</li><li>Use Custom Controller instead.</li></ul></div></div><div class="blk dep"><div class="ct">Interview Scenario</div><div class="cb"><ul class="cl"><li>“When should you use Extension instead of Custom Controller?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>I use Extension when I need to add custom logic while still leveraging Standard Controller’s built-in</p><ul class="cl"><li>CRUD, security enforcement, and automatic record handling.</li></ul></div></div><div class="blk ans"><div class="ct">Interview Power Line</div><div class="cb"><ul class="cl"><li>If interviewer asks:</li><li>“What is biggest advantage of Controller Extension?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>It allows adding custom business logic while preserving Standard Controller’s built-in CRUD operations</p><ul class="cl"><li>and automatic security enforcement, reducing development effort and security risks.</li><li>🚀 Next Topic in Sequence:</li></ul></div></div>
+</div>
+</body></html>

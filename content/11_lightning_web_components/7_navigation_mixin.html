@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Navigation Mixin</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0A84FF;--green:#30D158;--orange:#FF9F0A;--red:#FF453A;--purple:#BF5AF2;
+  --t1:#1C1C1E;--t2:#3A3A3C;--tm:#8E8E93;
+  --bg:#F2F2F7;--card:rgba(255,255,255,0.9);--bdr:rgba(0,0,0,0.08);
+  --r:12px;--rm:16px;--rl:20px;
+  --f:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --fm:"SF Mono","JetBrains Mono","Menlo","Courier New",monospace;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);line-height:1.7;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+.ph{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(30px) saturate(200%);-webkit-backdrop-filter:blur(30px) saturate(200%);
+  border-bottom:1px solid var(--bdr);padding:1rem 1.5rem;
+  box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.phi{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:.875rem}
+.hi{width:36px;height:36px;background:linear-gradient(135deg,#0A84FF,#5E5CE6);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:1rem;flex-shrink:0;box-shadow:0 2px 8px rgba(10,132,255,.35)}
+.ht h1{font-size:.9375rem;font-weight:600;letter-spacing:-.02em;color:var(--t1)}
+.ht p{font-size:.75rem;color:var(--tm);margin-top:1px}
+.cw{max-width:860px;margin:0 auto;padding:1.75rem 1.5rem 4rem}
+.hero{background:linear-gradient(135deg,#0A84FF,#5E5CE6);border-radius:var(--rl);
+  padding:1.75rem 2rem;margin-bottom:1.75rem;color:white;
+  box-shadow:0 8px 32px rgba(10,132,255,.3)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);border-radius:100px;font-size:.6875rem;
+  font-weight:700;padding:.2rem .75rem;margin-bottom:.625rem;
+  letter-spacing:.04em;text-transform:uppercase}
+.hero h2{font-size:1.625rem;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.maj{display:flex;align-items:center;gap:.5rem;font-size:.625rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--tm);
+  margin:2.25rem 0 .875rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.blk{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rm);
+  padding:1.125rem 1.375rem;margin-bottom:.875rem;
+  box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.ct{font-size:.9375rem;font-weight:600;color:var(--t1);margin-bottom:.625rem;
+  letter-spacing:-.01em}
+.cb p{font-size:.9rem;color:var(--t2);margin-bottom:.4rem;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.ans{border-left:3px solid var(--blue)}
+.scn{border-left:3px solid var(--orange)}
+.mis{border-left:3px solid var(--red)}
+.sen{border-left:3px solid var(--purple)}
+.chk{border-left:3px solid var(--green)}
+.dep{border-left:3px solid var(--blue);background:rgba(10,132,255,.03)}
+.sub{border-left:3px solid rgba(0,0,0,.1);background:rgba(0,0,0,.015)}
+.cl{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin:.2rem 0}
+.cl li{font-size:.875rem;color:var(--t2);padding:.25rem 0 .25rem 1rem;
+  position:relative;line-height:1.6}
+.cl li::before{content:"·";position:absolute;left:0;color:var(--blue);font-weight:700}
+.ni{padding-left:2rem !important}
+.ni::before{display:none !important}
+.nb{display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;background:var(--blue);color:white;border-radius:5px;
+  font-size:.625rem;font-weight:700;margin-right:.4rem;vertical-align:middle}
+.ci{font-size:.875rem;color:var(--t2);padding:.2rem 0}
+.arr{font-size:.875rem;color:var(--blue);padding:.2rem 0 .2rem .5rem;font-weight:500}
+.cb-code{background:#1C1C1E;border-radius:var(--r);padding:1.125rem 1.25rem;
+  margin:.75rem 0;overflow-x:auto;position:relative}
+.cb-code::before{content:"";display:block;width:10px;height:10px;border-radius:50%;
+  background:#FF5F57;box-shadow:16px 0 0 #FFBD2E,32px 0 0 #28CA41;
+  margin-bottom:.75rem}
+.cb-code pre{overflow-x:auto}
+.cb-code code{font-family:var(--fm);font-size:.8rem;line-height:1.7;
+  color:#E8E8ED;white-space:pre;word-break:normal}
+.ic{font-family:var(--fm);font-size:.8125rem;background:rgba(10,132,255,.1);
+  color:var(--blue);padding:.1em .4em;border-radius:4px;
+  border:1px solid rgba(10,132,255,.15)}
+.tbl{width:100%;border-collapse:collapse;font-size:.875rem;margin:.5rem 0;
+  border-radius:var(--r);overflow:hidden}
+.tbl tr:first-child td{background:rgba(10,132,255,.07);font-weight:600;color:var(--t1)}
+.tbl td{padding:.5rem .875rem;border-bottom:1px solid var(--bdr);color:var(--t2)}
+.tbl tr:last-child td{border-bottom:none}
+.lp{font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:.375rem}
+@media(max-width:640px){
+  .cw{padding:1rem .875rem 3rem}
+  .hero{padding:1.375rem 1.25rem}
+  .hero h2{font-size:1.25rem}
+  .blk{padding:.875rem 1rem;border-radius:var(--r)}
+  .cb-code{padding:.875rem 1rem}
+  .ph{padding:.75rem 1rem}
+}
+@media(max-width:380px){
+  .hero h2{font-size:1.125rem}
+  .cw{padding:.75rem .625rem 3rem}
+}
+</style>
+</head>
+<body>
+<header class="ph"><div class="phi">
+  <div class="hi">📘</div>
+  <div class="ht"><h1>Salesforce Developer Guide</h1><p>Interview Ready · Deep Dive · Production Patterns</p></div>
+</div></header>
+<div class="cw">
+  <div class="hero"><div class="badge">Salesforce Developer</div><h2>Navigation Mixin</h2></div>
+  <p class="lp">11.g NavigationMixin</p><p class="lp">Say Next.</p><p class="lp">Next</p><div class="maj"><span>🎤</span>INTERVIEW SECTION</div><div class="blk ans"><div class="ct">30-Second Interview Answer</div><div class="cb"><p>NavigationMixin is a utility in LWC that allows navigation to different pages in Salesforce such as record</p><p>pages, list views, object pages, web pages, or custom components. It enables programmatic navigation</p><ul class="cl"><li>using a standardized PageReference object.</li></ul></div></div><div class="blk ans"><div class="ct">2-Minute Technical Explanation</div><div class="cb"><ul class="cl"><li>To use NavigationMixin:</li></ul><div class="cb-code"><pre><code>import { NavigationMixin } from 'lightning/navigation';</code></pre></div><ul class="cl"><li>Extend component:</li></ul><div class="cb-code"><pre><code>export default class MyComponent extends NavigationMixin(LightningElement)</code></pre></div><ul class="cl"><li>Navigation works using a PageReference object:</li></ul><div class="cb-code"><pre><code>this[NavigationMixin.Navigate]({</code></pre></div><div class="cb-code"><pre><code>type: 'standard__recordPage',</code></pre></div><div class="cb-code"><pre><code>attributes: {</code></pre></div><div class="cb-code"><pre><code>recordId: recordId,</code></pre></div><div class="cb-code"><pre><code>objectApiName: 'Account',</code></pre></div><div class="cb-code"><pre><code>actionName: 'view'</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>});</code></pre></div><ul class="cl"><li>Used for:</li></ul><div class="ci">✔ Redirect after save</div><div class="ci">✔ Navigate to related record</div><div class="ci">✔ Open new record page</div><div class="ci">✔ Navigate to list view</div><div class="ci">✔ Open external URL</div></div></div><div class="blk scn"><div class="ct">Real-Time Scenario</div><div class="cb"><div class="cb-code"><pre><code>Requirement:</code></pre></div><ul class="cl"><li>After creating Account via Imperative call →</li><li>Redirect user to newly created Account record page.</li><li>Use NavigationMixin.</li></ul></div></div><div class="blk ans"><div class="ct">Tricky Interview Questions</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">1</span>Can we navigate to external URL?</li></ul><div class="cb-code"><pre><code>→ ✅ Yes (standard__webPage).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">2</span>Can we open new record page?</li></ul><div class="cb-code"><pre><code>→ ✅ Yes (actionName = 'new').</code></pre></div><ul class="cl"><li class="ni"><span class="nb">3</span>Does NavigationMixin work in Experience Cloud?</li></ul><div class="cb-code"><pre><code>→ Yes (with correct type).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">4</span>Can we pass state parameters?</li></ul></div></div><div class="blk chk"><div class="ct">Yes.</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">5</span>Does it work without extending NavigationMixin?</li></ul></div></div><div class="blk sen"><div class="ct">Senior-Level Discussion Points</div><div class="cb"><ul class="cl"><li>PageReference structure</li><li>Navigation vs window.location</li><li>Experience Cloud navigation differences</li><li>Passing state parameters</li><li>Deep linking</li><li>Performance consideration</li></ul></div></div><div class="maj"><span>🔬</span>DEEP TECHNICAL BREAKDOWN</div><div class="blk dep"><div class="ct">Step 1: Import NavigationMixin</div><div class="cb"><div class="cb-code"><pre><code>import { NavigationMixin } from 'lightning/navigation';</code></pre></div></div></div><div class="blk dep"><div class="ct">Step 2: Extend Component</div><div class="cb"><div class="cb-code"><pre><code>export default class MyComponent extends NavigationMixin(LightningElement)</code></pre></div><ul class="cl"><li>Without this → navigation fails.</li></ul></div></div><div class="blk dep"><div class="ct">Navigate to Record Page</div><div class="cb"><div class="cb-code"><pre><code>this[NavigationMixin.Navigate]({</code></pre></div><div class="cb-code"><pre><code>type: 'standard__recordPage',</code></pre></div><div class="cb-code"><pre><code>attributes: {</code></pre></div><div class="cb-code"><pre><code>recordId: this.recordId,</code></pre></div><div class="cb-code"><pre><code>objectApiName: 'Account',</code></pre></div><div class="cb-code"><pre><code>actionName: 'view'</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>});</code></pre></div><ul class="cl"><li>actionName options:</li><li>view</li><li>edit</li><li>clone</li></ul></div></div><div class="blk dep"><div class="ct">Navigate to New Record Page</div><div class="cb"><div class="cb-code"><pre><code>this[NavigationMixin.Navigate]({</code></pre></div><div class="cb-code"><pre><code>type: 'standard__objectPage',</code></pre></div><div class="cb-code"><pre><code>attributes: {</code></pre></div><div class="cb-code"><pre><code>objectApiName: 'Account',</code></pre></div><div class="cb-code"><pre><code>actionName: 'new'</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>});</code></pre></div></div></div><div class="blk dep"><div class="ct">Navigate to List View</div><div class="cb"><div class="cb-code"><pre><code>this[NavigationMixin.Navigate]({</code></pre></div><div class="cb-code"><pre><code>type: 'standard__objectPage',</code></pre></div><div class="cb-code"><pre><code>attributes: {</code></pre></div><div class="cb-code"><pre><code>objectApiName: 'Account',</code></pre></div><div class="cb-code"><pre><code>actionName: 'list'</code></pre></div><div class="cb-code"><pre><code>},</code></pre></div><div class="cb-code"><pre><code>state: {</code></pre></div><div class="cb-code"><pre><code>filterName: 'Recent'</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>});</code></pre></div></div></div><div class="blk dep"><div class="ct">Navigate to Web Page</div><div class="cb"><div class="cb-code"><pre><code>this[NavigationMixin.Navigate]({</code></pre></div><div class="cb-code"><pre><code>type: 'standard__webPage',</code></pre></div><div class="cb-code"><pre><code>attributes: {</code></pre></div><div class="cb-code"><pre><code>url: 'https://www.google.com'</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>});</code></pre></div></div></div><div class="blk dep"><div class="ct">Passing Custom State Parameters</div><div class="cb"><div class="cb-code"><pre><code>state: {</code></pre></div><div class="cb-code"><pre><code>c__customParam: 'value'</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>Important:</code></pre></div><ul class="cl"><li>Custom parameters must start with c__.</li><li>Access in target component:</li></ul><div class="cb-code"><pre><code>import { CurrentPageReference } from 'lightning/navigation';</code></pre></div></div></div><div class="blk dep"><div class="ct">Generate URL Without Navigating</div><div class="cb"><div class="cb-code"><pre><code>this[NavigationMixin.GenerateUrl](pageReference)</code></pre></div><div class="cb-code"><pre><code>.then(url =&gt; {</code></pre></div><div class="cb-code"><pre><code>window.open(url);</code></pre></div><div class="cb-code"><pre><code>});</code></pre></div><ul class="cl"><li>Used for:</li></ul><div class="ci">✔ Opening in new tab</div><div class="ci">✔ Creating shareable link</div></div></div><div class="blk dep"><div class="ct">Navigation Types Summary</div><div class="cb"><ul class="cl"><li>Type Use Case</li><li>standard__recordPage Record view/edit</li><li>standard__objectPage Object home/list/new</li><li>standard__webPage External URL</li><li>standard__component Navigate to LWC/Aura component</li><li>standard__navItemPage Custom tab</li></ul></div></div><div class="blk dep"><div class="ct">Best Practice</div><div class="cb"><div class="ci">✔ Always use NavigationMixin</div><div class="ci">✔ Avoid window.location</div><div class="ci">✔ Use PageReference for stability</div><div class="ci">✔ Pass parameters via state</div></div></div><div class="blk dep"><div class="ct">Common Interview Scenario</div><div class="cb"><ul class="cl"><li>“After saving a record in LWC, how will you redirect to that record page?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>I will use NavigationMixin with type 'standard__recordPage' and pass the newly created recordId with</p><ul class="cl"><li>actionName 'view'.</li></ul></div></div><div class="blk dep"><div class="ct">Enterprise Use Case</div><div class="cb"><ul class="cl"><li>Wizard component:</li><li>Step 1 → Create record</li><li>Step 2 → Navigate to review page</li><li>Step 3 → Navigate to summary page</li><li>NavigationMixin ensures structured routing.</li></ul></div></div><div class="blk ans"><div class="ct">Interview Power Line</div><div class="cb"><ul class="cl"><li>If interviewer asks:</li><li>“Why use NavigationMixin instead of window.location?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>Because NavigationMixin uses Salesforce’s PageReference system, ensuring compatibility across</p><p>Lightning Experience, Experience Cloud, and mobile, while maintaining platform stability and security.</p><ul class="cl"><li>🚀 Next Topic in Sequence:</li></ul></div></div>
+</div>
+</body></html>

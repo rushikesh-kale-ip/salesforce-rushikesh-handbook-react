@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Profiles</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0A84FF;--green:#30D158;--orange:#FF9F0A;--red:#FF453A;--purple:#BF5AF2;
+  --t1:#1C1C1E;--t2:#3A3A3C;--tm:#8E8E93;
+  --bg:#F2F2F7;--card:rgba(255,255,255,0.9);--bdr:rgba(0,0,0,0.08);
+  --r:12px;--rm:16px;--rl:20px;
+  --f:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --fm:"SF Mono","JetBrains Mono","Menlo","Courier New",monospace;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);line-height:1.7;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+.ph{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(30px) saturate(200%);-webkit-backdrop-filter:blur(30px) saturate(200%);
+  border-bottom:1px solid var(--bdr);padding:1rem 1.5rem;
+  box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.phi{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:.875rem}
+.hi{width:36px;height:36px;background:linear-gradient(135deg,#0A84FF,#5E5CE6);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:1rem;flex-shrink:0;box-shadow:0 2px 8px rgba(10,132,255,.35)}
+.ht h1{font-size:.9375rem;font-weight:600;letter-spacing:-.02em;color:var(--t1)}
+.ht p{font-size:.75rem;color:var(--tm);margin-top:1px}
+.cw{max-width:860px;margin:0 auto;padding:1.75rem 1.5rem 4rem}
+.hero{background:linear-gradient(135deg,#0A84FF,#5E5CE6);border-radius:var(--rl);
+  padding:1.75rem 2rem;margin-bottom:1.75rem;color:white;
+  box-shadow:0 8px 32px rgba(10,132,255,.3)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);border-radius:100px;font-size:.6875rem;
+  font-weight:700;padding:.2rem .75rem;margin-bottom:.625rem;
+  letter-spacing:.04em;text-transform:uppercase}
+.hero h2{font-size:1.625rem;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.maj{display:flex;align-items:center;gap:.5rem;font-size:.625rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--tm);
+  margin:2.25rem 0 .875rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.blk{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rm);
+  padding:1.125rem 1.375rem;margin-bottom:.875rem;
+  box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.ct{font-size:.9375rem;font-weight:600;color:var(--t1);margin-bottom:.625rem;
+  letter-spacing:-.01em}
+.cb p{font-size:.9rem;color:var(--t2);margin-bottom:.4rem;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.ans{border-left:3px solid var(--blue)}
+.scn{border-left:3px solid var(--orange)}
+.mis{border-left:3px solid var(--red)}
+.sen{border-left:3px solid var(--purple)}
+.chk{border-left:3px solid var(--green)}
+.dep{border-left:3px solid var(--blue);background:rgba(10,132,255,.03)}
+.sub{border-left:3px solid rgba(0,0,0,.1);background:rgba(0,0,0,.015)}
+.cl{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin:.2rem 0}
+.cl li{font-size:.875rem;color:var(--t2);padding:.25rem 0 .25rem 1rem;
+  position:relative;line-height:1.6}
+.cl li::before{content:"·";position:absolute;left:0;color:var(--blue);font-weight:700}
+.ni{padding-left:2rem !important}
+.ni::before{display:none !important}
+.nb{display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;background:var(--blue);color:white;border-radius:5px;
+  font-size:.625rem;font-weight:700;margin-right:.4rem;vertical-align:middle}
+.ci{font-size:.875rem;color:var(--t2);padding:.2rem 0}
+.arr{font-size:.875rem;color:var(--blue);padding:.2rem 0 .2rem .5rem;font-weight:500}
+.cb-code{background:#1C1C1E;border-radius:var(--r);padding:1.125rem 1.25rem;
+  margin:.75rem 0;overflow-x:auto;position:relative}
+.cb-code::before{content:"";display:block;width:10px;height:10px;border-radius:50%;
+  background:#FF5F57;box-shadow:16px 0 0 #FFBD2E,32px 0 0 #28CA41;
+  margin-bottom:.75rem}
+.cb-code pre{overflow-x:auto}
+.cb-code code{font-family:var(--fm);font-size:.8rem;line-height:1.7;
+  color:#E8E8ED;white-space:pre;word-break:normal}
+.ic{font-family:var(--fm);font-size:.8125rem;background:rgba(10,132,255,.1);
+  color:var(--blue);padding:.1em .4em;border-radius:4px;
+  border:1px solid rgba(10,132,255,.15)}
+.tbl{width:100%;border-collapse:collapse;font-size:.875rem;margin:.5rem 0;
+  border-radius:var(--r);overflow:hidden}
+.tbl tr:first-child td{background:rgba(10,132,255,.07);font-weight:600;color:var(--t1)}
+.tbl td{padding:.5rem .875rem;border-bottom:1px solid var(--bdr);color:var(--t2)}
+.tbl tr:last-child td{border-bottom:none}
+.lp{font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:.375rem}
+@media(max-width:640px){
+  .cw{padding:1rem .875rem 3rem}
+  .hero{padding:1.375rem 1.25rem}
+  .hero h2{font-size:1.25rem}
+  .blk{padding:.875rem 1rem;border-radius:var(--r)}
+  .cb-code{padding:.875rem 1rem}
+  .ph{padding:.75rem 1rem}
+}
+@media(max-width:380px){
+  .hero h2{font-size:1.125rem}
+  .cw{padding:.75rem .625rem 3rem}
+}
+</style>
+</head>
+<body>
+<header class="ph"><div class="phi">
+  <div class="hi">📘</div>
+  <div class="ht"><h1>Salesforce Developer Guide</h1><p>Interview Ready · Deep Dive · Production Patterns</p></div>
+</div></header>
+<div class="cw">
+  <div class="hero"><div class="badge">Salesforce Developer</div><h2>Profiles</h2></div>
+  <p class="lp">21.a Profiles</p><div class="maj"><span>🎤</span>INTERVIEW SECTION</div><div class="blk ans"><div class="ct">30-Second Interview Answer</div><div class="cb"><p>Profiles in Salesforce define a user’s baseline permissions, including object-level access, field-level</p><p>security, app access, system permissions, and login restrictions. Every user must be assigned exactly one</p><ul class="cl"><li>profile.</li></ul></div></div><div class="blk ans"><div class="ct">2-Minute Technical Explanation</div><div class="cb"><ul class="cl"><li>Profile controls:</li></ul><div class="cb-code"><pre><code>✔ Object permissions (CRUD)</code></pre></div><div class="cb-code"><pre><code>✔ Field-level security (FLS)</code></pre></div><div class="ci">✔ App access</div><div class="ci">✔ Record type access</div><div class="ci">✔ Tab visibility</div><div class="ci">✔ Login hours</div><div class="ci">✔ IP restrictions</div><div class="ci">✔ System permissions</div><ul class="cl"><li>Key rule:</li><li>👉 Every user has only ONE profile.</li><li>Profiles provide baseline access.</li><li>Permission Sets extend it.</li></ul></div></div><div class="blk scn"><div class="ct">Real-Time Scenario</div><div class="cb"><ul class="cl"><li>Sales User profile:</li></ul><div class="ci">✔ Access to Accounts</div><div class="ci">✔ Create/Edit Opportunities</div><div class="ci">✔ No access to Admin Setup</div><div class="ci">✔ Cannot delete Accounts</div><ul class="cl"><li>Marketing User profile:</li></ul><div class="ci">✔ Access to Leads</div><div class="ci">✔ Cannot edit Opportunities</div><ul class="cl"><li>Different profiles define role-based access.</li></ul></div></div><div class="blk ans"><div class="ct">Tricky Interview Questions</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">1</span>Can a user have multiple profiles?</li></ul><div class="arr">→ No.</div><ul class="cl"><li class="ni"><span class="nb">2</span>Difference between Profile and Role?</li></ul><div class="cb-code"><pre><code>→ Profile = permission; Role = record visibility.</code></pre></div><ul class="cl"><li class="ni"><span class="nb">3</span>Can we restrict login time?</li></ul><div class="cb-code"><pre><code>→ Yes (via profile).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">4</span>Does profile control OWD?</li></ul><div class="arr">→ No.</div><ul class="cl"><li class="ni"><span class="nb">5</span>Should we create many profiles?</li></ul><div class="cb-code"><pre><code>→ No (keep minimal).</code></pre></div></div></div><div class="blk sen"><div class="ct">Senior-Level Discussion Points</div><div class="cb"><ul class="cl"><li>Profile minimization strategy</li><li>Permission Set-first architecture</li><li>Governance model</li><li>Compliance design</li><li>Enterprise access modeling</li></ul></div></div><div class="maj"><span>🔬</span>DEEP TECHNICAL BREAKDOWN</div><div class="blk dep"><div class="ct">What Profiles Control</div><div class="cb"><div class="cb-code"><pre><code>🔹 󾠮 Object-Level Permissions (CRUD)</code></pre></div><ul class="cl"><li>Create</li><li>Read</li><li>Edit</li><li>Delete</li><li>View All</li><li>Modify All</li></ul><div class="cb-code"><pre><code>🔹 󾠯 Field-Level Security (FLS)</code></pre></div><ul class="cl"><li>Visible</li><li>Read-only</li><li>Configured per field.</li></ul></div></div><div class="blk sub"><div class="ct">Record Type Access</div><div class="cb"><div class="cb-code"><pre><code>Controls:</code></pre></div><ul class="cl"><li>Which record types user can use</li><li>Default record type</li></ul></div></div><div class="blk sub"><div class="ct">App & Tab Settings</div><div class="cb"><div class="cb-code"><pre><code>Controls:</code></pre></div><ul class="cl"><li>App visibility</li><li>Tab visibility</li><li>Default app</li></ul></div></div><div class="blk sub"><div class="ct">System Permissions</div><div class="cb"><div class="cb-code"><pre><code>Examples:</code></pre></div><ul class="cl"><li>API Enabled</li><li>View Setup</li><li>Customize Application</li><li>Manage Users</li><li>Author Apex</li><li>Powerful permissions.</li></ul></div></div><div class="blk sub"><div class="ct">Login Restrictions</div><div class="cb"><ul class="cl"><li>Login hours</li><li>IP range restrictions</li><li>Security layer.</li></ul></div></div><div class="blk dep"><div class="ct">Profile vs Permission Set</div><div class="cb"><ul class="cl"><li>Feature Profile Permission Set</li><li>Mandatory Yes No</li><li>Number per user One Many</li><li>Feature Profile Permission Set</li><li>Baseline access Yes No</li><li>Flexible addition Limited High</li><li>Best practice Minimal Extend via PS</li><li>Modern best practice:</li><li>Minimal Profiles + Permission Sets.</li></ul></div></div><div class="blk dep"><div class="ct">Enterprise Best Practice</div><div class="cb"><ul class="cl"><li>Instead of:</li></ul></div></div><div class="blk mis"><div class="ct">10 different Sales profiles ❌</div><div class="cb"><div class="cb-code"><pre><code>Use:</code></pre></div><ul class="cl"><li>1 Base Sales Profile</li><li>Permission Sets for variations</li><li>More scalable design.</li></ul></div></div><div class="blk dep"><div class="ct">Profile & Security Layers</div><div class="cb"><ul class="cl"><li>Profile controls:</li></ul><div class="ci">✔ Object permission</div><div class="ci">✔ Field permission</div><ul class="cl"><li>But not:</li></ul><div class="cb-code"><pre><code>❌ Record visibility (Role + Sharing handle that)</code></pre></div></div></div><div class="blk dep"><div class="ct">Example Secure Architecture</div><div class="cb"><ul class="cl"><li>Sales Profile:</li></ul><div class="ci">✔ Read Account</div><div class="ci">✔ Edit Opportunity</div><div class="ci">✔ No Delete permission</div><ul class="cl"><li>Permission Set:</li><li>“Discount Approval Access”</li><li>Assigned to select users only.</li><li>Flexible model.</li></ul></div></div><div class="blk dep"><div class="ct">Common Interview Trap</div><div class="cb"><div class="cb-code"><pre><code>Question:</code></pre></div><ul class="cl"><li>“Does Profile control record-level access?”</li><li>Correct answer:</li><li>No. That is controlled by OWD, Role Hierarchy, and Sharing Rules.</li></ul></div></div><div class="blk dep"><div class="ct">Performance & Governance</div><div class="cb"><ul class="cl"><li>Too many profiles:</li><li>Hard to maintain</li><li>Difficult deployments</li><li>Governance nightmare</li><li>Keep profiles minimal.</li></ul></div></div><div class="blk dep"><div class="ct">Interview Scenario</div><div class="cb"><ul class="cl"><li>“How would you design access for different departments?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>I would create minimal baseline profiles for each functional group and use permission sets to grant</p><ul class="cl"><li>additional access where required, ensuring scalability and maintainability.</li></ul></div></div><div class="blk ans"><div class="ct">Interview Power Line</div><div class="cb"><ul class="cl"><li>If interviewer asks:</li><li>“Why is permission set preferred over creating multiple profiles?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>Because permission sets provide flexible, scalable access extension without duplicating profiles,</p><ul class="cl"><li>reducing maintenance complexity and improving governance in large organizations.</li><li>🚀 Next Topic in Sequence:</li></ul></div></div>
+</div>
+</body></html>

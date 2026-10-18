@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Batch Apex</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0A84FF;--green:#30D158;--orange:#FF9F0A;--red:#FF453A;--purple:#BF5AF2;
+  --t1:#1C1C1E;--t2:#3A3A3C;--tm:#8E8E93;
+  --bg:#F2F2F7;--card:rgba(255,255,255,0.9);--bdr:rgba(0,0,0,0.08);
+  --r:12px;--rm:16px;--rl:20px;
+  --f:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --fm:"SF Mono","JetBrains Mono","Menlo","Courier New",monospace;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);line-height:1.7;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+.ph{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(30px) saturate(200%);-webkit-backdrop-filter:blur(30px) saturate(200%);
+  border-bottom:1px solid var(--bdr);padding:1rem 1.5rem;
+  box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.phi{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:.875rem}
+.hi{width:36px;height:36px;background:linear-gradient(135deg,#0A84FF,#5E5CE6);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:1rem;flex-shrink:0;box-shadow:0 2px 8px rgba(10,132,255,.35)}
+.ht h1{font-size:.9375rem;font-weight:600;letter-spacing:-.02em;color:var(--t1)}
+.ht p{font-size:.75rem;color:var(--tm);margin-top:1px}
+.cw{max-width:860px;margin:0 auto;padding:1.75rem 1.5rem 4rem}
+.hero{background:linear-gradient(135deg,#0A84FF,#5E5CE6);border-radius:var(--rl);
+  padding:1.75rem 2rem;margin-bottom:1.75rem;color:white;
+  box-shadow:0 8px 32px rgba(10,132,255,.3)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);border-radius:100px;font-size:.6875rem;
+  font-weight:700;padding:.2rem .75rem;margin-bottom:.625rem;
+  letter-spacing:.04em;text-transform:uppercase}
+.hero h2{font-size:1.625rem;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.maj{display:flex;align-items:center;gap:.5rem;font-size:.625rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--tm);
+  margin:2.25rem 0 .875rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.blk{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rm);
+  padding:1.125rem 1.375rem;margin-bottom:.875rem;
+  box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.ct{font-size:.9375rem;font-weight:600;color:var(--t1);margin-bottom:.625rem;
+  letter-spacing:-.01em}
+.cb p{font-size:.9rem;color:var(--t2);margin-bottom:.4rem;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.ans{border-left:3px solid var(--blue)}
+.scn{border-left:3px solid var(--orange)}
+.mis{border-left:3px solid var(--red)}
+.sen{border-left:3px solid var(--purple)}
+.chk{border-left:3px solid var(--green)}
+.dep{border-left:3px solid var(--blue);background:rgba(10,132,255,.03)}
+.sub{border-left:3px solid rgba(0,0,0,.1);background:rgba(0,0,0,.015)}
+.cl{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin:.2rem 0}
+.cl li{font-size:.875rem;color:var(--t2);padding:.25rem 0 .25rem 1rem;
+  position:relative;line-height:1.6}
+.cl li::before{content:"·";position:absolute;left:0;color:var(--blue);font-weight:700}
+.ni{padding-left:2rem !important}
+.ni::before{display:none !important}
+.nb{display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;background:var(--blue);color:white;border-radius:5px;
+  font-size:.625rem;font-weight:700;margin-right:.4rem;vertical-align:middle}
+.ci{font-size:.875rem;color:var(--t2);padding:.2rem 0}
+.arr{font-size:.875rem;color:var(--blue);padding:.2rem 0 .2rem .5rem;font-weight:500}
+.cb-code{background:#1C1C1E;border-radius:var(--r);padding:1.125rem 1.25rem;
+  margin:.75rem 0;overflow-x:auto;position:relative}
+.cb-code::before{content:"";display:block;width:10px;height:10px;border-radius:50%;
+  background:#FF5F57;box-shadow:16px 0 0 #FFBD2E,32px 0 0 #28CA41;
+  margin-bottom:.75rem}
+.cb-code pre{overflow-x:auto}
+.cb-code code{font-family:var(--fm);font-size:.8rem;line-height:1.7;
+  color:#E8E8ED;white-space:pre;word-break:normal}
+.ic{font-family:var(--fm);font-size:.8125rem;background:rgba(10,132,255,.1);
+  color:var(--blue);padding:.1em .4em;border-radius:4px;
+  border:1px solid rgba(10,132,255,.15)}
+.tbl{width:100%;border-collapse:collapse;font-size:.875rem;margin:.5rem 0;
+  border-radius:var(--r);overflow:hidden}
+.tbl tr:first-child td{background:rgba(10,132,255,.07);font-weight:600;color:var(--t1)}
+.tbl td{padding:.5rem .875rem;border-bottom:1px solid var(--bdr);color:var(--t2)}
+.tbl tr:last-child td{border-bottom:none}
+.lp{font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:.375rem}
+@media(max-width:640px){
+  .cw{padding:1rem .875rem 3rem}
+  .hero{padding:1.375rem 1.25rem}
+  .hero h2{font-size:1.25rem}
+  .blk{padding:.875rem 1rem;border-radius:var(--r)}
+  .cb-code{padding:.875rem 1rem}
+  .ph{padding:.75rem 1rem}
+}
+@media(max-width:380px){
+  .hero h2{font-size:1.125rem}
+  .cw{padding:.75rem .625rem 3rem}
+}
+</style>
+</head>
+<body>
+<header class="ph"><div class="phi">
+  <div class="hi">📘</div>
+  <div class="ht"><h1>Salesforce Developer Guide</h1><p>Interview Ready · Deep Dive · Production Patterns</p></div>
+</div></header>
+<div class="cw">
+  <div class="hero"><div class="badge">Salesforce Developer</div><h2>Batch Apex</h2></div>
+  <p class="lp">7.c Batch Apex</p><p class="lp">Say Next.</p><p class="lp">Next</p><p class="lp">🔷 7.c Batch Apex</p><div class="maj"><span>🎤</span>INTERVIEW SECTION</div><div class="blk ans"><div class="ct">30-Second Interview Answer</div><div class="cb"><p>Batch Apex is used to process large volumes of records asynchronously by breaking them into</p><p>manageable chunks called batches. It implements the Database.Batchable interface and processes</p><ul class="cl"><li>records in separate transactions, resetting governor limits for each batch execution.</li></ul></div></div><div class="blk ans"><div class="ct">2-Minute Technical Explanation</div><div class="cb"><ul class="cl"><li>Batch Apex is designed for:</li></ul><div class="cb-code"><pre><code>Large Data Volume (LDV)</code></pre></div><ul class="cl"><li>Processing more than 50,000 records</li><li>Scheduled bulk processing</li><li>Data cleanup jobs</li><li>Recalculations</li><li>Batch works in 3 methods:</li></ul><div class="cb-code"><pre><code>󾠮 start() → Defines scope (Query or Iterable)</code></pre></div><div class="cb-code"><pre><code>󾠯 execute() → Processes records in chunks</code></pre></div><div class="cb-code"><pre><code>󾠰 finish() → Runs after all batches complete</code></pre></div><ul class="cl"><li>Basic structure:</li></ul><div class="cb-code"><pre><code>public class MyBatch implements Database.Batchable&lt;sObject&gt; {</code></pre></div><div class="cb-code"><pre><code>public Database.QueryLocator start(Database.BatchableContext bc){</code></pre></div><div class="cb-code"><pre><code>return Database.getQueryLocator(</code></pre></div><ul class="cl"><li>'SELECT Id FROM Account'</li></ul><div class="cb-code"><pre><code>);</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>public void execute(Database.BatchableContext bc, List&lt;Account&gt; scope){</code></pre></div><ul class="cl"><li>// process records</li></ul><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>public void finish(Database.BatchableContext bc){</code></pre></div><ul class="cl"><li>// post-processing</li></ul><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><ul class="cl"><li>Run batch:</li></ul><div class="cb-code"><pre><code>Database.executeBatch(new MyBatch(), 200);</code></pre></div></div></div><div class="blk scn"><div class="ct">Real-Time Scenario</div><div class="cb"><div class="cb-code"><pre><code>Requirement:</code></pre></div><ul class="cl"><li>Recalculate commission for 2 million Opportunities nightly.</li><li>Cannot use trigger or queueable.</li><li>Use Batch Apex:</li><li>Process 200 records per chunk</li><li>Each chunk new transaction</li><li>Limits reset per chunk</li><li>Efficient and scalable</li></ul></div></div><div class="blk ans"><div class="ct">Tricky Interview Questions</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">1</span>What is default batch size?</li></ul><div class="arr">→ 200.</div><ul class="cl"><li class="ni"><span class="nb">2</span>Maximum records via QueryLocator?</li></ul><div class="arr">→ 50 million.</div><ul class="cl"><li class="ni"><span class="nb">3</span>Does each batch have separate limits?</li></ul><div class="arr">→ Yes.</div><ul class="cl"><li class="ni"><span class="nb">4</span>Can Batch perform callout?</li></ul><div class="cb-code"><pre><code>→ Yes (with Database.AllowsCallouts).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">5</span>Can Batch chain another Batch?</li></ul><div class="cb-code"><pre><code>→ Yes (in finish method).</code></pre></div></div></div><div class="blk sen"><div class="ct">Senior-Level Discussion Points</div><div class="cb"><ul class="cl"><li>Database.Stateful</li><li>QueryLocator vs Iterable</li><li>Batch chaining strategy</li><li>Handling partial failures</li><li>Performance tuning batch size</li><li>Batch vs Queueable</li><li>Retry pattern design</li></ul></div></div><div class="maj"><span>🔬</span>DEEP TECHNICAL BREAKDOWN</div><div class="blk dep"><div class="ct">Why Batch Apex Is Needed</div><div class="cb"><div class="cb-code"><pre><code>Because:</code></pre></div><ul class="cl"><li>SOQL limit: 50,000 rows in sync</li><li>Heap size limit</li><li>CPU limit</li><li>Need to process millions of records</li><li>Batch splits processing into chunks.</li></ul></div></div><div class="blk dep"><div class="ct">Batch Lifecycle</div><div class="cb"><div class="cb-code"><pre><code>󾠮 start()</code></pre></div><ul class="cl"><li>Defines data source.</li><li>Two options:</li></ul></div></div><div class="blk sub"><div class="ct">QueryLocator</div><div class="cb"><div class="cb-code"><pre><code>return Database.getQueryLocator(</code></pre></div><ul class="cl"><li>'SELECT Id FROM Account'</li></ul><div class="cb-code"><pre><code>);</code></pre></div><ul class="cl"><li>Supports up to 50 million records.</li></ul></div></div><div class="blk sub"><div class="ct">Iterable</div><div class="cb"><ul class="cl"><li>Used when custom data source needed.</li></ul><div class="cb-code"><pre><code>󾠯 execute()</code></pre></div><ul class="cl"><li>Runs per batch chunk.</li></ul><div class="cb-code"><pre><code>Example:</code></pre></div><div class="cb-code"><pre><code>public void execute(Database.BatchableContext bc,</code></pre></div><div class="cb-code"><pre><code>List&lt;Account&gt; scope){</code></pre></div><div class="cb-code"><pre><code>for(Account acc : scope){</code></pre></div><div class="cb-code"><pre><code>acc.Rating = 'Updated';</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>update scope;</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><ul class="cl"><li>Each chunk separate transaction.</li></ul><div class="cb-code"><pre><code>󾠰 finish()</code></pre></div><ul class="cl"><li>Runs once after all batches complete.</li></ul><div class="cb-code"><pre><code>Example:</code></pre></div><div class="cb-code"><pre><code>public void finish(Database.BatchableContext bc){</code></pre></div><div class="cb-code"><pre><code>System.debug('Batch completed');</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><ul class="cl"><li>Used for:</li><li>Sending email</li><li>Starting next batch</li><li>Logging results</li></ul></div></div><div class="blk dep"><div class="ct">Database.Stateful</div><div class="cb"><ul class="cl"><li>By default:</li><li>Each execute is stateless.</li><li>If you want to preserve variables across batches:</li><li>public class MyBatch implements</li><li>Database.Batchable<sObject>,</li></ul><div class="cb-code"><pre><code>Database.Stateful {</code></pre></div><div class="cb-code"><pre><code>Integer totalProcessed = 0;</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><ul class="cl"><li>Allows maintaining counters.</li></ul></div></div><div class="blk dep"><div class="ct">Callout in Batch</div><div class="cb"><ul class="cl"><li>public class MyBatch implements</li><li>Database.Batchable<sObject>,</li></ul><div class="cb-code"><pre><code>Database.AllowsCallouts {</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><ul class="cl"><li>Allows HTTP callouts inside execute.</li></ul></div></div><div class="blk dep"><div class="ct">Governor Limits Per Batch</div><div class="cb"><ul class="cl"><li>Each execute:</li><li>200 SOQL</li><li>150 DML</li><li>60 sec CPU</li><li>12MB heap</li><li>Resets for next chunk.</li><li>Huge advantage.</li></ul></div></div><div class="blk dep"><div class="ct">Batch Size Tuning</div><div class="cb"><div class="cb-code"><pre><code>Default: 200</code></pre></div><ul class="cl"><li>Smaller batch size:</li><li>Less heap usage</li><li>Lower CPU per chunk</li><li>Larger batch size:</li><li>Fewer transactions</li><li>Higher per-chunk resource use</li><li>Common tuning:</li><li>50–200 depending on complexity.</li></ul></div></div><div class="blk dep"><div class="ct">Batch Chaining</div><div class="cb"><ul class="cl"><li>Inside finish:</li></ul><div class="cb-code"><pre><code>Database.executeBatch(new AnotherBatch());</code></pre></div><ul class="cl"><li>Used for multi-step processing.</li></ul></div></div><div class="blk dep"><div class="ct">Batch vs Queueable</div><div class="cb"><ul class="cl"><li>Feature Queueable Batch</li><li>Max Records Limited by heap 50M</li><li>Chunk Processing No Yes</li></ul><div class="cb-code"><pre><code>Governor Reset Yes Yes (per chunk)</code></pre></div><ul class="cl"><li>Chaining Yes Yes</li><li>Best For Medium async Large data volume</li></ul></div></div><div class="blk dep"><div class="ct">Error Handling Strategy</div><div class="cb"><ul class="cl"><li>Inside execute:</li><li>Use try-catch.</li><li>Log failed records in custom object.</li><li>Avoid failing entire batch.</li></ul></div></div><div class="blk dep"><div class="ct">Monitoring Batch</div><div class="cb"><ul class="cl"><li>Go to:</li><li>Setup → Apex Jobs</li></ul><div class="cb-code"><pre><code>Track:</code></pre></div><ul class="cl"><li>Job ID</li><li>Status</li><li>Number of batches</li><li>Errors</li><li>AsyncApexJob object holds details.</li></ul></div></div><div class="blk sub"><div class="ct">Partial Failure</div><div class="cb"><ul class="cl"><li>One batch fails → other batches continue.</li></ul></div></div><div class="blk sub"><div class="ct">Record Lock</div><div class="cb"><ul class="cl"><li>Parallel batch jobs may cause lock contention.</li></ul></div></div><div class="blk sub"><div class="ct">Large Data Skew</div><div class="cb"><ul class="cl"><li>May slow down processing.</li></ul></div></div><div class="blk dep"><div class="ct">When NOT to Use Batch</div><div class="cb"><ul class="cl"><li>Avoid if:</li><li>Only few hundred records</li><li>Immediate response needed</li><li>Simple async logic</li><li>Use Queueable instead.</li></ul></div></div><div class="blk ans"><div class="ct">Interview Power Line</div><div class="cb"><ul class="cl"><li>If interviewer asks:</li><li>“When would you choose Batch Apex over Queueable?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>When processing very large data volumes exceeding 50,000 records, requiring chunk-based processing</p><ul class="cl"><li>with governor limits resetting per batch execution.</li><li>🚀 Next Topic in Sequence:</li></ul></div></div>
+</div>
+</body></html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Integration Flow</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0A84FF;--green:#30D158;--orange:#FF9F0A;--red:#FF453A;--purple:#BF5AF2;
+  --t1:#1C1C1E;--t2:#3A3A3C;--tm:#8E8E93;
+  --bg:#F2F2F7;--card:rgba(255,255,255,0.9);--bdr:rgba(0,0,0,0.08);
+  --r:12px;--rm:16px;--rl:20px;
+  --f:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --fm:"SF Mono","JetBrains Mono","Menlo","Courier New",monospace;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);line-height:1.7;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+.ph{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(30px) saturate(200%);-webkit-backdrop-filter:blur(30px) saturate(200%);
+  border-bottom:1px solid var(--bdr);padding:1rem 1.5rem;
+  box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.phi{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:.875rem}
+.hi{width:36px;height:36px;background:linear-gradient(135deg,#0A84FF,#5E5CE6);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:1rem;flex-shrink:0;box-shadow:0 2px 8px rgba(10,132,255,.35)}
+.ht h1{font-size:.9375rem;font-weight:600;letter-spacing:-.02em;color:var(--t1)}
+.ht p{font-size:.75rem;color:var(--tm);margin-top:1px}
+.cw{max-width:860px;margin:0 auto;padding:1.75rem 1.5rem 4rem}
+.hero{background:linear-gradient(135deg,#0A84FF,#5E5CE6);border-radius:var(--rl);
+  padding:1.75rem 2rem;margin-bottom:1.75rem;color:white;
+  box-shadow:0 8px 32px rgba(10,132,255,.3)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);border-radius:100px;font-size:.6875rem;
+  font-weight:700;padding:.2rem .75rem;margin-bottom:.625rem;
+  letter-spacing:.04em;text-transform:uppercase}
+.hero h2{font-size:1.625rem;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.maj{display:flex;align-items:center;gap:.5rem;font-size:.625rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--tm);
+  margin:2.25rem 0 .875rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.blk{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rm);
+  padding:1.125rem 1.375rem;margin-bottom:.875rem;
+  box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.ct{font-size:.9375rem;font-weight:600;color:var(--t1);margin-bottom:.625rem;
+  letter-spacing:-.01em}
+.cb p{font-size:.9rem;color:var(--t2);margin-bottom:.4rem;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.ans{border-left:3px solid var(--blue)}
+.scn{border-left:3px solid var(--orange)}
+.mis{border-left:3px solid var(--red)}
+.sen{border-left:3px solid var(--purple)}
+.chk{border-left:3px solid var(--green)}
+.dep{border-left:3px solid var(--blue);background:rgba(10,132,255,.03)}
+.sub{border-left:3px solid rgba(0,0,0,.1);background:rgba(0,0,0,.015)}
+.cl{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin:.2rem 0}
+.cl li{font-size:.875rem;color:var(--t2);padding:.25rem 0 .25rem 1rem;
+  position:relative;line-height:1.6}
+.cl li::before{content:"·";position:absolute;left:0;color:var(--blue);font-weight:700}
+.ni{padding-left:2rem !important}
+.ni::before{display:none !important}
+.nb{display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;background:var(--blue);color:white;border-radius:5px;
+  font-size:.625rem;font-weight:700;margin-right:.4rem;vertical-align:middle}
+.ci{font-size:.875rem;color:var(--t2);padding:.2rem 0}
+.arr{font-size:.875rem;color:var(--blue);padding:.2rem 0 .2rem .5rem;font-weight:500}
+.cb-code{background:#1C1C1E;border-radius:var(--r);padding:1.125rem 1.25rem;
+  margin:.75rem 0;overflow-x:auto;position:relative}
+.cb-code::before{content:"";display:block;width:10px;height:10px;border-radius:50%;
+  background:#FF5F57;box-shadow:16px 0 0 #FFBD2E,32px 0 0 #28CA41;
+  margin-bottom:.75rem}
+.cb-code pre{overflow-x:auto}
+.cb-code code{font-family:var(--fm);font-size:.8rem;line-height:1.7;
+  color:#E8E8ED;white-space:pre;word-break:normal}
+.ic{font-family:var(--fm);font-size:.8125rem;background:rgba(10,132,255,.1);
+  color:var(--blue);padding:.1em .4em;border-radius:4px;
+  border:1px solid rgba(10,132,255,.15)}
+.tbl{width:100%;border-collapse:collapse;font-size:.875rem;margin:.5rem 0;
+  border-radius:var(--r);overflow:hidden}
+.tbl tr:first-child td{background:rgba(10,132,255,.07);font-weight:600;color:var(--t1)}
+.tbl td{padding:.5rem .875rem;border-bottom:1px solid var(--bdr);color:var(--t2)}
+.tbl tr:last-child td{border-bottom:none}
+.lp{font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:.375rem}
+@media(max-width:640px){
+  .cw{padding:1rem .875rem 3rem}
+  .hero{padding:1.375rem 1.25rem}
+  .hero h2{font-size:1.25rem}
+  .blk{padding:.875rem 1rem;border-radius:var(--r)}
+  .cb-code{padding:.875rem 1rem}
+  .ph{padding:.75rem 1rem}
+}
+@media(max-width:380px){
+  .hero h2{font-size:1.125rem}
+  .cw{padding:.75rem .625rem 3rem}
+}
+</style>
+</head>
+<body>
+<header class="ph"><div class="phi">
+  <div class="hi">📘</div>
+  <div class="ht"><h1>Salesforce Developer Guide</h1><p>Interview Ready · Deep Dive · Production Patterns</p></div>
+</div></header>
+<div class="cw">
+  <div class="hero"><div class="badge">Salesforce Developer</div><h2>Integration Flow</h2></div>
+  <p class="lp">30.b Integration Flow</p><p class="lp">Say Next.</p><p class="lp">Next</p><p class="lp">🔷 30. Project-Level Discussion</p><p class="lp">30.b Integration Flow</p><div class="maj"><span>🎤</span>INTERVIEW SECTION</div><div class="blk ans"><div class="ct">30-Second Interview Answer</div><div class="cb"><p>Integration Flow refers to the end-to-end design of how Salesforce exchanges data with external</p><p>systems, including trigger points, data transformation, authentication, error handling, retry</p><ul class="cl"><li>mechanisms, and monitoring to ensure reliable and scalable communication.</li></ul></div></div><div class="blk ans"><div class="ct">2-Minute Structured Interview Answer</div><div class="cb"><ul class="cl"><li>When explaining Integration Flow in interview, structure it like this:</li></ul><div class="cb-code"><pre><code>󾠮 Trigger Event (What starts integration?)</code></pre></div><div class="cb-code"><pre><code>󾠯 Processing Layer (How data is prepared?)</code></pre></div><div class="cb-code"><pre><code>󾠰 Transport Mechanism (REST / Events / CDC?)</code></pre></div><div class="cb-code"><pre><code>󾠱 Authentication (OAuth / Named Credential?)</code></pre></div><div class="cb-code"><pre><code>󾠲 Error Handling (Logging + Retry?)</code></pre></div><ul class="cl"><li>󾠳 Monitoring Strategy</li></ul><div class="cb-code"><pre><code>Example:</code></pre></div><p>“When Opportunity is Closed Won, we publish a Platform Event. Middleware subscribes and calls ERP</p><p>API using OAuth. Failures are logged in a custom error object and retried via scheduled job.”</p><ul class="cl"><li>Clear + Structured = Senior answer.</li></ul></div></div><div class="blk scn"><div class="ct">Real-Time Example Project</div><div class="cb"><div class="cb-code"><pre><code>Scenario:</code></pre></div><p>Closed Won Opportunity → ERP Invoice Creation → ERP sends Invoice Number back to Salesforce.</p></div></div><div class="blk sub"><div class="ct">Step 1: Trigger Event</div><div class="cb"><ul class="cl"><li>After Update Trigger</li><li>OR</li><li>Platform Event published</li></ul></div></div><div class="blk sub"><div class="ct">Step 2: Data Preparation</div><div class="cb"><ul class="cl"><li>Service Layer prepares:</li></ul><div class="ci">✔ Required fields</div><div class="ci">✔ JSON payload</div><div class="ci">✔ Validation checks</div></div></div><div class="blk sub"><div class="ct">Step 3: Transport Mechanism</div><div class="cb"><div class="cb-code"><pre><code>Option A – Direct Callout (Queueable)</code></pre></div><div class="cb-code"><pre><code>Option B – Platform Event → Middleware (Recommended)</code></pre></div><ul class="cl"><li>Option C – CDC</li></ul></div></div><div class="blk sub"><div class="ct">Step 4: Authentication</div><div class="cb"><div class="cb-code"><pre><code>Use:</code></pre></div><div class="ci">✔ Named Credential</div><div class="ci">✔ OAuth 2.0</div><div class="ci">✔ JWT</div><ul class="cl"><li>Avoid hardcoding credentials.</li></ul></div></div><div class="blk sub"><div class="ct">Step 5: ERP Response Handling</div><div class="cb"><ul class="cl"><li>ERP sends:</li></ul><div class="ci">✔ Invoice Number</div><div class="ci">✔ Status</div><ul class="cl"><li>Salesforce updates Opportunity.</li></ul></div></div><div class="blk sub"><div class="ct">Step 6: Error Handling</div><div class="cb"><ul class="cl"><li>If failure:</li></ul><div class="ci">✔ Log Integration_Error__c</div><div class="ci">✔ Retry with Scheduled Job</div><div class="ci">✔ Alert admin</div></div></div><div class="blk ans"><div class="ct">Tricky Interview Questions</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">1</span>Why use Platform Events instead of direct callout?</li></ul><div class="arr">→ Decoupling + scalability.</div><ul class="cl"><li class="ni"><span class="nb">2</span>How to prevent duplicate records?</li></ul><div class="arr">→ External ID + Upsert.</div><ul class="cl"><li class="ni"><span class="nb">3</span>What if ERP is down?</li></ul><div class="arr">→ Retry with backoff.</div><ul class="cl"><li class="ni"><span class="nb">4</span>How to monitor integration?</li></ul><div class="arr">→ AsyncApexJob + Custom logging.</div><ul class="cl"><li class="ni"><span class="nb">5</span>How to handle bulk updates?</li></ul><div class="arr">→ Batch publishing.</div></div></div><div class="blk sen"><div class="ct">Senior-Level Discussion Points</div><div class="cb"><ul class="cl"><li>Event-driven architecture</li><li>Exactly-once delivery strategy</li><li>Middleware vs direct integration</li><li>Data transformation layer</li><li>Fault tolerance pattern</li></ul></div></div><div class="maj"><span>🔬</span>DEEP TECHNICAL BREAKDOWN</div><div class="blk dep"><div class="ct">Integration Patterns Overview</div><div class="cb"><div class="cb-code"><pre><code>🔹 󾠮 Request-Response (Synchronous)</code></pre></div><ul class="cl"><li>Salesforce → External → Immediate response</li><li>Used for:</li></ul><div class="ci">✔ Real-time validation</div><div class="ci">✔ Payment authorization</div><div class="cb-code"><pre><code>Risk:</code></pre></div><ul class="cl"><li>User waits.</li></ul><div class="cb-code"><pre><code>🔹 󾠯 Fire-and-Forget (Async Callout)</code></pre></div><ul class="cl"><li>Salesforce sends data.</li><li>No immediate dependency.</li><li>Used for:</li></ul><div class="ci">✔ Notification systems</div><div class="cb-code"><pre><code>🔹 󾠰 Event-Driven (Platform Events)</code></pre></div><ul class="cl"><li>Salesforce publishes event.</li><li>External subscribes.</li><li>Best for:</li></ul><div class="ci">✔ Scalable enterprise systems</div><div class="cb-code"><pre><code>🔹 󾠱 Change Data Capture (CDC)</code></pre></div><ul class="cl"><li>Salesforce automatically streams record changes.</li><li>Best for:</li></ul><div class="ci">✔ Data synchronization.</div><div class="cb-code"><pre><code>📌 Idempotent Design (Very Important)</code></pre></div><ul class="cl"><li>If integration retries:</li><li>Must avoid duplicate invoice creation.</li></ul><div class="cb-code"><pre><code>Solution:</code></pre></div><div class="ci">✔ Use external ID</div><div class="ci">✔ Store Integration Reference ID</div><div class="ci">✔ Check before insert</div><ul class="cl"><li>Prevents duplication.</li></ul></div></div><div class="blk dep"><div class="ct">Retry Strategy</div><div class="cb"><div class="cb-code"><pre><code>Implement:</code></pre></div><div class="ci">✔ Retry count field</div><div class="ci">✔ Scheduled job every 5 mins</div><div class="ci">✔ Stop after threshold</div><div class="ci">✔ Notify admin</div><ul class="cl"><li>Avoid infinite loop.</li></ul></div></div><div class="blk dep"><div class="ct">Monitoring Strategy</div><div class="cb"><div class="cb-code"><pre><code>Track:</code></pre></div><div class="ci">✔ Success count</div><div class="ci">✔ Failure count</div><div class="ci">✔ Last sync time</div><div class="ci">✔ AsyncApexJob status</div><ul class="cl"><li>Enterprise systems need observability.</li></ul></div></div><div class="blk dep"><div class="ct">Bi-Directional Sync Handling</div><div class="cb"><ul class="cl"><li>If ERP updates record:</li><li>ERP → Salesforce REST API → Upsert using External ID.</li><li>Conflict resolution strategy required.</li></ul></div></div><div class="blk dep"><div class="ct">Security Consideration</div><div class="cb"><div class="ci">✔ Named Credentials</div><div class="ci">✔ TLS encryption</div><div class="ci">✔ IP restrictions</div><div class="ci">✔ Field-level validation</div><div class="ci">✔ Audit trail</div><ul class="cl"><li>Never expose sensitive data.</li></ul><div class="cb-code"><pre><code>📌 Enterprise Example (Clean Architecture)</code></pre></div><ul class="cl"><li>Salesforce</li></ul><div class="cb-code"><pre><code>↓ (Platform Event)</code></pre></div><div class="cb-code"><pre><code>Middleware (MuleSoft)</code></pre></div><ul class="cl"><li>↓</li><li>ERP</li><li>ERP</li></ul><div class="cb-code"><pre><code>↓ (REST API)</code></pre></div><ul class="cl"><li>Salesforce</li><li>Decoupled, scalable, resilient.</li></ul></div></div><div class="blk dep"><div class="ct">Interview Scenario</div><div class="cb"><ul class="cl"><li>“Explain integration flow of your last project.”</li><li>Strong answer structure:</li></ul><div class="ci">✔ Business trigger</div><div class="ci">✔ Technical trigger</div><div class="ci">✔ Async handling</div><div class="ci">✔ Authentication</div><div class="ci">✔ Error logging</div><div class="ci">✔ Retry</div><div class="ci">✔ Monitoring</div><ul class="cl"><li>Structured storytelling wins.</li></ul></div></div><div class="blk ans"><div class="ct">Interview Power Line</div><div class="cb"><ul class="cl"><li>If interviewer asks:</li><li>“What makes integration architecture robust?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>A robust integration architecture is decoupled, idempotent, scalable, and resilient to failure, with proper</p><ul class="cl"><li>error logging, retry mechanisms, and monitoring in place.</li><li>🚀 Next Topic in Sequence:</li></ul></div></div>
+</div>
+</body></html>

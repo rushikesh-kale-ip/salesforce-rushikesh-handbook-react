@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Lwc Performance Issue</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0A84FF;--green:#30D158;--orange:#FF9F0A;--red:#FF453A;--purple:#BF5AF2;
+  --t1:#1C1C1E;--t2:#3A3A3C;--tm:#8E8E93;
+  --bg:#F2F2F7;--card:rgba(255,255,255,0.9);--bdr:rgba(0,0,0,0.08);
+  --r:12px;--rm:16px;--rl:20px;
+  --f:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --fm:"SF Mono","JetBrains Mono","Menlo","Courier New",monospace;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);line-height:1.7;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+.ph{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(30px) saturate(200%);-webkit-backdrop-filter:blur(30px) saturate(200%);
+  border-bottom:1px solid var(--bdr);padding:1rem 1.5rem;
+  box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.phi{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:.875rem}
+.hi{width:36px;height:36px;background:linear-gradient(135deg,#0A84FF,#5E5CE6);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:1rem;flex-shrink:0;box-shadow:0 2px 8px rgba(10,132,255,.35)}
+.ht h1{font-size:.9375rem;font-weight:600;letter-spacing:-.02em;color:var(--t1)}
+.ht p{font-size:.75rem;color:var(--tm);margin-top:1px}
+.cw{max-width:860px;margin:0 auto;padding:1.75rem 1.5rem 4rem}
+.hero{background:linear-gradient(135deg,#0A84FF,#5E5CE6);border-radius:var(--rl);
+  padding:1.75rem 2rem;margin-bottom:1.75rem;color:white;
+  box-shadow:0 8px 32px rgba(10,132,255,.3)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);border-radius:100px;font-size:.6875rem;
+  font-weight:700;padding:.2rem .75rem;margin-bottom:.625rem;
+  letter-spacing:.04em;text-transform:uppercase}
+.hero h2{font-size:1.625rem;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.maj{display:flex;align-items:center;gap:.5rem;font-size:.625rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--tm);
+  margin:2.25rem 0 .875rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.blk{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rm);
+  padding:1.125rem 1.375rem;margin-bottom:.875rem;
+  box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.ct{font-size:.9375rem;font-weight:600;color:var(--t1);margin-bottom:.625rem;
+  letter-spacing:-.01em}
+.cb p{font-size:.9rem;color:var(--t2);margin-bottom:.4rem;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.ans{border-left:3px solid var(--blue)}
+.scn{border-left:3px solid var(--orange)}
+.mis{border-left:3px solid var(--red)}
+.sen{border-left:3px solid var(--purple)}
+.chk{border-left:3px solid var(--green)}
+.dep{border-left:3px solid var(--blue);background:rgba(10,132,255,.03)}
+.sub{border-left:3px solid rgba(0,0,0,.1);background:rgba(0,0,0,.015)}
+.cl{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin:.2rem 0}
+.cl li{font-size:.875rem;color:var(--t2);padding:.25rem 0 .25rem 1rem;
+  position:relative;line-height:1.6}
+.cl li::before{content:"·";position:absolute;left:0;color:var(--blue);font-weight:700}
+.ni{padding-left:2rem !important}
+.ni::before{display:none !important}
+.nb{display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;background:var(--blue);color:white;border-radius:5px;
+  font-size:.625rem;font-weight:700;margin-right:.4rem;vertical-align:middle}
+.ci{font-size:.875rem;color:var(--t2);padding:.2rem 0}
+.arr{font-size:.875rem;color:var(--blue);padding:.2rem 0 .2rem .5rem;font-weight:500}
+.cb-code{background:#1C1C1E;border-radius:var(--r);padding:1.125rem 1.25rem;
+  margin:.75rem 0;overflow-x:auto;position:relative}
+.cb-code::before{content:"";display:block;width:10px;height:10px;border-radius:50%;
+  background:#FF5F57;box-shadow:16px 0 0 #FFBD2E,32px 0 0 #28CA41;
+  margin-bottom:.75rem}
+.cb-code pre{overflow-x:auto}
+.cb-code code{font-family:var(--fm);font-size:.8rem;line-height:1.7;
+  color:#E8E8ED;white-space:pre;word-break:normal}
+.ic{font-family:var(--fm);font-size:.8125rem;background:rgba(10,132,255,.1);
+  color:var(--blue);padding:.1em .4em;border-radius:4px;
+  border:1px solid rgba(10,132,255,.15)}
+.tbl{width:100%;border-collapse:collapse;font-size:.875rem;margin:.5rem 0;
+  border-radius:var(--r);overflow:hidden}
+.tbl tr:first-child td{background:rgba(10,132,255,.07);font-weight:600;color:var(--t1)}
+.tbl td{padding:.5rem .875rem;border-bottom:1px solid var(--bdr);color:var(--t2)}
+.tbl tr:last-child td{border-bottom:none}
+.lp{font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:.375rem}
+@media(max-width:640px){
+  .cw{padding:1rem .875rem 3rem}
+  .hero{padding:1.375rem 1.25rem}
+  .hero h2{font-size:1.25rem}
+  .blk{padding:.875rem 1rem;border-radius:var(--r)}
+  .cb-code{padding:.875rem 1rem}
+  .ph{padding:.75rem 1rem}
+}
+@media(max-width:380px){
+  .hero h2{font-size:1.125rem}
+  .cw{padding:.75rem .625rem 3rem}
+}
+</style>
+</head>
+<body>
+<header class="ph"><div class="phi">
+  <div class="hi">📘</div>
+  <div class="ht"><h1>Salesforce Developer Guide</h1><p>Interview Ready · Deep Dive · Production Patterns</p></div>
+</div></header>
+<div class="cw">
+  <div class="hero"><div class="badge">Salesforce Developer</div><h2>Lwc Performance Issue</h2></div>
+  <p class="lp">29.g LWC Performance Issue</p><p class="lp">Say Next.</p><p class="lp">Next</p><p class="lp">🔷 29. Scenario-Based Questions</p><p class="lp">29.g LWC Performance Issue</p><div class="maj"><span>🎤</span>INTERVIEW SECTION</div><div class="blk ans"><div class="ct">30-Second Interview Answer</div><div class="cb"><p>LWC performance issues usually occur due to excessive Apex calls, non-selective queries, improper</p><p>reactivity handling, unnecessary re-rendering, large data loads, or lack of caching. Optimization involves</p><p>using @wire efficiently, enabling caching, minimizing DOM updates, and ensuring backend queries are</p><ul class="cl"><li>selective.</li></ul></div></div><div class="blk ans"><div class="ct">2-Minute Technical Explanation</div><div class="cb"><ul class="cl"><li>Common LWC performance problems:</li><li>󾠮 Too many imperative Apex calls</li><li>󾠯 Large datasets loaded at once</li><li>󾠰 No pagination</li><li>󾠱 Improper use of @track / reactive properties</li><li>󾠲 Re-rendering entire component unnecessarily</li><li>󾠳 Non-cacheable Apex methods</li><li>󾠴 Non-selective SOQL in backend</li><li>Optimization strategy:</li></ul><div class="ci">✔ Use @wire with cacheable=true</div><div class="ci">✔ Use pagination or lazy loading</div><div class="ci">✔ Avoid unnecessary reactive variables</div><div class="ci">✔ Optimize SOQL queries</div><div class="cb-code"><pre><code>✔ Use Lightning Data Service (LDS) when possible</code></pre></div><ul class="cl"><li>Performance must be optimized at:</li><li>Frontend + Backend.</li></ul></div></div><div class="blk scn"><div class="ct">Real-Time Scenario</div><div class="cb"><ul class="cl"><li>User opens LWC dashboard.</li></ul><div class="cb-code"><pre><code>Component:</code></pre></div><ul class="cl"><li>Calls Apex 5 times on load.</li><li>Each returns 5k records.</li><li>UI becomes slow.</li></ul><div class="cb-code"><pre><code>Fix:</code></pre></div><div class="ci">✔ Combine queries</div><div class="ci">✔ Use aggregate queries</div><div class="ci">✔ Add pagination</div><div class="ci">✔ Use cacheable=true</div><div class="ci">✔ Lazy load data</div><ul class="cl"><li>Performance improves drastically.</li></ul></div></div><div class="blk ans"><div class="ct">Tricky Interview Questions</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">1</span>Does @wire automatically cache?</li></ul><div class="cb-code"><pre><code>→ Yes (if cacheable=true).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">2</span>Is imperative call slower?</li></ul><div class="arr">→ Not always, but no automatic caching.</div><ul class="cl"><li class="ni"><span class="nb">3</span>Can non-selective query slow LWC?</li></ul><div class="arr">→ Yes.</div><ul class="cl"><li class="ni"><span class="nb">4</span>Does reactivity cause re-render?</li></ul><div class="arr">→ Yes.</div><ul class="cl"><li class="ni"><span class="nb">5</span>Is LDS faster than Apex?</li></ul><div class="arr">→ Often yes for CRUD operations.</div></div></div><div class="blk sen"><div class="ct">Senior-Level Discussion Points</div><div class="cb"><ul class="cl"><li>Frontend vs backend bottleneck</li><li>Caching strategy</li><li>Event-driven reactivity</li><li>Pagination vs infinite scroll</li><li>Data virtualization strategy</li></ul></div></div><div class="maj"><span>🔬</span>DEEP TECHNICAL BREAKDOWN</div><div class="blk dep"><div class="ct">Step 1: Identify Where Issue Is</div><div class="cb"><ul class="cl"><li>Performance issue may be:</li></ul><div class="ci">✔ UI rendering delay</div><div class="ci">✔ Network latency</div><div class="ci">✔ Apex slow query</div><div class="ci">✔ Too much data</div><div class="ci">✔ Repeated calls</div><div class="cb-code"><pre><code>Check:</code></pre></div><ul class="cl"><li>Browser DevTools → Network tab.</li></ul><div class="cb-code"><pre><code>Check:</code></pre></div><ul class="cl"><li>Query Plan in Apex.</li></ul></div></div><div class="blk dep"><div class="ct">Apex Optimization</div><div class="cb"><ul class="cl"><li>Ensure Apex method:</li></ul><div class="cb-code"><pre><code>@AuraEnabled(cacheable=true)</code></pre></div><ul class="cl"><li>And query is:</li></ul><div class="ci">✔ Selective</div><div class="ci">✔ Limited fields</div><div class="ci">✔ Limited records</div><div class="cb-code"><pre><code>Bad:</code></pre></div><ul class="cl"><li>SELECT * FROM Account</li></ul><div class="cb-code"><pre><code>Good:</code></pre></div><ul class="cl"><li>SELECT Id, Name</li><li>FROM Account</li><li>WHERE CreatedDate = LAST_N_DAYS:30</li><li>LIMIT 50</li></ul></div></div><div class="blk dep"><div class="ct">Use Pagination</div><div class="cb"><ul class="cl"><li>Instead of:</li><li>Returning 5000 records.</li></ul><div class="cb-code"><pre><code>Use:</code></pre></div><div class="ci">✔ LIMIT + OFFSET</div><div class="ci">✔ Infinite scroll</div><div class="ci">✔ Load more button</div><ul class="cl"><li>Improves load time.</li></ul></div></div><div class="blk dep"><div class="ct">Avoid Unnecessary Reactivity</div><div class="cb"><div class="cb-code"><pre><code>Example:</code></pre></div><div class="cb-code"><pre><code>@track data;</code></pre></div><ul class="cl"><li>If data updated frequently →</li><li>Full re-render.</li></ul><div class="cb-code"><pre><code>Better:</code></pre></div><ul class="cl"><li>Only update when required.</li></ul></div></div><div class="blk dep"><div class="ct">Proper List Rendering</div><div class="cb"><ul class="cl"><li>Always use:</li></ul><div class="cb-code"><pre><code>&lt;template for:each={records} for:item="rec"&gt;</code></pre></div><div class="cb-code"><pre><code>&lt;div key={rec.Id}&gt;{rec.Name}&lt;/div&gt;</code></pre></div><ul class="cl"><li></template></li><li>Missing key → inefficient DOM updates.</li></ul></div></div><div class="blk dep"><div class="ct">Wire vs Imperative</div><div class="cb"><ul class="cl"><li>Feature @wire Imperative</li><li>Caching Yes No</li><li>Feature @wire Imperative</li><li>Reactive Yes Manual</li><li>Control Limited Full control</li><li>Use wire when possible.</li></ul><div class="cb-code"><pre><code>📌 Lightning Data Service (LDS)</code></pre></div><ul class="cl"><li>For CRUD:</li></ul><div class="cb-code"><pre><code>Use:</code></pre></div><ul class="cl"><li>lightning-record-form</li><li>Instead of Apex.</li></ul><div class="cb-code"><pre><code>Benefits:</code></pre></div><div class="ci">✔ Built-in caching</div><div class="ci">✔ Automatic FLS</div><div class="ci">✔ Optimized</div></div></div><div class="blk dep"><div class="ct">Avoid Multiple Apex Calls</div><div class="cb"><div class="cb-code"><pre><code>Bad:</code></pre></div><ul class="cl"><li>Call Apex in:</li><li>connectedCallback</li><li>renderedCallback</li><li>event handler</li><li>Causes repeated calls.</li></ul><div class="cb-code"><pre><code>Better:</code></pre></div><ul class="cl"><li>Centralize call.</li></ul></div></div><div class="blk dep"><div class="ct">Backend + Frontend Combined Optimization</div><div class="cb"><ul class="cl"><li>Even if LWC optimized:</li><li>If backend query non-selective →</li><li>Still slow.</li><li>Must optimize both layers.</li></ul></div></div><div class="blk dep"><div class="ct">Enterprise Example</div><div class="cb"><ul class="cl"><li>Partner dashboard:</li></ul><div class="cb-code"><pre><code>Originally:</code></pre></div><ul class="cl"><li>5 Apex calls</li><li>Each returned 2000 rows</li><li>Refactored to:</li><li>1 aggregate query</li><li>Pagination</li></ul><div class="cb-code"><pre><code>Cacheable=true</code></pre></div><ul class="cl"><li>Load time reduced from 6s to 1.2s.</li></ul></div></div><div class="blk dep"><div class="ct">Interview Scenario</div><div class="cb"><ul class="cl"><li>“Your LWC is loading slowly in production. How do you debug?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>I would first analyze network calls in browser DevTools to identify slow Apex responses, review the SOQL</p><p>queries using Query Plan for selectivity, ensure methods are cacheable where appropriate, implement</p><p>pagination to reduce data load, and optimize reactive variables to minimize unnecessary re-renders.</p></div></div><div class="blk ans"><div class="ct">Interview Power Line</div><div class="cb"><ul class="cl"><li>If interviewer asks:</li><li>“What is most common cause of LWC slowness?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>The most common cause is inefficient Apex queries combined with excessive data loading and lack of</p><ul class="cl"><li>caching, which leads to slow network responses and heavy DOM rendering.</li><li>🚀 Next Topic in Sequence:</li></ul></div></div>
+</div>
+</body></html>

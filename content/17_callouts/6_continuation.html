@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Continuation</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0A84FF;--green:#30D158;--orange:#FF9F0A;--red:#FF453A;--purple:#BF5AF2;
+  --t1:#1C1C1E;--t2:#3A3A3C;--tm:#8E8E93;
+  --bg:#F2F2F7;--card:rgba(255,255,255,0.9);--bdr:rgba(0,0,0,0.08);
+  --r:12px;--rm:16px;--rl:20px;
+  --f:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --fm:"SF Mono","JetBrains Mono","Menlo","Courier New",monospace;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);line-height:1.7;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+.ph{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(30px) saturate(200%);-webkit-backdrop-filter:blur(30px) saturate(200%);
+  border-bottom:1px solid var(--bdr);padding:1rem 1.5rem;
+  box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.phi{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:.875rem}
+.hi{width:36px;height:36px;background:linear-gradient(135deg,#0A84FF,#5E5CE6);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:1rem;flex-shrink:0;box-shadow:0 2px 8px rgba(10,132,255,.35)}
+.ht h1{font-size:.9375rem;font-weight:600;letter-spacing:-.02em;color:var(--t1)}
+.ht p{font-size:.75rem;color:var(--tm);margin-top:1px}
+.cw{max-width:860px;margin:0 auto;padding:1.75rem 1.5rem 4rem}
+.hero{background:linear-gradient(135deg,#0A84FF,#5E5CE6);border-radius:var(--rl);
+  padding:1.75rem 2rem;margin-bottom:1.75rem;color:white;
+  box-shadow:0 8px 32px rgba(10,132,255,.3)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);border-radius:100px;font-size:.6875rem;
+  font-weight:700;padding:.2rem .75rem;margin-bottom:.625rem;
+  letter-spacing:.04em;text-transform:uppercase}
+.hero h2{font-size:1.625rem;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.maj{display:flex;align-items:center;gap:.5rem;font-size:.625rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--tm);
+  margin:2.25rem 0 .875rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.blk{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rm);
+  padding:1.125rem 1.375rem;margin-bottom:.875rem;
+  box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.ct{font-size:.9375rem;font-weight:600;color:var(--t1);margin-bottom:.625rem;
+  letter-spacing:-.01em}
+.cb p{font-size:.9rem;color:var(--t2);margin-bottom:.4rem;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.ans{border-left:3px solid var(--blue)}
+.scn{border-left:3px solid var(--orange)}
+.mis{border-left:3px solid var(--red)}
+.sen{border-left:3px solid var(--purple)}
+.chk{border-left:3px solid var(--green)}
+.dep{border-left:3px solid var(--blue);background:rgba(10,132,255,.03)}
+.sub{border-left:3px solid rgba(0,0,0,.1);background:rgba(0,0,0,.015)}
+.cl{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin:.2rem 0}
+.cl li{font-size:.875rem;color:var(--t2);padding:.25rem 0 .25rem 1rem;
+  position:relative;line-height:1.6}
+.cl li::before{content:"·";position:absolute;left:0;color:var(--blue);font-weight:700}
+.ni{padding-left:2rem !important}
+.ni::before{display:none !important}
+.nb{display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;background:var(--blue);color:white;border-radius:5px;
+  font-size:.625rem;font-weight:700;margin-right:.4rem;vertical-align:middle}
+.ci{font-size:.875rem;color:var(--t2);padding:.2rem 0}
+.arr{font-size:.875rem;color:var(--blue);padding:.2rem 0 .2rem .5rem;font-weight:500}
+.cb-code{background:#1C1C1E;border-radius:var(--r);padding:1.125rem 1.25rem;
+  margin:.75rem 0;overflow-x:auto;position:relative}
+.cb-code::before{content:"";display:block;width:10px;height:10px;border-radius:50%;
+  background:#FF5F57;box-shadow:16px 0 0 #FFBD2E,32px 0 0 #28CA41;
+  margin-bottom:.75rem}
+.cb-code pre{overflow-x:auto}
+.cb-code code{font-family:var(--fm);font-size:.8rem;line-height:1.7;
+  color:#E8E8ED;white-space:pre;word-break:normal}
+.ic{font-family:var(--fm);font-size:.8125rem;background:rgba(10,132,255,.1);
+  color:var(--blue);padding:.1em .4em;border-radius:4px;
+  border:1px solid rgba(10,132,255,.15)}
+.tbl{width:100%;border-collapse:collapse;font-size:.875rem;margin:.5rem 0;
+  border-radius:var(--r);overflow:hidden}
+.tbl tr:first-child td{background:rgba(10,132,255,.07);font-weight:600;color:var(--t1)}
+.tbl td{padding:.5rem .875rem;border-bottom:1px solid var(--bdr);color:var(--t2)}
+.tbl tr:last-child td{border-bottom:none}
+.lp{font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:.375rem}
+@media(max-width:640px){
+  .cw{padding:1rem .875rem 3rem}
+  .hero{padding:1.375rem 1.25rem}
+  .hero h2{font-size:1.25rem}
+  .blk{padding:.875rem 1rem;border-radius:var(--r)}
+  .cb-code{padding:.875rem 1rem}
+  .ph{padding:.75rem 1rem}
+}
+@media(max-width:380px){
+  .hero h2{font-size:1.125rem}
+  .cw{padding:.75rem .625rem 3rem}
+}
+</style>
+</head>
+<body>
+<header class="ph"><div class="phi">
+  <div class="hi">📘</div>
+  <div class="ht"><h1>Salesforce Developer Guide</h1><p>Interview Ready · Deep Dive · Production Patterns</p></div>
+</div></header>
+<div class="cw">
+  <div class="hero"><div class="badge">Salesforce Developer</div><h2>Continuation</h2></div>
+  <p class="lp">17.f Continuation</p><p class="lp">Say Next.</p><p class="lp">Next</p><p class="lp">🔷 17.f Continuation</p><div class="maj"><span>🎤</span>INTERVIEW SECTION</div><div class="blk ans"><div class="ct">30-Second Interview Answer</div><div class="cb"><p>Continuation in Salesforce is used to perform long-running HTTP callouts asynchronously from</p><p>Visualforce or Aura without blocking the user’s request thread. It allows Salesforce to handle callouts</p><p>exceeding the normal synchronous timeout limits by freeing up server resources while waiting for the</p><ul class="cl"><li>external response.</li></ul></div></div><div class="blk ans"><div class="ct">2-Minute Technical Explanation</div><div class="cb"><div class="cb-code"><pre><code>Problem:</code></pre></div><ul class="cl"><li>Normal synchronous callouts:</li><li>Block the request thread</li><li>Have strict timeout</li><li>Poor user experience for long-running APIs</li></ul><div class="cb-code"><pre><code>Solution:</code></pre></div><ul class="cl"><li>👉 Continuation</li><li>How it works:</li><li>󾠮 User action triggers Apex method</li><li>󾠯 Continuation object created</li><li>󾠰 Callout executed asynchronously</li><li>󾠱 Salesforce releases thread</li><li>󾠲 When response returns → Callback method executes</li><li>Used mainly in:</li></ul><div class="ci">✔ Visualforce</div><div class="ci">✔ Aura</div><div class="cb-code"><pre><code>Not required in LWC (since LWC uses async Apex differently).</code></pre></div></div></div><div class="blk scn"><div class="ct">Real-Time Scenario</div><div class="cb"><ul class="cl"><li>Visualforce page calls external credit-check API:</li><li>API takes 40 seconds</li><li>Without Continuation → Timeout / Poor UX</li><li>With Continuation → Page remains responsive</li><li>Better scalability.</li></ul></div></div><div class="blk ans"><div class="ct">Tricky Interview Questions</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">1</span>Can Continuation be used in LWC?</li></ul><div class="cb-code"><pre><code>→ No (primarily VF/Aura use case).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">2</span>Why use Continuation?</li></ul><div class="arr">→ Prevent blocking thread during long callouts.</div><ul class="cl"><li class="ni"><span class="nb">3</span>Is it asynchronous?</li></ul><div class="arr">→ Yes.</div><ul class="cl"><li class="ni"><span class="nb">4</span>Does it increase timeout limit?</li></ul><div class="cb-code"><pre><code>→ Yes (indirectly supports longer wait).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">5</span>Does it improve scalability?</li></ul><div class="arr">→ Yes.</div></div></div><div class="blk sen"><div class="ct">Senior-Level Discussion Points</div><div class="cb"><ul class="cl"><li>Thread management</li><li>Scalability impact</li><li>Long-running API design</li><li>UX optimization</li><li>When to prefer async Queueable instead</li></ul></div></div><div class="maj"><span>🔬</span>DEEP TECHNICAL BREAKDOWN</div><div class="blk dep"><div class="ct">Problem Without Continuation</div><div class="cb"><ul class="cl"><li>User clicks button</li><li>↓</li><li>Apex makes callout</li><li>↓</li><li>External system slow</li><li>↓</li><li>User waits</li><li>↓</li><li>Timeout or poor experience</li><li>Thread blocked.</li></ul></div></div><div class="blk dep"><div class="ct">Continuation Architecture</div><div class="cb"><ul class="cl"><li>User Action</li><li>↓</li><li>Create Continuation</li><li>↓</li><li>Callout registered</li><li>↓</li><li>Thread released</li><li>↓</li><li>External response</li><li>↓</li><li>Callback executed</li><li>Scalable design.</li></ul></div></div><div class="blk dep"><div class="ct">Basic Continuation Example</div><div class="cb"><div class="cb-code"><pre><code>Controller:</code></pre></div><div class="cb-code"><pre><code>public Object startRequest() {</code></pre></div><div class="cb-code"><pre><code>Continuation cont = new Continuation(120);</code></pre></div><div class="cb-code"><pre><code>HttpRequest req = new HttpRequest();</code></pre></div><div class="cb-code"><pre><code>req.setEndpoint('https://api.example.com');</code></pre></div><div class="cb-code"><pre><code>req.setMethod('GET');</code></pre></div><div class="cb-code"><pre><code>cont.addHttpRequest(req);</code></pre></div><div class="cb-code"><pre><code>return cont;</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div><div class="cb-code"><pre><code>Callback:</code></pre></div><div class="cb-code"><pre><code>public Object processResponse() {</code></pre></div><div class="cb-code"><pre><code>HttpResponse res = Continuation.getResponse(this);</code></pre></div><div class="cb-code"><pre><code>return res.getBody();</code></pre></div><div class="cb-code"><pre><code>}</code></pre></div></div></div><div class="blk dep"><div class="ct">Timeout in Continuation</div><div class="cb"><ul class="cl"><li>When creating:</li></ul><div class="cb-code"><pre><code>new Continuation(120);</code></pre></div><ul class="cl"><li>120 seconds max.</li><li>Supports longer wait without blocking.</li></ul></div></div><div class="blk dep"><div class="ct">Why Not Just Use Queueable?</div><div class="cb"><div class="cb-code"><pre><code>Queueable:</code></pre></div><div class="ci">✔ Backend async</div></div></div><div class="blk mis"><div class="ct">No immediate UI response</div><div class="cb"><div class="cb-code"><pre><code>Continuation:</code></pre></div><div class="ci">✔ Async</div><div class="ci">✔ Designed for UI interaction</div><div class="ci">✔ Returns response to same page</div><ul class="cl"><li>Important distinction.</li></ul></div></div><div class="blk dep"><div class="ct">Continuation vs Normal Callout</div><div class="cb"><ul class="cl"><li>Feature Normal Callout Continuation</li><li>Blocks thread Yes No</li><li>Long-running support Limited Better</li><li>UI friendly No Yes</li><li>Async No Yes</li><li>Used in Apex VF/Aura</li></ul></div></div><div class="blk dep"><div class="ct">When NOT to Use Continuation</div><div class="cb"><ul class="cl"><li>Avoid if:</li></ul><div class="ci">✔ Background integration</div><div class="ci">✔ No UI interaction needed</div><div class="ci">✔ LWC architecture</div><ul class="cl"><li>Use Queueable instead.</li></ul></div></div><div class="blk dep"><div class="ct">Enterprise Example</div><div class="cb"><ul class="cl"><li>VF-based legacy portal:</li><li>Real-time insurance premium calculation</li><li>API slow</li><li>Use Continuation</li><li>Improves scalability.</li></ul></div></div><div class="blk dep"><div class="ct">Modern Architecture Note</div><div class="cb"><ul class="cl"><li>In LWC era:</li><li>Continuation rarely used.</li></ul><div class="cb-code"><pre><code>Instead:</code></pre></div><div class="ci">✔ LWC → Apex async</div><div class="ci">✔ Platform Event</div><div class="ci">✔ Queueable</div><ul class="cl"><li>Mostly legacy pattern.</li></ul></div></div><div class="blk dep"><div class="ct">Interview Scenario</div><div class="cb"><ul class="cl"><li>“When would you use Continuation instead of normal callout?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>I would use Continuation when making long-running callouts from Visualforce or Aura components to</p><ul class="cl"><li>prevent blocking the request thread and improve scalability and user experience.</li></ul></div></div><div class="blk ans"><div class="ct">Interview Power Line</div><div class="cb"><ul class="cl"><li>If interviewer asks:</li><li>“What problem does Continuation solve?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>Continuation prevents server thread blocking during long-running callouts by handling them</p><ul class="cl"><li>asynchronously, improving scalability and user experience in UI-driven integrations.</li><li>🚀 Next Topic in Sequence:</li><li class="ni"><span class="nb">18</span>Event-Based Integration → 18.a Platform Events</li><li>Say Next.</li><li>Next</li><li>🔷 18. Event-Based Integration</li></ul></div></div>
+</div>
+</body></html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Lookup Relationship</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0A84FF;--green:#30D158;--orange:#FF9F0A;--red:#FF453A;--purple:#BF5AF2;
+  --t1:#1C1C1E;--t2:#3A3A3C;--tm:#8E8E93;
+  --bg:#F2F2F7;--card:rgba(255,255,255,0.9);--bdr:rgba(0,0,0,0.08);
+  --r:12px;--rm:16px;--rl:20px;
+  --f:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --fm:"SF Mono","JetBrains Mono","Menlo","Courier New",monospace;
+}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);line-height:1.7;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+.ph{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(30px) saturate(200%);-webkit-backdrop-filter:blur(30px) saturate(200%);
+  border-bottom:1px solid var(--bdr);padding:1rem 1.5rem;
+  box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.phi{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:.875rem}
+.hi{width:36px;height:36px;background:linear-gradient(135deg,#0A84FF,#5E5CE6);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:1rem;flex-shrink:0;box-shadow:0 2px 8px rgba(10,132,255,.35)}
+.ht h1{font-size:.9375rem;font-weight:600;letter-spacing:-.02em;color:var(--t1)}
+.ht p{font-size:.75rem;color:var(--tm);margin-top:1px}
+.cw{max-width:860px;margin:0 auto;padding:1.75rem 1.5rem 4rem}
+.hero{background:linear-gradient(135deg,#0A84FF,#5E5CE6);border-radius:var(--rl);
+  padding:1.75rem 2rem;margin-bottom:1.75rem;color:white;
+  box-shadow:0 8px 32px rgba(10,132,255,.3)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);border-radius:100px;font-size:.6875rem;
+  font-weight:700;padding:.2rem .75rem;margin-bottom:.625rem;
+  letter-spacing:.04em;text-transform:uppercase}
+.hero h2{font-size:1.625rem;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.maj{display:flex;align-items:center;gap:.5rem;font-size:.625rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--tm);
+  margin:2.25rem 0 .875rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
+.blk{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rm);
+  padding:1.125rem 1.375rem;margin-bottom:.875rem;
+  box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.ct{font-size:.9375rem;font-weight:600;color:var(--t1);margin-bottom:.625rem;
+  letter-spacing:-.01em}
+.cb p{font-size:.9rem;color:var(--t2);margin-bottom:.4rem;line-height:1.75}
+.cb p:last-child{margin-bottom:0}
+.ans{border-left:3px solid var(--blue)}
+.scn{border-left:3px solid var(--orange)}
+.mis{border-left:3px solid var(--red)}
+.sen{border-left:3px solid var(--purple)}
+.chk{border-left:3px solid var(--green)}
+.dep{border-left:3px solid var(--blue);background:rgba(10,132,255,.03)}
+.sub{border-left:3px solid rgba(0,0,0,.1);background:rgba(0,0,0,.015)}
+.cl{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin:.2rem 0}
+.cl li{font-size:.875rem;color:var(--t2);padding:.25rem 0 .25rem 1rem;
+  position:relative;line-height:1.6}
+.cl li::before{content:"·";position:absolute;left:0;color:var(--blue);font-weight:700}
+.ni{padding-left:2rem !important}
+.ni::before{display:none !important}
+.nb{display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;background:var(--blue);color:white;border-radius:5px;
+  font-size:.625rem;font-weight:700;margin-right:.4rem;vertical-align:middle}
+.ci{font-size:.875rem;color:var(--t2);padding:.2rem 0}
+.arr{font-size:.875rem;color:var(--blue);padding:.2rem 0 .2rem .5rem;font-weight:500}
+.cb-code{background:#1C1C1E;border-radius:var(--r);padding:1.125rem 1.25rem;
+  margin:.75rem 0;overflow-x:auto;position:relative}
+.cb-code::before{content:"";display:block;width:10px;height:10px;border-radius:50%;
+  background:#FF5F57;box-shadow:16px 0 0 #FFBD2E,32px 0 0 #28CA41;
+  margin-bottom:.75rem}
+.cb-code pre{overflow-x:auto}
+.cb-code code{font-family:var(--fm);font-size:.8rem;line-height:1.7;
+  color:#E8E8ED;white-space:pre;word-break:normal}
+.ic{font-family:var(--fm);font-size:.8125rem;background:rgba(10,132,255,.1);
+  color:var(--blue);padding:.1em .4em;border-radius:4px;
+  border:1px solid rgba(10,132,255,.15)}
+.tbl{width:100%;border-collapse:collapse;font-size:.875rem;margin:.5rem 0;
+  border-radius:var(--r);overflow:hidden}
+.tbl tr:first-child td{background:rgba(10,132,255,.07);font-weight:600;color:var(--t1)}
+.tbl td{padding:.5rem .875rem;border-bottom:1px solid var(--bdr);color:var(--t2)}
+.tbl tr:last-child td{border-bottom:none}
+.lp{font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:.375rem}
+@media(max-width:640px){
+  .cw{padding:1rem .875rem 3rem}
+  .hero{padding:1.375rem 1.25rem}
+  .hero h2{font-size:1.25rem}
+  .blk{padding:.875rem 1rem;border-radius:var(--r)}
+  .cb-code{padding:.875rem 1rem}
+  .ph{padding:.75rem 1rem}
+}
+@media(max-width:380px){
+  .hero h2{font-size:1.125rem}
+  .cw{padding:.75rem .625rem 3rem}
+}
+</style>
+</head>
+<body>
+<header class="ph"><div class="phi">
+  <div class="hi">📘</div>
+  <div class="ht"><h1>Salesforce Developer Guide</h1><p>Interview Ready · Deep Dive · Production Patterns</p></div>
+</div></header>
+<div class="cw">
+  <div class="hero"><div class="badge">Salesforce Developer</div><h2>Lookup Relationship</h2></div>
+  <p class="lp">2.e Lookup Relationship</p><p class="lp">Say Next.</p><p class="lp">Next</p><p class="lp">🔵 󾠯 Data Model</p><p class="lp">2.e Lookup Relationship</p><div class="maj"><span>🎤</span>INTERVIEW SECTION</div><div class="blk ans"><div class="ct">30-Second Interview Answer</div><div class="cb"><p>A Lookup Relationship in Salesforce is a loosely coupled relationship between two objects where one</p><p>object references another via a lookup field. The child record can exist independently of the parent, and</p><ul class="cl"><li>deleting the parent does not automatically delete the child.</li></ul></div></div><div class="blk ans"><div class="ct">2-Minute Technical Explanation</div><div class="cb"><ul class="cl"><li>Lookup is used when:</li><li>Relationship is optional.</li><li>Objects are loosely connected.</li><li>Child should survive even if parent is deleted.</li></ul><div class="cb-code"><pre><code>Example:</code></pre></div><div class="cb-code"><pre><code>Contact → Account (Lookup)</code></pre></div><div class="cb-code"><pre><code>Opportunity → Campaign (Lookup)</code></pre></div><ul class="cl"><li>Custom Object → Account</li><li>Key characteristics:</li></ul><div class="cb-code"><pre><code>Parent deletion does NOT delete child (unless configured otherwise).</code></pre></div><ul class="cl"><li>Child can exist without parent.</li><li>No Roll-Up Summary fields supported.</li><li>Sharing is independent.</li></ul></div></div><div class="blk scn"><div class="ct">Real-Time Scenario</div><div class="cb"><div class="cb-code"><pre><code>Suppose:</code></pre></div><ul class="cl"><li>You create custom object:</li><li>Site_Visit__c</li><li>It has lookup to:</li><li>Engineer__c</li><li>If Engineer is deleted:</li></ul><div class="cb-code"><pre><code>Site Visit record still exists (Engineer field becomes null).</code></pre></div><ul class="cl"><li>Business rule:</li><li>Site Visit must not be deleted automatically.</li><li>So use Lookup.</li></ul></div></div><div class="blk ans"><div class="ct">Tricky Interview Questions</div><div class="cb"><ul class="cl"><li class="ni"><span class="nb">1</span>Can we make lookup mandatory?</li></ul><div class="cb-code"><pre><code>✅ Yes (Required checkbox).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">2</span>Can we convert lookup to master-detail?</li></ul><div class="cb-code"><pre><code>✅ Yes (if no existing orphan records).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">3</span>Can we create roll-up summary in lookup?</li></ul><div class="cb-code"><pre><code>❌ No (unless using declarative workaround).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">4</span>Can child record exist without parent?</li></ul><div class="cb-code"><pre><code>✅ Yes (unless required).</code></pre></div><ul class="cl"><li class="ni"><span class="nb">5</span>Does lookup inherit sharing?</li></ul></div></div><div class="blk sen"><div class="ct">Senior-Level Discussion Points</div><div class="cb"><div class="cb-code"><pre><code>Indirect Lookup (External Objects)</code></pre></div><ul class="cl"><li>Lookup filters</li></ul><div class="cb-code"><pre><code>Cascade delete option (special case)</code></pre></div><ul class="cl"><li>Performance impact in large data</li></ul><div class="cb-code"><pre><code>Declarative roll-up alternatives (DLRS)</code></pre></div></div></div><div class="maj"><span>🔬</span>DEEP TECHNICAL BREAKDOWN</div><div class="blk dep"><div class="ct">What Is Lookup Internally?</div><div class="cb"><ul class="cl"><li>Lookup field stores:</li><li>Parent record Id</li><li>Acts like foreign key</li><li>Indexed field</li><li>Database-level relationship but loosely enforced.</li></ul></div></div><div class="blk dep"><div class="ct">Example Structure</div><div class="cb"><ul class="cl"><li>Child Object:</li><li>Site_Visit__c</li></ul><div class="cb-code"><pre><code>Field:</code></pre></div><div class="cb-code"><pre><code>Engineer__c (Lookup to Engineer__c)</code></pre></div><div class="cb-code"><pre><code>Internally:</code></pre></div><ul class="cl"><li>Site_Visit__c</li><li>Id</li><li>Name</li></ul><div class="cb-code"><pre><code>Engineer__c (stores Engineer Id)</code></pre></div></div></div><div class="blk dep"><div class="ct">Relationship Query Example</div><div class="cb"><ul class="cl"><li>Parent to Child</li></ul><div class="cb-code"><pre><code>SELECT Name, (SELECT Name FROM Site_Visits__r)</code></pre></div><ul class="cl"><li>FROM Engineer__c</li><li>Child to Parent</li><li>SELECT Name, Engineer__r.Name</li><li>FROM Site_Visit__c</li></ul></div></div><div class="blk dep"><div class="ct">Deletion Behavior</div><div class="cb"><ul class="cl"><li>If parent deleted:</li><li>Child record:</li><li>Remains</li><li>Lookup field becomes null</li><li>Unless “Delete this record also” option enabled</li></ul></div></div><div class="blk dep"><div class="ct">Sharing Behavior</div><div class="cb"><div class="cb-code"><pre><code>Lookup:</code></pre></div><ul class="cl"><li>Child does NOT inherit parent sharing.</li><li>Child has its own OWD.</li><li>Can have separate sharing rules.</li></ul></div></div><div class="blk dep"><div class="ct">Lookup Filter</div><div class="cb"><ul class="cl"><li>Used to restrict which records can be selected.</li></ul><div class="cb-code"><pre><code>Example:</code></pre></div><ul class="cl"><li>Only show Engineers where Status = Active.</li></ul><div class="cb-code"><pre><code>Helps:</code></pre></div><ul class="cl"><li>Data integrity</li><li>Better UI control</li></ul></div></div><div class="blk dep"><div class="ct">Performance Considerations</div><div class="cb"><ul class="cl"><li>Lookup field is indexed.</li><li>Filtering on lookup field is selective.</li><li>Good for LDV.</li><li>Bad practice:</li><li>Cross-object formula referencing deep hierarchy.</li></ul></div></div><div class="blk sub"><div class="ct">Converting Lookup → Master-Detail</div><div class="cb"><div class="cb-code"><pre><code>Conditions:</code></pre></div><ul class="cl"><li>No existing orphan records</li><li>Child OWD must be Public Read/Write</li><li>No roll-up summary dependent on it</li></ul></div></div><div class="blk sub"><div class="ct">Deleting Parent</div><div class="cb"><ul class="cl"><li>Child may become orphan record.</li></ul></div></div><div class="blk sub"><div class="ct">Large Data Volume</div><div class="cb"><ul class="cl"><li>Relationship queries may hit heap limit.</li></ul></div></div><div class="blk dep"><div class="ct">Debugging Lookup Issues</div><div class="cb"><ul class="cl"><li>If relationship not working:</li><li class="ni"><span class="nb">1</span>Check lookup filter.</li><li class="ni"><span class="nb">2</span>Check field-level security.</li><li class="ni"><span class="nb">3</span>Check required setting.</li><li class="ni"><span class="nb">4</span>Check sharing.</li><li class="ni"><span class="nb">5</span>Check cascade delete option.</li></ul></div></div><div class="blk dep"><div class="ct">Lookup vs Master-Detail Quick Comparison</div><div class="cb"><ul class="cl"><li>Feature Lookup Master-Detail</li><li>Parent Required Optional Required</li></ul></div></div><div class="blk mis"><div class="ct">Sharing Inherited ❌ ✅</div><div class="cb"><ul class="cl"><li>Cascade Delete Optional Always</li></ul></div></div><div class="blk dep"><div class="ct">When NOT to Use Lookup</div><div class="cb"><div class="cb-code"><pre><code>If:</code></pre></div><ul class="cl"><li>Child must always depend on parent</li><li>Roll-up summary required</li><li>Strict data integrity needed</li><li>Then use Master-Detail.</li></ul></div></div><div class="blk ans"><div class="ct">Interview Power Line</div><div class="cb"><ul class="cl"><li>If interviewer asks:</li><li>“When do you prefer Lookup over Master-Detail?”</li></ul><div class="cb-code"><pre><code>Answer:</code></pre></div><p>When the relationship is optional, objects should have independent sharing, and child records must not</p><ul class="cl"><li>be deleted automatically when parent is removed.</li><li>🚀 Next Topic in Sequence:</li></ul></div></div>
+</div>
+</body></html>
