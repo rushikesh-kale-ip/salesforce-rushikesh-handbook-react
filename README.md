@@ -60,6 +60,8 @@ npm install
 
 # Start the development server
 npm run dev
+npm run build
+npm run deploy
 ```
 
 Open the local URL displayed in your terminal, typically `http://localhost:5173/`.
