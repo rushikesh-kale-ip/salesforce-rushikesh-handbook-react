@@ -53,7 +53,7 @@ const fileCache = new Map();
 const loadFiles = async (topicId) => {
   if (fileCache.has(topicId)) return fileCache.get(topicId);
   try {
-    const res = await fetch(`/salesforce-dev-handbook-react/content/${topicId}/manifest.json`);
+    const res = await fetch(`/salesforce-rushikesh-handbook-react/content/${topicId}/manifest.json`);
     if (!res.ok) return [];
     const fileList = await res.json();
     const files = await Promise.all(
@@ -64,9 +64,9 @@ const loadFiles = async (topicId) => {
         const name = match[2].replace(/_/g, ' ');
         const type = match[3];
         if (['pdf', 'jpg', 'jpeg', 'png', 'webp'].includes(type)) {
-          return { rank, name, type, content: `/salesforce-dev-handbook-react/content/${topicId}/${fileName}` };
+          return { rank, name, type, content: `/salesforce-rushikesh-handbook-react/content/${topicId}/${fileName}` };
         }
-        const fileRes = await fetch(`/salesforce-dev-handbook-react/content/${topicId}/${fileName}`);
+        const fileRes = await fetch(`/salesforce-rushikesh-handbook-react/content/${topicId}/${fileName}`);
         const content = await fileRes.text();
         return { rank, name, type, content };
       })
