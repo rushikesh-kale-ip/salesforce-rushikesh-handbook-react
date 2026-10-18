@@ -4,7 +4,7 @@ An interactive, developer-focused knowledge hub for exploring Salesforce archite
 
 Built as a personal learning and reference resource, this project brings core Salesforce concepts together in a structured, easy-to-navigate experience inspired by guided technical learning platforms.
 
-🔗 **Live Demo:** [Explore the Salesforce Developer Handbook](https://rushikesh-kale-ip.github.io/salesforce-rushikesh-handbook-react/#/learningroute/)
+🔗 **Live Demo:** [Explore the Salesforce Developer Handbook](https://rushikesh-kale-ip.github.io/salesforce-rushikesh-handbook-react/#/learningroute/lwc/1)
 
 ## 🚀 Overview
 
